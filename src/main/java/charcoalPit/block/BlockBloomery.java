@@ -1,7 +1,5 @@
 package charcoalPit.block;
 
-import java.util.Random;
-
 import charcoalPit.CharcoalPit;
 import charcoalPit.core.Config;
 import charcoalPit.core.MethodHelper;
@@ -14,19 +12,12 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
-import net.minecraft.item.Items;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -39,19 +30,21 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ToolType;
 
-public class BlockBloomery extends Block{
-	
-	public static final IntegerProperty STAGE=IntegerProperty.create("stage", 1, 12);
+import java.util.Random;
+
+public class BlockBloomery extends Block {
+
+	public static final IntegerProperty STAGE = IntegerProperty.create("stage", 1, 12);
 	//1-8 layers,9 active,10 done,11 worked,12 cooled
-	
-	protected static final VoxelShape[] SHAPES = new VoxelShape[]{VoxelShapes.empty(), 
-			Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D), 
-			Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 4.0D, 16.0D), 
-			Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 6.0D, 16.0D), 
-			Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 8.0D, 16.0D), 
-			Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 10.0D, 16.0D), 
-			Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 12.0D, 16.0D), 
-			Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 14.0D, 16.0D), 
+
+	protected static final VoxelShape[] SHAPES = new VoxelShape[]{VoxelShapes.empty(),
+			Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D),
+			Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 4.0D, 16.0D),
+			Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 6.0D, 16.0D),
+			Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 8.0D, 16.0D),
+			Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 10.0D, 16.0D),
+			Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 12.0D, 16.0D),
+			Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 14.0D, 16.0D),
 			Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D)};
 
 	public BlockBloomery() {
@@ -177,12 +170,12 @@ public class BlockBloomery extends Block{
 						}
 					}
 				}else {
-					BlockPos up=pos.offset(Direction.UP);
-					if(worldIn.isAirBlock(up)&&MethodHelper.Bloomery2ValidPosition(worldIn, up, true, false)) {
+					BlockPos up = pos.offset(Direction.UP);
+					if (worldIn.isAirBlock(up) && MethodHelper.Bloomery2ValidPosition(worldIn, up, true, false) && worldIn.getBlockState(pos.offset(Direction.DOWN)).getBlock() != this) {
 						worldIn.setBlockState(up, state.with(STAGE, 1));
-						TileBloomery2 dummy=((TileBloomery2)worldIn.getTileEntity(up));
-						dummy.recipe=tile.recipe;
-						dummy.dummy=true;
+						TileBloomery2 dummy = ((TileBloomery2) worldIn.getTileEntity(up));
+						dummy.recipe = tile.recipe;
+						dummy.dummy = true;
 						player.setHeldItem(handIn, dummy.ore.insertItem(0, player.getHeldItem(handIn), false));
 						worldIn.playSound(null, pos, SoundEvents.BLOCK_GRAVEL_PLACE, SoundCategory.BLOCKS, 1F, 1F);
 						return ActionResultType.SUCCESS;
@@ -200,12 +193,12 @@ public class BlockBloomery extends Block{
 							}
 						}
 					}else {
-						BlockPos up=pos.offset(Direction.UP);
-						if(worldIn.isAirBlock(up)&&MethodHelper.Bloomery2ValidPosition(worldIn, up, true, false)) {
+						BlockPos up = pos.offset(Direction.UP);
+						if (worldIn.isAirBlock(up) && MethodHelper.Bloomery2ValidPosition(worldIn, up, true, false) && worldIn.getBlockState(pos.offset(Direction.DOWN)).getBlock() != this) {
 							worldIn.setBlockState(up, state.with(STAGE, 1));
-							TileBloomery2 dummy=((TileBloomery2)worldIn.getTileEntity(up));
-							dummy.recipe=tile.recipe;
-							dummy.dummy=true;
+							TileBloomery2 dummy = ((TileBloomery2) worldIn.getTileEntity(up));
+							dummy.recipe = tile.recipe;
+							dummy.dummy = true;
 							player.setHeldItem(handIn, dummy.fuel.insertItem(0, player.getHeldItem(handIn), false));
 							worldIn.playSound(null, pos, SoundEvents.BLOCK_GRAVEL_PLACE, SoundCategory.BLOCKS, 1F, 1F);
 							return ActionResultType.SUCCESS;

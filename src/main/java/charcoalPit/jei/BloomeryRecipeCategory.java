@@ -85,25 +85,25 @@ public class BloomeryRecipeCategory implements IRecipeCategory<BloomeryRecipe> {
 			coal.add(new ItemStack(i));
 		}
 		iRecipeLayout.getItemStacks().init(2,true,25,16);
-		iRecipeLayout.getItemStacks().set(2,coal);
-		ArrayList<ItemStack> brick=new ArrayList();
-		for(Block i: BlockTags.getCollection().get(new ResourceLocation(CharcoalPit.MODID,"bloomery_walls")).getAllElements()){
+		iRecipeLayout.getItemStacks().set(2, coal);
+		ArrayList<ItemStack> brick = new ArrayList();
+		for (Block i : BlockTags.getCollection().get(new ResourceLocation(CharcoalPit.MODID, "bloomery_walls")).getAllElements()) {
 			brick.add(new ItemStack(i));
 		}
-		iRecipeLayout.getItemStacks().init(3,true,61,34);
-		iRecipeLayout.getItemStacks().init(4,true,97,34);
-		iRecipeLayout.getItemStacks().init(5,true,79,70);
-		iRecipeLayout.getItemStacks().set(3,brick);
-		iRecipeLayout.getItemStacks().set(4,brick);
-		iRecipeLayout.getItemStacks().set(5,brick);
-		iRecipeLayout.getItemStacks().init(6,true,43,52);
-		iRecipeLayout.getItemStacks().init(7,true,115,52);
-		iRecipeLayout.getItemStacks().set(6,new ItemStack(ModBlockRegistry.Bellows));
-		iRecipeLayout.getItemStacks().set(7,new ItemStack(ModBlockRegistry.Bellows));
-		iRecipeLayout.getItemStacks().init(8,true,61,52);
-		iRecipeLayout.getItemStacks().init(9,true,97,52);
-		ArrayList<ItemStack> tuyere=new ArrayList();
-		for(Block i: BlockTags.getCollection().get(new ResourceLocation(CharcoalPit.MODID,"tuyere_blocks")).getAllElements()){
+		iRecipeLayout.getItemStacks().init(3, true, 61, 34);
+		iRecipeLayout.getItemStacks().init(4, true, 97, 34);
+		iRecipeLayout.getItemStacks().init(5, true, 79, 70);
+		iRecipeLayout.getItemStacks().set(3, brick);
+		iRecipeLayout.getItemStacks().set(4, brick);
+		iRecipeLayout.getItemStacks().set(5, new ItemStack(ModBlockRegistry.MainBloomery));
+		iRecipeLayout.getItemStacks().init(6, true, 43, 52);
+		iRecipeLayout.getItemStacks().init(7, true, 115, 52);
+		iRecipeLayout.getItemStacks().set(6, new ItemStack(ModBlockRegistry.Bellows));
+		iRecipeLayout.getItemStacks().set(7, new ItemStack(ModBlockRegistry.Bellows));
+		iRecipeLayout.getItemStacks().init(8, true, 61, 52);
+		iRecipeLayout.getItemStacks().init(9, true, 97, 52);
+		ArrayList<ItemStack> tuyere = new ArrayList();
+		for (Block i : BlockTags.getCollection().get(new ResourceLocation(CharcoalPit.MODID, "tuyere_blocks")).getAllElements()) {
 			tuyere.add(new ItemStack(i));
 		}
 		iRecipeLayout.getItemStacks().set(8,tuyere);

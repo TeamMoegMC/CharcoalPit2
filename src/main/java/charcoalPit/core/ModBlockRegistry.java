@@ -6,9 +6,6 @@ import net.minecraft.block.*;
 import net.minecraft.block.AbstractBlock.Properties;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
-import net.minecraft.item.Items;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -43,27 +40,27 @@ public class ModBlockRegistry {
 			OrangePot=new BlockCeramicPot(MaterialColor.ORANGE_TERRACOTTA),MagentaPot=new BlockCeramicPot(MaterialColor.MAGENTA_TERRACOTTA),
 			LightBluePot=new BlockCeramicPot(MaterialColor.LIGHT_BLUE_TERRACOTTA),YellowPot=new BlockCeramicPot(MaterialColor.YELLOW_TERRACOTTA),
 			LimePot=new BlockCeramicPot(MaterialColor.LIME_TERRACOTTA),PinkPot=new BlockCeramicPot(MaterialColor.PINK_TERRACOTTA),
-			GrayPot=new BlockCeramicPot(MaterialColor.GRAY_TERRACOTTA),LightGrayPot=new BlockCeramicPot(MaterialColor.LIGHT_GRAY_TERRACOTTA),
-			CyanPot=new BlockCeramicPot(MaterialColor.CYAN_TERRACOTTA),PurplePot=new BlockCeramicPot(MaterialColor.PURPLE_TERRACOTTA),
-			BluePot=new BlockCeramicPot(MaterialColor.BLUE_TERRACOTTA),BrownPot=new BlockCeramicPot(MaterialColor.BROWN_TERRACOTTA),
-			GreenPot=new BlockCeramicPot(MaterialColor.GREEN_TERRACOTTA),RedPot=new BlockCeramicPot(MaterialColor.RED_TERRACOTTA),
-			BlackPot=new BlockCeramicPot(MaterialColor.BLACK_TERRACOTTA);
-	public static BlockBellows Bellows=new BlockBellows();
-	public static Block TuyereBrick=new Block(Properties.from(Blocks.BRICKS)), TuyereSandy=new Block(Properties.from(SandyBrick)), TuyereNether=new Block(Properties.from(Blocks.NETHER_BRICKS)),
-			TuyereEnd=new Block(Properties.from(Blocks.END_STONE_BRICKS));
+			GrayPot = new BlockCeramicPot(MaterialColor.GRAY_TERRACOTTA), LightGrayPot = new BlockCeramicPot(MaterialColor.LIGHT_GRAY_TERRACOTTA),
+			CyanPot = new BlockCeramicPot(MaterialColor.CYAN_TERRACOTTA), PurplePot = new BlockCeramicPot(MaterialColor.PURPLE_TERRACOTTA),
+			BluePot = new BlockCeramicPot(MaterialColor.BLUE_TERRACOTTA), BrownPot = new BlockCeramicPot(MaterialColor.BROWN_TERRACOTTA),
+			GreenPot = new BlockCeramicPot(MaterialColor.GREEN_TERRACOTTA), RedPot = new BlockCeramicPot(MaterialColor.RED_TERRACOTTA),
+			BlackPot = new BlockCeramicPot(MaterialColor.BLACK_TERRACOTTA);
+	public static BlockBellows Bellows = new BlockBellows();
+	public static Block TuyereBrick = new Block(Properties.from(Blocks.BRICKS)), TuyereSandy = new Block(Properties.from(SandyBrick)), TuyereNether = new Block(Properties.from(Blocks.NETHER_BRICKS)),
+			TuyereEnd = new Block(Properties.from(Blocks.END_STONE_BRICKS));
 	//public static BlockClayPot ClayPot=new BlockClayPot();
-	public static BlockBloomery Bloomery=new BlockBloomery();
-	
-	public static Block CopperOre=new Block(Properties.create(Material.ROCK).hardnessAndResistance(3).setRequiresTool().harvestTool(ToolType.PICKAXE).harvestLevel(1)),
-			CopperBlock=new Block(Properties.create(Material.IRON, MaterialColor.ORANGE_TERRACOTTA).setRequiresTool().hardnessAndResistance(4, 6).harvestTool(ToolType.PICKAXE).harvestLevel(1));
-	
-	public static BlockBarrel Barrel=new BlockBarrel();
-	public static BlockMechanicalBellows MechanicalBellows=new BlockMechanicalBellows();
-	
-	public static BlockLeeks Leeks=new BlockLeeks(Properties.from(Blocks.WHEAT));
-	public static BlockCorn Corn=new BlockCorn(Properties.from(Blocks.WHEAT));
-	
-	public static SaplingBlock AppleSapling=new SaplingBlock(new ModFeatures.AppleTree(),AbstractBlock.Properties.create(Material.PLANTS).doesNotBlockMovement().tickRandomly().zeroHardnessAndResistance().sound(SoundType.PLANT));
+	public static BlockBloomery Bloomery = new BlockBloomery();
+	public static BlockMainBloomery MainBloomery = new BlockMainBloomery();
+	public static Block CopperOre = new Block(Properties.create(Material.ROCK).hardnessAndResistance(3).setRequiresTool().harvestTool(ToolType.PICKAXE).harvestLevel(1)),
+			CopperBlock = new Block(Properties.create(Material.IRON, MaterialColor.ORANGE_TERRACOTTA).setRequiresTool().hardnessAndResistance(4, 6).harvestTool(ToolType.PICKAXE).harvestLevel(1));
+
+	public static BlockBarrel Barrel = new BlockBarrel();
+	public static BlockMechanicalBellows MechanicalBellows = new BlockMechanicalBellows();
+
+	public static BlockLeeks Leeks = new BlockLeeks(Properties.from(Blocks.WHEAT));
+	public static BlockCorn Corn = new BlockCorn(Properties.from(Blocks.WHEAT));
+
+	public static SaplingBlock AppleSapling = new SaplingBlock(new ModFeatures.AppleTree(), AbstractBlock.Properties.create(Material.PLANTS).doesNotBlockMovement().tickRandomly().zeroHardnessAndResistance().sound(SoundType.PLANT));
 	public static SaplingBlock CherrySapling=new SaplingBlock(new ModFeatures.CherryTree(), AbstractBlock.Properties.create(Material.PLANTS).doesNotBlockMovement().tickRandomly().zeroHardnessAndResistance().sound(SoundType.PLANT));
 	public static SaplingBlock DragonSapling=new SaplingBlock(new ModFeatures.DragonTree(),AbstractBlock.Properties.from(Blocks.OAK_SAPLING));
 	public static SaplingBlock BananaSapling=new SaplingBlock(new ModFeatures.BananaTree(),AbstractBlock.Properties.from(Blocks.OAK_SAPLING));
@@ -90,22 +87,22 @@ public class ModBlockRegistry {
 	
 	@SubscribeEvent
 	public static void registerBlocks(RegistryEvent.Register<Block> event) {
-		event.getRegistry().registerAll(Thatch.setRegistryName("thatch"),LogPile.setRegistryName("log_pile"),
-				WoodAsh.setRegistryName("wood_ash"),CoalAsh.setRegistryName("coal_ash"),
-				CokeBlock.setRegistryName("coke"),Ash.setRegistryName("ash"),
-				ActiveLogPile.setRegistryName("active_log_pile"),ActiveCoalPile.setRegistryName("active_coal_pile"),
-				SandyBrick.setRegistryName("sandy_brick"),SandySlab.setRegistryName("sandy_slab"),SandyStair.setRegistryName("sandy_stair"),SandyWall.setRegistryName("sandy_wall"),
-				Creosote.setRegistryName("creosote_oil"),BrickCollector.setRegistryName("brick_collector"),SandyCollector.setRegistryName("sandy_collector"),
-				NetherCollector.setRegistryName("nether_collector"),EndCollector.setRegistryName("end_collector"),Kiln.setRegistryName("pottery_kiln"),Bellows.setRegistryName("bellows"),
-				TuyereBrick.setRegistryName("brick_tuyere"),TuyereSandy.setRegistryName("sandy_tuyere"),TuyereNether.setRegistryName("nether_tuyere"),TuyereEnd.setRegistryName("end_tuyere"),
-				CopperOre.setRegistryName("copper_ore"),CopperBlock.setRegistryName("copper_block"),Bloomery.setRegistryName("bloomery"),
+		event.getRegistry().registerAll(Thatch.setRegistryName("thatch"), LogPile.setRegistryName("log_pile"),
+				WoodAsh.setRegistryName("wood_ash"), CoalAsh.setRegistryName("coal_ash"),
+				CokeBlock.setRegistryName("coke"), Ash.setRegistryName("ash"),
+				ActiveLogPile.setRegistryName("active_log_pile"), ActiveCoalPile.setRegistryName("active_coal_pile"),
+				SandyBrick.setRegistryName("sandy_brick"), SandySlab.setRegistryName("sandy_slab"), SandyStair.setRegistryName("sandy_stair"), SandyWall.setRegistryName("sandy_wall"),
+				Creosote.setRegistryName("creosote_oil"), BrickCollector.setRegistryName("brick_collector"), SandyCollector.setRegistryName("sandy_collector"),
+				NetherCollector.setRegistryName("nether_collector"), EndCollector.setRegistryName("end_collector"), Kiln.setRegistryName("pottery_kiln"), Bellows.setRegistryName("bellows"),
+				TuyereBrick.setRegistryName("brick_tuyere"), TuyereSandy.setRegistryName("sandy_tuyere"), TuyereNether.setRegistryName("nether_tuyere"), TuyereEnd.setRegistryName("end_tuyere"),
+				CopperOre.setRegistryName("copper_ore"), CopperBlock.setRegistryName("copper_block"), Bloomery.setRegistryName("bloomery"), MainBloomery.setRegistryName("mainbloomery"),
 				Barrel.setRegistryName("barrel")/*,BrickDoor.setRegistryName("brick_door"),SandyDoor.setRegistryName("sandy_door"),NetherDoor.setRegistryName("nether_door"),
-				EndDoor.setRegistryName("end_door")*/,MechanicalBellows.setRegistryName("mechanical_bellows"),Leeks.setRegistryName("leeks"),Corn.setRegistryName("corn"),
-				AppleLeaves.setRegistryName("apple_leaves"),AppleSapling.setRegistryName("apple_sapling"),CherrySapling.setRegistryName("cherry_sapling"),
-				CherryLeaves.setRegistryName("cherry_leaves"),DragonSapling.setRegistryName("dragon_sapling"),DragonLeaves.setRegistryName("dragon_leaves"),
-				BananaSapling.setRegistryName("banana_sapling"),BananaLeaves.setRegistryName("banana_leaves"),
-				ChestnutSapling.setRegistryName("chestnut_sapling"),ChestnutLeaves.setRegistryName("chestnut_leaves"),BanananaPod.setRegistryName("banana_pod"),
-				CoconutPod.setRegistryName("coconut_pod"),CoconutSapling.setRegistryName("coconut_sapling"),CoconutLeaves.setRegistryName("coconut_leaves"));
+				EndDoor.setRegistryName("end_door")*/, MechanicalBellows.setRegistryName("mechanical_bellows"), Leeks.setRegistryName("leeks"), Corn.setRegistryName("corn"),
+				AppleLeaves.setRegistryName("apple_leaves"), AppleSapling.setRegistryName("apple_sapling"), CherrySapling.setRegistryName("cherry_sapling"),
+				CherryLeaves.setRegistryName("cherry_leaves"), DragonSapling.setRegistryName("dragon_sapling"), DragonLeaves.setRegistryName("dragon_leaves"),
+				BananaSapling.setRegistryName("banana_sapling"), BananaLeaves.setRegistryName("banana_leaves"),
+				ChestnutSapling.setRegistryName("chestnut_sapling"), ChestnutLeaves.setRegistryName("chestnut_leaves"), BanananaPod.setRegistryName("banana_pod"),
+				CoconutPod.setRegistryName("coconut_pod"), CoconutSapling.setRegistryName("coconut_sapling"), CoconutLeaves.setRegistryName("coconut_leaves"));
 		event.getRegistry().registerAll(CeramicPot.setRegistryName("ceramic_pot"),YellowPot.setRegistryName("yellow_pot"),WhitePot.setRegistryName("white_pot"),
 				RedPot.setRegistryName("red_pot"),PurplePot.setRegistryName("purple_pot"),PinkPot.setRegistryName("pink_pot"),OrangePot.setRegistryName("orange_pot"),
 				MagentaPot.setRegistryName("magenta_pot"),LimePot.setRegistryName("lime_pot"),LightGrayPot.setRegistryName("light_gray_pot"),

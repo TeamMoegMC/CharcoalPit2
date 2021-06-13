@@ -8,12 +8,10 @@ import net.minecraft.block.DispenserBlock;
 import net.minecraft.item.*;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
-import org.lwjgl.system.CallbackI;
 
 @EventBusSubscriber(modid=CharcoalPit.MODID, bus=Bus.MOD)
 public class ModItemRegistry {
@@ -24,26 +22,26 @@ public class ModItemRegistry {
 			return new ItemStack(Items.CHARCOAL);
 		}
 	};
-	public static ItemGroup CHARCOAL_PIT_FOODS=new ItemGroup("charcoal_pit_foods") {
+	public static ItemGroup CHARCOAL_PIT_FOODS = new ItemGroup("charcoal_pit_foods") {
 		@Override
 		public ItemStack createIcon() {
 			return new ItemStack(ModItemRegistry.Kebabs);
 		}
 	};
 
-	public static BlockItemFuel Thatch=buildBlockItem(ModBlockRegistry.Thatch,200),LogPile=buildBlockItem(ModBlockRegistry.LogPile,3000),CokeBlock=buildBlockItem(ModBlockRegistry.CokeBlock,32000);
-	public static BlockItem WoodAsh=buildBlockItem(ModBlockRegistry.WoodAsh),CoalAsh=buildBlockItem(ModBlockRegistry.CoalAsh),AshBlock=buildBlockItem(ModBlockRegistry.Ash),
-			SandyBrick=buildBlockItem(ModBlockRegistry.SandyBrick),SandySlab=buildBlockItem(ModBlockRegistry.SandySlab),SandyStair=buildBlockItem(ModBlockRegistry.SandyStair),SandyWall=buildBlockItem(ModBlockRegistry.SandyWall);
-	
-	public static ItemFuel Straw=buildItem(CHARCOAL_PIT,50),Coke=buildItem(CHARCOAL_PIT,3200);
-	public static Item Ash=buildItem(CHARCOAL_PIT),Aeternalis=new ItemAeternalis();
-	public static BoneMealItem Fertilizer=new BoneMealItem(new Item.Properties().group(CHARCOAL_PIT));
-	public static ItemFireStarter FireStarter=new ItemFireStarter();
-	public static Item BloomCool=buildItem(CHARCOAL_PIT),BloomFail=buildItem(CHARCOAL_PIT),BloomNiCool=buildItem(CHARCOAL_PIT),BloomNiFail=buildItem(CHARCOAL_PIT);
-	public static Item SandyBrickItem=buildItem(CHARCOAL_PIT),NetherBrickItem=buildItem(CHARCOAL_PIT),UnfireSandyBrick=buildItem(CHARCOAL_PIT),UnfiredBrick=buildItem(CHARCOAL_PIT);
-	
-	public static BlockItem BrickCollector=buildBlockItem(ModBlockRegistry.BrickCollector,CHARCOAL_PIT),
-			SandyCollector=buildBlockItem(ModBlockRegistry.SandyCollector,CHARCOAL_PIT),
+	public static BlockItemFuel Thatch = buildBlockItem(ModBlockRegistry.Thatch, 200), LogPile = buildBlockItem(ModBlockRegistry.LogPile, 3000), CokeBlock = buildBlockItem(ModBlockRegistry.CokeBlock, 32000);
+	public static BlockItem WoodAsh = buildBlockItem(ModBlockRegistry.WoodAsh), CoalAsh = buildBlockItem(ModBlockRegistry.CoalAsh), AshBlock = buildBlockItem(ModBlockRegistry.Ash),
+			SandyBrick = buildBlockItem(ModBlockRegistry.SandyBrick), SandySlab = buildBlockItem(ModBlockRegistry.SandySlab), SandyStair = buildBlockItem(ModBlockRegistry.SandyStair), SandyWall = buildBlockItem(ModBlockRegistry.SandyWall), MainMainBloomery = buildBlockItem(ModBlockRegistry.MainBloomery);
+
+	public static ItemFuel Straw = buildItem(CHARCOAL_PIT, 50), Coke = buildItem(CHARCOAL_PIT, 3200);
+	public static Item Ash = buildItem(CHARCOAL_PIT), Aeternalis = new ItemAeternalis();
+	public static BoneMealItem Fertilizer = new BoneMealItem(new Item.Properties().group(CHARCOAL_PIT));
+	public static ItemFireStarter FireStarter = new ItemFireStarter();
+	public static Item BloomCool = buildItem(CHARCOAL_PIT), BloomFail = buildItem(CHARCOAL_PIT), BloomNiCool = buildItem(CHARCOAL_PIT), BloomNiFail = buildItem(CHARCOAL_PIT);
+	public static Item SandyBrickItem = buildItem(CHARCOAL_PIT), NetherBrickItem = buildItem(CHARCOAL_PIT), UnfireSandyBrick = buildItem(CHARCOAL_PIT), UnfiredBrick = buildItem(CHARCOAL_PIT);
+
+	public static BlockItem BrickCollector = buildBlockItem(ModBlockRegistry.BrickCollector, CHARCOAL_PIT),
+			SandyCollector = buildBlockItem(ModBlockRegistry.SandyCollector, CHARCOAL_PIT),
 			NetherCollector=buildBlockItem(ModBlockRegistry.NetherCollector,CHARCOAL_PIT),
 			EndCollector=buildBlockItem(ModBlockRegistry.EndCollector,CHARCOAL_PIT);
 	public static BlockItem CeramicPot=buildBlockItemP(ModBlockRegistry.CeramicPot),WhitePot=buildBlockItemP(ModBlockRegistry.WhitePot),
@@ -123,19 +121,19 @@ public class ModItemRegistry {
 	
 	@SubscribeEvent
 	public static void registerItems(RegistryEvent.Register<Item> event) {
-		event.getRegistry().registerAll(Thatch.setRegistryName("thatch"), LogPile.setRegistryName("log_pile"), WoodAsh.setRegistryName("wood_ash"), 
-				CoalAsh.setRegistryName("coal_ash"), CokeBlock.setRegistryName("coke_block"), AshBlock.setRegistryName("ash_block"), 
-				SandyBrick.setRegistryName("sandy_brick"), SandySlab.setRegistryName("sandy_slab"), SandyStair.setRegistryName("sandy_stair"), SandyWall.setRegistryName("sandy_wall"),
-				BrickCollector.setRegistryName("brick_collector"),SandyCollector.setRegistryName("sandy_collector"),NetherCollector.setRegistryName("nether_collector"),EndCollector.setRegistryName("end_collector"),
-				Bellows.setRegistryName("bellows"),TuyereBrick.setRegistryName("brick_tuyere"),TuyereSandy.setRegistryName("sandy_tuyere"),TuyereNether.setRegistryName("nether_tuyere"),TuyereEnd.setRegistryName("end_tuyere"),
-				CopperOre.setRegistryName("copper_ore"),CopperBlock.setRegistryName("copper_block"),
+		event.getRegistry().registerAll(Thatch.setRegistryName("thatch"), LogPile.setRegistryName("log_pile"), WoodAsh.setRegistryName("wood_ash"),
+				CoalAsh.setRegistryName("coal_ash"), CokeBlock.setRegistryName("coke_block"), AshBlock.setRegistryName("ash_block"),
+				SandyBrick.setRegistryName("sandy_brick"), SandySlab.setRegistryName("sandy_slab"), SandyStair.setRegistryName("sandy_stair"), SandyWall.setRegistryName("sandy_wall"), MainMainBloomery.setRegistryName("main_bloomery"),
+				BrickCollector.setRegistryName("brick_collector"), SandyCollector.setRegistryName("sandy_collector"), NetherCollector.setRegistryName("nether_collector"), EndCollector.setRegistryName("end_collector"),
+				Bellows.setRegistryName("bellows"), TuyereBrick.setRegistryName("brick_tuyere"), TuyereSandy.setRegistryName("sandy_tuyere"), TuyereNether.setRegistryName("nether_tuyere"), TuyereEnd.setRegistryName("end_tuyere"),
+				CopperOre.setRegistryName("copper_ore"), CopperBlock.setRegistryName("copper_block"),
 				Barrel.setRegistryName("barrel")/*,BrickDoor.setRegistryName("brick_door"),SandyDoor.setRegistryName("sandy_door"),NetherDoor.setRegistryName("nether_door"),
-				EndDoor.setRegistryName("end_door")*/,MechanicalBeellows.setRegistryName("mechanical_bellows"),
-				AppleSapling.setRegistryName("apple_sapling"),CherrySapling.setRegistryName("cherry_sapling"),
-				AppleLeaves.setRegistryName("apple_leaves"),CherryLeaves.setRegistryName("cherry_leaves"),
-				DragonSapling.setRegistryName("dragon_sapling"),DragonLeaves.setRegistryName("dragon_leaves"),
-				BananaSapling.setRegistryName("banana_sapling"),BananaLeaves.setRegistryName("banana_leaves"),
-				ChestnutSapling.setRegistryName("chestnut_sapling"),ChestnutLeaves.setRegistryName("chestnut_leaves"),
+				EndDoor.setRegistryName("end_door")*/, MechanicalBeellows.setRegistryName("mechanical_bellows"),
+				AppleSapling.setRegistryName("apple_sapling"), CherrySapling.setRegistryName("cherry_sapling"),
+				AppleLeaves.setRegistryName("apple_leaves"), CherryLeaves.setRegistryName("cherry_leaves"),
+				DragonSapling.setRegistryName("dragon_sapling"), DragonLeaves.setRegistryName("dragon_leaves"),
+				BananaSapling.setRegistryName("banana_sapling"), BananaLeaves.setRegistryName("banana_leaves"),
+				ChestnutSapling.setRegistryName("chestnut_sapling"), ChestnutLeaves.setRegistryName("chestnut_leaves"),
 				CoconutLeaves.setRegistryName("coconut_leaves"),CoconutSapling.setRegistryName("coconut_sapling"));
 		event.getRegistry().registerAll(Straw.setRegistryName("straw"), Ash.setRegistryName("ash"), Coke.setRegistryName("coke"), 
 				Aeternalis.setRegistryName("aeternalis_fuel"), Fertilizer.setRegistryName("fertilizer"), FireStarter.setRegistryName("fire_starter"),

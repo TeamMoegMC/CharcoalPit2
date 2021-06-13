@@ -1,6 +1,7 @@
 package charcoalPit.tile;
 
 import charcoalPit.block.BlockBloomery;
+import charcoalPit.block.BlockMainBloomery;
 import charcoalPit.core.Config;
 import charcoalPit.core.MethodHelper;
 import charcoalPit.core.ModBlockRegistry;
@@ -20,10 +21,11 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class TileBloomery2 extends TileEntity implements ITickableTileEntity{
-	
+public class TileBloomery2 extends TileEntity implements ITickableTileEntity {
+
 	public boolean dummy;
 	public boolean isValid;
+	public int changetime;
 	public int burnTime;
 	public int airTicks;
 	public int airBuffer;
@@ -37,17 +39,18 @@ public class TileBloomery2 extends TileEntity implements ITickableTileEntity{
 	
 	public TileBloomery2() {
 		super(ModTileRegistry.Bloomery2);
-		dummy=false;
-		isValid=false;
-		invalidTicks=0;
-		burnTime=-1;
-		airTicks=-1;
-		airBuffer=0;
-		workCount=-1;
-		done=false;
-		ore=new OneItemHandler(4);
-		fuel=new OneItemHandler(4);
-		ingots=0;
+		dummy = false;
+		isValid = false;
+		changetime = 0;
+		invalidTicks = 0;
+		burnTime = -1;
+		airTicks = -1;
+		airBuffer = 0;
+		workCount = -1;
+		done = false;
+		ore = new OneItemHandler(4);
+		fuel = new OneItemHandler(4);
+		ingots = 0;
 	}
 
 	@Override
@@ -56,27 +59,42 @@ public class TileBloomery2 extends TileEntity implements ITickableTileEntity{
 			if(!done) {
 				checkValid();
 				if(!dummy) {
-					if(burnTime>0&&airTicks>0) {
-						burnTime--;
-						if(burnTime%200==0)
-							markDirty();
-						if(airBuffer>0) {
-							airBuffer--;
-							airTicks--;
+					if (burnTime > 0) {
+						changetime++;
+						if (changetime > 100) {
+							BlockPos down = pos.offset(Direction.DOWN);
+							if (world.getBlockState(down).getBlock() == ModBlockRegistry.MainBloomery) {
+								if (airBuffer == 0) {
+									world.setBlockState(down, ModBlockRegistry.MainBloomery.getDefaultState().with(BlockMainBloomery.STAGE, 1));
+								} else {
+									world.setBlockState(down, ModBlockRegistry.MainBloomery.getDefaultState().with(BlockMainBloomery.STAGE, 2));
+								}
+							}
+							changetime = 0;
 						}
-					}else {
-						if(burnTime!=-1) {
+						if (airTicks > 0) {
+							burnTime--;
+							if (burnTime % 200 == 0)
+								markDirty();
+							if (airBuffer > 0) {
+								airBuffer--;
+								airTicks--;
+							}
+						}
+					} else {
+						if (burnTime != -1) {
 							//done
-							done=true;
-							ingots=4;
-							ore=new OneItemHandler(4);
-							fuel=new OneItemHandler(4);
-							burnTime=Config.BloomCooldown.get();
-							if(world.getBlockState(pos.offset(Direction.UP)).getBlock()==ModBlockRegistry.Bloomery) {
-								TileBloomery2 dummy=((TileBloomery2)world.getTileEntity(pos.offset(Direction.UP)));
-								ingots+=4;
-								dummy.ore=new OneItemHandler(4);
-								dummy.fuel=new OneItemHandler(4);
+							done = true;
+							world.setBlockState(pos.offset(Direction.DOWN), ModBlockRegistry.MainBloomery.getDefaultState().with(BlockMainBloomery.STAGE, 0));
+							ingots = 4;
+							ore = new OneItemHandler(4);
+							fuel = new OneItemHandler(4);
+							burnTime = Config.BloomCooldown.get();
+							if (world.getBlockState(pos.offset(Direction.UP)).getBlock() == ModBlockRegistry.Bloomery) {
+								TileBloomery2 dummy = ((TileBloomery2) world.getTileEntity(pos.offset(Direction.UP)));
+								ingots += 4;
+								dummy.ore = new OneItemHandler(4);
+								dummy.fuel = new OneItemHandler(4);
 								world.removeBlock(pos.offset(Direction.UP), false);
 							}else {
 								if(world.getBlockState(pos.offset(Direction.UP)).getBlock()==Blocks.FIRE)
@@ -190,34 +208,40 @@ public class TileBloomery2 extends TileEntity implements ITickableTileEntity{
 			            this.world.setBlockState(up, blockstate1, 11);
 					}
 				}else {
-					burnTime=-1;
-					airBuffer=0;
-					airTicks=-1;
+					burnTime = -1;
+					airBuffer = 0;
+					airTicks = -1;
 					world.setBlockState(this.pos, ModBlockRegistry.Bloomery.getDefaultState().with(BlockBloomery.STAGE, 8));
-					BlockPos charm=pos.offset(Direction.UP);
-					if(dummy) {
-						BlockPos down=pos.offset(Direction.DOWN);
-						
-						if(world.getBlockState(down).getBlock()==ModBlockRegistry.Bloomery) {
-							world.setBlockState(down, ModBlockRegistry.Bloomery.getDefaultState().with(BlockBloomery.STAGE, 8));
-							TileBloomery2 master=((TileBloomery2)world.getTileEntity(down));
-							master.airBuffer=0;
-							master.airTicks=-1;
-							master.burnTime=-1;
+
+					BlockPos charm = pos.offset(Direction.UP);
+					BlockPos down = pos.offset(Direction.DOWN);
+					if (dummy) {
+						if (world.getBlockState(down.offset(Direction.DOWN)).getBlock() == ModBlockRegistry.MainBloomery) {
+							world.setBlockState(down.offset(Direction.DOWN), ModBlockRegistry.MainBloomery.getDefaultState().with(BlockMainBloomery.STAGE, 0));
 						}
-						if(world.getBlockState(charm).getBlock()==Blocks.FIRE) {
+						if (world.getBlockState(down).getBlock() == ModBlockRegistry.Bloomery) {
+							world.setBlockState(down, ModBlockRegistry.Bloomery.getDefaultState().with(BlockBloomery.STAGE, 8));
+							TileBloomery2 master = ((TileBloomery2) world.getTileEntity(down));
+							master.airBuffer = 0;
+							master.airTicks = -1;
+							master.burnTime = -1;
+						}
+						if (world.getBlockState(charm).getBlock() == Blocks.FIRE) {
 							world.removeBlock(charm, false);
 						}
 					}else {
-						if(world.getBlockState(charm).getBlock()==ModBlockRegistry.Bloomery) {
+						if (world.getBlockState(down).getBlock() == ModBlockRegistry.MainBloomery) {
+							world.setBlockState(down, ModBlockRegistry.MainBloomery.getDefaultState().with(BlockMainBloomery.STAGE, 0));
+						}
+						if (world.getBlockState(charm).getBlock() == ModBlockRegistry.Bloomery) {
 							world.setBlockState(charm, ModBlockRegistry.Bloomery.getDefaultState().with(BlockBloomery.STAGE, 8));
-							TileBloomery2 dummy=((TileBloomery2)world.getTileEntity(charm));
-							dummy.burnTime=-1;
-							BlockPos top=charm.offset(Direction.UP);
-							if(world.getBlockState(top).getBlock()==Blocks.FIRE)
+							TileBloomery2 dummy = ((TileBloomery2) world.getTileEntity(charm));
+							dummy.burnTime = -1;
+							BlockPos top = charm.offset(Direction.UP);
+							if (world.getBlockState(top).getBlock() == Blocks.FIRE)
 								world.removeBlock(top, false);
 						}
-						if(world.getBlockState(charm).getBlock()==Blocks.FIRE)
+						if (world.getBlockState(charm).getBlock() == Blocks.FIRE)
 							world.removeBlock(charm, false);
 						
 					}

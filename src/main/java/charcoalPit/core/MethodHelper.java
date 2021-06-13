@@ -66,10 +66,10 @@ public class MethodHelper {
 		}
 		Block block=world.getBlockState(pos.offset(Direction.DOWN)).getBlock();
 		if(		!(
-				(!dummy && block.isIn(BlockTags.getCollection().get(new ResourceLocation(CharcoalPit.MODID, "bloomery_walls"))))
-				||
-				(dummy && block==ModBlockRegistry.Bloomery)
-				)
+                (!dummy && block == ModBlockRegistry.MainBloomery)
+                        ||
+                        (dummy && block == ModBlockRegistry.Bloomery)
+        )
 			)
 			return false;
 		block=world.getBlockState(pos.offset(Direction.UP)).getBlock();
