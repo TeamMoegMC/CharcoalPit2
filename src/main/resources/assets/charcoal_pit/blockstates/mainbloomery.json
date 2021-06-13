@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "stage=0": {
+      "model": "charcoal_pit:block/mainbloomery_0"
+    },
+    "stage=1": {
+      "model": "charcoal_pit:block/mainbloomery_1"
+    },
+    "stage=2": {
+      "model": "charcoal_pit:block/mainbloomery_2"
+    }
+  }
+}

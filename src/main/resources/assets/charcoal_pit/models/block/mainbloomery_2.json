@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "particle": "charcoal_pit:block/sandy_brick",
+    "down": "charcoal_pit:block/sandy_brick",
+    "up": "charcoal_pit:block/sandy_brick",
+    "east": "charcoal_pit:block/mainbloomery_2",
+    "west": "charcoal_pit:block/mainbloomery_2",
+    "north": "charcoal_pit:block/mainbloomery_2",
+    "south": "charcoal_pit:block/mainbloomery_2"
+  }
+}
