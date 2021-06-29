@@ -13,6 +13,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.CauldronBlock;
 import net.minecraft.entity.merchant.villager.VillagerProfession;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.loot.LootPool;
@@ -28,8 +29,8 @@ import net.minecraft.world.IWorld;
 import net.minecraftforge.common.BasicTrade;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.ItemCraftedEvent;
-import net.minecraftforge.event.furnace.FurnaceFuelBurnTimeEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.furnace.FurnaceFuelBurnTimeEvent;
 import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.event.village.WandererTradesEvent;
 import net.minecraftforge.event.world.BlockEvent.NeighborNotifyEvent;
@@ -38,7 +39,6 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
-import org.lwjgl.system.CallbackI;
 
 @EventBusSubscriber(modid=CharcoalPit.MODID, bus=Bus.FORGE)
 public class PileIgnitr {
@@ -174,6 +174,12 @@ public class PileIgnitr {
 			event.setUseBlock(Result.DENY);
 			event.setUseItem(Result.DENY);
 		}*/
+		if (!event.isCanceled() && event.getWorld().getBlockState(event.getPos()).getBlock() == Blocks.COAL_BLOCK) {
+			Item item = event.getItemStack().getItem();
+			if (item == Items.FLINT_AND_STEEL || item == ModItemRegistry.FireStarter) {
+				igniteCoal(event.getWorld(), event.getPos());
+			}
+		}
 	}
 	@SubscribeEvent
 	public static void addLoot(LootTableLoadEvent event) {
