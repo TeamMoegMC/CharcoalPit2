@@ -149,7 +149,7 @@ public class TileBloomery2 extends TileEntity implements ITickableTileEntity {
 	}
 	
 	public void blow(int air) {
-		airBuffer=Math.max(1000, airBuffer+air);
+		airBuffer = Math.min(1000, airBuffer + air);
 	}
 	
 	public void work() {

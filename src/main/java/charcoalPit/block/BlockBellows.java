@@ -1,10 +1,7 @@
 package charcoalPit.block;
 
-import java.util.Random;
-
 import charcoalPit.CharcoalPit;
 import charcoalPit.core.ModBlockRegistry;
-import charcoalPit.recipe.BloomeryRecipe;
 import charcoalPit.tile.TileBloomery2;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -12,28 +9,22 @@ import net.minecraft.block.DirectionalBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.ToolType;
+
+import java.util.Random;
 
 public class BlockBellows extends Block{
 	
@@ -131,8 +122,8 @@ public class BlockBellows extends Block{
 				for(Direction dir:Direction.Plane.HORIZONTAL) {
 					BlockPos pos3=pos2.offset(dir);
 					if(world.getBlockState(pos3).getBlock()==ModBlockRegistry.Bloomery&&
-							((TileBloomery2)world.getTileEntity(pos3)).dummy==false){
-						((TileBloomery2)world.getTileEntity(pos3)).blow(60/divs);
+							((TileBloomery2)world.getTileEntity(pos3)).dummy==false) {
+						((TileBloomery2) world.getTileEntity(pos3)).blow(120 / divs);
 					}
 				}
 			}
