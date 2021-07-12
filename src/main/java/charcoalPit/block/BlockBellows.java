@@ -123,7 +123,7 @@ public class BlockBellows extends Block{
 					BlockPos pos3=pos2.offset(dir);
 					if(world.getBlockState(pos3).getBlock()==ModBlockRegistry.Bloomery&&
 							((TileBloomery2)world.getTileEntity(pos3)).dummy==false) {
-						((TileBloomery2) world.getTileEntity(pos3)).blow(120 / divs);
+						((TileBloomery2) world.getTileEntity(pos3)).blow(160 / divs);
 					}
 				}
 			}
