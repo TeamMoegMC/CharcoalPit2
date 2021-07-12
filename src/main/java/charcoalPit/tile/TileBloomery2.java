@@ -63,7 +63,6 @@ public class TileBloomery2 extends TileEntity implements ITickableTileEntity {
 						burnTime--;
 						changetime++;
 						if (changetime > 50) {
-							System.out.println(burnTime);
 							BlockPos down = pos.offset(Direction.DOWN);
 							if (world.getBlockState(down).getBlock() == ModBlockRegistry.MainBloomery) {
 								if (airBuffer == 0) {
