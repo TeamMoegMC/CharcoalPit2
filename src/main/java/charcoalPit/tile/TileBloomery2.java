@@ -62,6 +62,12 @@ public class TileBloomery2 extends TileEntity implements ITickableTileEntity {
 					if (burnTime > 0 && airTicks > 0) {
 						burnTime--;
 						changetime++;
+						if (burnTime % 200 == 0)
+							markDirty();
+						if (airBuffer > 0) {
+							airBuffer--;
+							airTicks--;
+						}
 						if (changetime > 50) {
 							BlockPos down = pos.offset(Direction.DOWN);
 							if (world.getBlockState(down).getBlock() == ModBlockRegistry.MainBloomery) {
@@ -73,15 +79,7 @@ public class TileBloomery2 extends TileEntity implements ITickableTileEntity {
 							}
 							changetime = 0;
 						}
-						if (airTicks > 0) {
-							burnTime--;
-							if (burnTime % 200 == 0)
-								markDirty();
-							if (airBuffer > 0) {
-								airBuffer--;
-								airTicks--;
-							}
-						}
+
 					} else {
 						if (burnTime != -1) {
 							//done
@@ -123,7 +121,8 @@ public class TileBloomery2 extends TileEntity implements ITickableTileEntity {
 			}
 		}
 	}
-	
+
+
 	public BloomeryRecipe getRecipe() {
 		if(recipe==null && dummy) {
 			TileBloomery2 master=((TileBloomery2)world.getTileEntity(pos.offset(Direction.DOWN)));
