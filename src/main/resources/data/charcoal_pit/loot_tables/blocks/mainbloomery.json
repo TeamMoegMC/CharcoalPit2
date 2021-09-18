@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "charcoal_pit:mainbloomery"
+          "name": "charcoal_pit:main_bloomery"
         }
       ],
       "conditions": [

@@ -149,8 +149,8 @@ public class TileBloomery2 extends TileEntity implements ITickableTileEntity {
 	}
 	
 	public void blow(int air) {
-		airBuffer = Math.min(1000, airBuffer + air);
-	}
+        airBuffer = Math.min(1200, airBuffer + air);
+    }
 	
 	public void work() {
 		if(workCount!=-1) {

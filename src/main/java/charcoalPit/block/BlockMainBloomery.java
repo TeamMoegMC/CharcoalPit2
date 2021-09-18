@@ -14,7 +14,7 @@ public class BlockMainBloomery extends Block {
     public static final IntegerProperty STAGE = IntegerProperty.create("stage", 0, 2);
 
     public BlockMainBloomery() {
-        super(Properties.create(Material.ROCK, MaterialColor.ADOBE).hardnessAndResistance(2, 6).setRequiresTool().harvestLevel(0).harvestTool(ToolType.PICKAXE));
+        super(Properties.create(Material.ROCK, MaterialColor.ADOBE).hardnessAndResistance(4, 8).setRequiresTool().harvestLevel(0).harvestTool(ToolType.PICKAXE));
     }
 
     @Override
