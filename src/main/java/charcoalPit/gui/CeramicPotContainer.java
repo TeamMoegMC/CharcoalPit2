@@ -57,18 +57,18 @@ public class CeramicPotContainer extends Container{
 	            return ItemStack.EMPTY;
 	         }
 
-	         if (itemstack1.isEmpty()) {
-	            slot.putStack(ItemStack.EMPTY);
-	         } else {
-	            slot.onSlotChanged();
-	         }
+			  if (itemstack1.isEmpty()) {
+				  slot.putStack(ItemStack.EMPTY);
+			  } else {
+				  slot.onSlotChanged();
+			  }
 
-	         if (itemstack1.getCount() == itemstack.getCount()) {
-	            return ItemStack.EMPTY;
-	         }
-
-	         slot.onTake(playerIn, itemstack1);
-	      }
+			  if (itemstack1.getCount() == itemstack.getCount()) {
+				  return ItemStack.EMPTY;
+			  }
+			  slot.onTake(playerIn, itemstack1);
+			  detectAndSendChanges();
+		  }
 
 	      return itemstack;
 	}

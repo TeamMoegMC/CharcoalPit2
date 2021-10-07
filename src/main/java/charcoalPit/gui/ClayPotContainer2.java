@@ -3,13 +3,13 @@ package charcoalPit.gui;
 import charcoalPit.CharcoalPit;
 import charcoalPit.core.ModContainerRegistry;
 import charcoalPit.recipe.OreKilnRecipe;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -85,18 +85,18 @@ public class ClayPotContainer2 extends Container{
 	            return ItemStack.EMPTY;
 	         }
 
-	         if (itemstack1.isEmpty()) {
-	            slot.putStack(ItemStack.EMPTY);
-	         } else {
-	            slot.onSlotChanged();
-	         }
+			  if (itemstack1.isEmpty()) {
+				  slot.putStack(ItemStack.EMPTY);
+			  } else {
+				  slot.onSlotChanged();
+			  }
 
-	         if (itemstack1.getCount() == itemstack.getCount()) {
-	            return ItemStack.EMPTY;
-	         }
-
-	         slot.onTake(playerIn, itemstack1);
-	      }
+			  if (itemstack1.getCount() == itemstack.getCount()) {
+				  return ItemStack.EMPTY;
+			  }
+			  detectAndSendChanges();
+			  slot.onTake(playerIn, itemstack1);
+		  }
 
 	      return itemstack;
 	}
@@ -110,23 +110,34 @@ public class ClayPotContainer2 extends Container{
 			function=r;
 			this.world=world;
 		}
-		
+
 		@Override
 		public boolean isItemValid(int slot, ItemStack stack) {
-			if(slot==0) {
+			if (slot == 0) {
 				return stack.getItem().isIn(ItemTags.getCollection().get(new ResourceLocation(CharcoalPit.MODID, "orekiln_fuels")));
-			}else {
+			} else {
 				return OreKilnRecipe.isValidInput(stack, world);
 			}
 		}
-		
+
 		@Override
-		public int getSlotLimit(int slot) {
-			if(slot==0)
+		public int getStackLimit(int slot, ItemStack stack) {
+			if (slot == 0 && stack.getItem() == Items.CHARCOAL)
+				return 8;
+			else if (slot == 0)
 				return 4;
 			return 1;
 		}
-		
+
+		@Override
+		public int getSlotLimit(int slot) {
+			if (slot == 0 && getStackInSlot(0).getItem() == Items.CHARCOAL)
+				return 8;
+			else if (slot == 0)
+				return 4;
+			return 1;
+		}
+
 		@Override
 		protected void onContentsChanged(int slot) {
 			function.run();

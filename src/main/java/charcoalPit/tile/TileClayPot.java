@@ -1,6 +1,5 @@
 package charcoalPit.tile;
 
-import charcoalPit.core.ModTileRegistry;
 import charcoalPit.recipe.OreKilnRecipe;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
@@ -69,12 +68,14 @@ public class TileClayPot extends TileEntity{
 		}
 		
 		@Override
-		public int getSlotLimit(int slot) {
-			if(slot==0)
+		public int getStackLimit(int slot, ItemStack stack) {
+			if (slot == 0 && stack.getItem() == Items.CHARCOAL)
+				return 8;
+			else if (slot == 0)
 				return 4;
 			return 1;
 		}
-		
+
 		@Override
 		protected void onContentsChanged(int slot) {
 			function.run();
