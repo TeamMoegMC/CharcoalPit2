@@ -66,10 +66,19 @@ public class TileClayPot extends TileEntity{
 				return OreKilnRecipe.isValidInput(stack, tile.getWorld());
 			}
 		}
-		
+
 		@Override
 		public int getStackLimit(int slot, ItemStack stack) {
 			if (slot == 0 && stack.getItem() == Items.CHARCOAL)
+				return 8;
+			else if (slot == 0)
+				return 4;
+			return 1;
+		}
+
+		@Override
+		public int getSlotLimit(int slot) {
+			if (slot == 0 && getStackInSlot(0).getItem() == Items.CHARCOAL)
 				return 8;
 			else if (slot == 0)
 				return 4;
