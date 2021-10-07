@@ -1,13 +1,7 @@
 package charcoalPit.core;
 
 import charcoalPit.CharcoalPit;
-import charcoalPit.tile.TileActivePile;
-import charcoalPit.tile.TileBarrel;
-import charcoalPit.tile.TileBloomery2;
-import charcoalPit.tile.TileCeramicPot;
-import charcoalPit.tile.TileClayPot;
-import charcoalPit.tile.TileCreosoteCollector;
-import charcoalPit.tile.TilePotteryKiln;
+import charcoalPit.tile.*;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
