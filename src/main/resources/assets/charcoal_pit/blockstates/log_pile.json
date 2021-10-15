@@ -1,15 +1,27 @@
 {
   "variants": {
-    "axis=x": {
+    "axis=x,lit=false": {
       "model": "charcoal_pit:block/log_pile",
       "x": 90,
       "y": 90
     },
-    "axis=y": {
+    "axis=y,lit=false": {
       "model": "charcoal_pit:block/log_pile"
     },
-    "axis=z": {
+    "axis=z,lit=false": {
       "model": "charcoal_pit:block/log_pile",
+      "x": 90
+    },
+    "axis=x,lit=true": {
+      "model": "charcoal_pit:block/active_log_pile",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y,lit=true": {
+      "model": "charcoal_pit:block/active_log_pile"
+    },
+    "axis=z,lit=true": {
+      "model": "charcoal_pit:block/active_log_pile",
       "x": 90
     }
   }

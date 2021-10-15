@@ -31,9 +31,9 @@ public class MethodHelper {
 	}
 	
 	public static boolean CokeOvenIsValidBlock(BlockState state) {
-		Block block=state.getBlock();
-		return block==ModBlockRegistry.ActiveCoalPile||block.isIn(BlockTags.getCollection().get(new ResourceLocation(CharcoalPit.MODID, "coke_oven_walls")));
-	}
+        Block block = state.getBlock();
+        return block == ModBlockRegistry.CoalPile || block.isIn(BlockTags.getCollection().get(new ResourceLocation(CharcoalPit.MODID, "coke_oven_walls")));
+    }
 	//for placement
 	/*public static boolean BloomeryIsValidPosition(World world, BlockPos pos, boolean init) {
 		for(Direction dir:Direction.Plane.HORIZONTAL) {

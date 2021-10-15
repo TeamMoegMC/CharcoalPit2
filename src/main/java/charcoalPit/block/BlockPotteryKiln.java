@@ -16,18 +16,13 @@ import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
@@ -179,16 +174,17 @@ public class BlockPotteryKiln extends Block{
 						return ActionResultType.SUCCESS;
 					}
 				}else{
-					if(player.getHeldItem(handIn).getItem().isIn(ItemTags.getCollection().get(new ResourceLocation(CharcoalPit.MODID, "kiln_straw")))&&player.getHeldItem(handIn).getCount()>=Config.StrawAmount.get()){
-						if(worldIn.isRemote){
+					if (player.getHeldItem(handIn).getItem().isIn(ItemTags.getCollection().get(new ResourceLocation(CharcoalPit.MODID, "kiln_straw"))) && player.getHeldItem(handIn).getCount() >= Config.StrawAmount.get()) {
+						if (worldIn.isRemote) {
 							return ActionResultType.SUCCESS;
-						}else{
-							player.getHeldItem(handIn).setCount(player.getHeldItem(handIn).getCount()-Config.StrawAmount.get());
+						} else {
+							player.getHeldItem(handIn).setCount(player.getHeldItem(handIn).getCount() - Config.StrawAmount.get());
 							worldIn.setBlockState(pos, this.getDefaultState().with(TYPE, EnumKilnTypes.THATCH));
 							worldIn.playSound(null, pos, SoundEvents.BLOCK_GRASS_PLACE, SoundCategory.BLOCKS, 1F, 1F);
 							return ActionResultType.SUCCESS;
 						}
-					}else
+					} else
+						player.sendStatusMessage(new TranslationTextComponent("message." + CharcoalPit.MODID + "." + "nofuel"), true);
 						return ActionResultType.FAIL;
 				}
 			}

@@ -65,6 +65,7 @@
   "block.charcoal_pit.banana_sapling": "Banana Sapling",
   "block.charcoal_pit.coconut_leaves": "Coconut Leaves",
   "block.charcoal_pit.coconut_sapling": "Coconut Sapling",
+  "block.charcoal_pit.coal_pile": "Coal Pile",
   "item.charcoal_pit.straw": "Straw",
   "item.charcoal_pit.ash": "Ash",
   "item.charcoal_pit.coke": "Coal Coke",
@@ -243,5 +244,6 @@
   "charcoal_pit.instruction.coke_oven": "Fortune enchant increases efficiency. Default 80%, up to 95%",
   "charcoal_pit.instruction.charcoal_pit": "Fortune enchant increases efficiency. Default 50%, up to 80%",
   "charcoal_pit.instruction.straw": "Straw is obtained by cutting tall grass with a Hoe",
-  "charcoal_pit.instruction.build_pit": "Place ingredients in world, cover in valid blocks, light an exposed side on fire and quickly cover it then wait until smoke stops"
+  "charcoal_pit.instruction.build_pit": "Place ingredients in world, cover in valid blocks, light an exposed side on fire and quickly cover it then wait until smoke stops",
+  "message.charcoal_pit.nofuel": "Not enough fuel"
 }

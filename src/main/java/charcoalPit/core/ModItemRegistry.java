@@ -29,7 +29,7 @@ public class ModItemRegistry {
 		}
 	};
 
-	public static BlockItemFuel Thatch = buildBlockItem(ModBlockRegistry.Thatch, 200), LogPile = buildBlockItem(ModBlockRegistry.LogPile, 3000), CokeBlock = buildBlockItem(ModBlockRegistry.CokeBlock, 32000);
+	public static BlockItemFuel Thatch = buildBlockItem(ModBlockRegistry.Thatch, 200), LogPile = buildBlockItem(ModBlockRegistry.LogPile, 3000), CoalPile = buildBlockItem(ModBlockRegistry.CoalPile, 12000), CokeBlock = buildBlockItem(ModBlockRegistry.CokeBlock, 32000);
 	public static BlockItem WoodAsh = buildBlockItem(ModBlockRegistry.WoodAsh), CoalAsh = buildBlockItem(ModBlockRegistry.CoalAsh), AshBlock = buildBlockItem(ModBlockRegistry.Ash),
 			SandyBrick = buildBlockItem(ModBlockRegistry.SandyBrick), SandySlab = buildBlockItem(ModBlockRegistry.SandySlab), SandyStair = buildBlockItem(ModBlockRegistry.SandyStair), SandyWall = buildBlockItem(ModBlockRegistry.SandyWall), MainMainBloomery = buildBlockItem(ModBlockRegistry.MainBloomery);
 
@@ -98,21 +98,7 @@ public class ModItemRegistry {
 	public static ItemKebabs TurtleSoup=new ItemKebabs(new Item.Properties().group(CHARCOAL_PIT_FOODS).food(new Food.Builder().hunger(8).saturation(1.6F).meat().build()).containerItem(Items.BOWL));
 	public static Item ChocoPoweder=new Item(new Item.Properties().group(CHARCOAL_PIT_FOODS));
 	public static Item Chocolate=new Item(new Item.Properties().group(CHARCOAL_PIT_FOODS).food(new Food.Builder().hunger(4).saturation(0.2F).fastToEat().build()));
-	
-	public static BlockItem AppleSapling=new BlockItem(ModBlockRegistry.AppleSapling,new Item.Properties().group(CHARCOAL_PIT));
-	public static BlockItem CherrySapling=new BlockItem(ModBlockRegistry.CherrySapling,new Item.Properties().group(CHARCOAL_PIT));
-	public static BlockItem DragonSapling=new BlockItem(ModBlockRegistry.DragonSapling, new Item.Properties().group(CHARCOAL_PIT));
-	public static BlockItem BananaSapling=new BlockItem(ModBlockRegistry.BananaSapling, new Item.Properties().group(CHARCOAL_PIT));
-	public static BlockItem ChestnutSapling=new BlockItem(ModBlockRegistry.ChestnutSapling, new Item.Properties().group(CHARCOAL_PIT));
-	public static BlockItem CoconutSapling=new BlockItem(ModBlockRegistry.CoconutSapling,new Item.Properties().group(CHARCOAL_PIT));
-	
-	public static ItemBlockLeaves AppleLeaves=new ItemBlockLeaves(ModBlockRegistry.AppleLeaves,new Item.Properties().group(CHARCOAL_PIT));
-	public static ItemBlockLeaves CherryLeaves=new ItemBlockLeaves(ModBlockRegistry.CherryLeaves,new Item.Properties().group(CHARCOAL_PIT));
-	public static ItemBlockLeaves DragonLeaves=new ItemBlockLeaves(ModBlockRegistry.DragonLeaves,new Item.Properties().group(CHARCOAL_PIT));
-	public static ItemBlockLeaves ChestnutLeaves=new ItemBlockLeaves(ModBlockRegistry.ChestnutLeaves,new Item.Properties().group(CHARCOAL_PIT));
-	public static BlockItem BananaLeaves=new BlockItem(ModBlockRegistry.BananaLeaves,new Item.Properties().group(CHARCOAL_PIT));
-	public static BlockItem CoconutLeaves=new BlockItem(ModBlockRegistry.CoconutLeaves,new Item.Properties().group(CHARCOAL_PIT));
-	
+
 	/*public static TallBlockItem BrickDoor=new TallBlockItem(ModBlockRegistry.BrickDoor,new Item.Properties().group(CHARCOAL_PIT)),
 			SandyDoor=new TallBlockItem(ModBlockRegistry.SandyDoor,new Item.Properties().group(CHARCOAL_PIT)),
 			NetherDoor=new TallBlockItem(ModBlockRegistry.NetherDoor,new Item.Properties().group(CHARCOAL_PIT)),
@@ -121,30 +107,24 @@ public class ModItemRegistry {
 	
 	@SubscribeEvent
 	public static void registerItems(RegistryEvent.Register<Item> event) {
-		event.getRegistry().registerAll(Thatch.setRegistryName("thatch"), LogPile.setRegistryName("log_pile"), WoodAsh.setRegistryName("wood_ash"),
+		event.getRegistry().registerAll(Thatch.setRegistryName("thatch"), LogPile.setRegistryName("log_pile"), CoalPile.setRegistryName("coal_pile"), WoodAsh.setRegistryName("wood_ash"),
 				CoalAsh.setRegistryName("coal_ash"), CokeBlock.setRegistryName("coke_block"), AshBlock.setRegistryName("ash_block"),
 				SandyBrick.setRegistryName("sandy_brick"), SandySlab.setRegistryName("sandy_slab"), SandyStair.setRegistryName("sandy_stair"), SandyWall.setRegistryName("sandy_wall"), MainMainBloomery.setRegistryName("main_bloomery"),
 				BrickCollector.setRegistryName("brick_collector"), SandyCollector.setRegistryName("sandy_collector"), NetherCollector.setRegistryName("nether_collector"), EndCollector.setRegistryName("end_collector"),
 				Bellows.setRegistryName("bellows"), TuyereBrick.setRegistryName("brick_tuyere"), TuyereSandy.setRegistryName("sandy_tuyere"), TuyereNether.setRegistryName("nether_tuyere"), TuyereEnd.setRegistryName("end_tuyere"),
 				CopperOre.setRegistryName("copper_ore"), CopperBlock.setRegistryName("copper_block"),
 				Barrel.setRegistryName("barrel")/*,BrickDoor.setRegistryName("brick_door"),SandyDoor.setRegistryName("sandy_door"),NetherDoor.setRegistryName("nether_door"),
-				EndDoor.setRegistryName("end_door")*/, MechanicalBeellows.setRegistryName("mechanical_bellows"),
-				AppleSapling.setRegistryName("apple_sapling"), CherrySapling.setRegistryName("cherry_sapling"),
-				AppleLeaves.setRegistryName("apple_leaves"), CherryLeaves.setRegistryName("cherry_leaves"),
-				DragonSapling.setRegistryName("dragon_sapling"), DragonLeaves.setRegistryName("dragon_leaves"),
-				BananaSapling.setRegistryName("banana_sapling"), BananaLeaves.setRegistryName("banana_leaves"),
-				ChestnutSapling.setRegistryName("chestnut_sapling"), ChestnutLeaves.setRegistryName("chestnut_leaves"),
-				CoconutLeaves.setRegistryName("coconut_leaves"),CoconutSapling.setRegistryName("coconut_sapling"));
-		event.getRegistry().registerAll(Straw.setRegistryName("straw"), Ash.setRegistryName("ash"), Coke.setRegistryName("coke"), 
+				EndDoor.setRegistryName("end_door")*/, MechanicalBeellows.setRegistryName("mechanical_bellows"));
+		event.getRegistry().registerAll(Straw.setRegistryName("straw"), Ash.setRegistryName("ash"), Coke.setRegistryName("coke"),
 				Aeternalis.setRegistryName("aeternalis_fuel"), Fertilizer.setRegistryName("fertilizer"), FireStarter.setRegistryName("fire_starter"),
-				CreosoteBucket.setRegistryName("creosote_bucket"),ClayPot.setRegistryName("clay_pot"),BloomCool.setRegistryName("bloom_cool"),BloomFail.setRegistryName("bloom_fail"),
-				CopperIngot.setRegistryName("copper_ingot"),CrackedPot.setRegistryName("cracked_pot"),BloomNiCool.setRegistryName("bloom_nickel_cool"),BloomNiFail.setRegistryName("bloom_nickel_fail"),
-				SandyBrickItem.setRegistryName("sandy_brick_item"),UnfireSandyBrick.setRegistryName("unfired_sandy_brick"),NetherBrickItem.setRegistryName("nether_brick_item"),
-				UnfiredBrick.setRegistryName("unfired_brick"),AlcoholBottle.setRegistryName("alcohol_bottle"),VinegarBucket.setRegistryName("vinegar_bucket"),
-				VinegarBottle.setRegistryName("vinegar_bottle"),Cheese.setRegistryName("cheese"),TinyCoke.setRegistryName("tiny_coke"),Kebabs.setRegistryName("kebabs"),
-				Leek.setRegistryName("leek"),FarfetchStew.setRegistryName("farfetch_stew"),RabbitStew.setRegistryName("rabbit_stew"),MooshroomStew.setRegistryName("mooshroom_stew"),
-				BeetStew.setRegistryName("beet_stew"),Calamari.setRegistryName("calamari"),CookedCalamri.setRegistryName("cooked_calamari"),CookedEgg.setRegistryName("cooked_egg"),
-				Corn.setRegistryName("corn"),CornKernels.setRegistryName("corn_kernels"),PopCorn.setRegistryName("popcorn"),CornStew.setRegistryName("corn_stew"),
+				CreosoteBucket.setRegistryName("creosote_bucket"), ClayPot.setRegistryName("clay_pot"), BloomCool.setRegistryName("bloom_cool"), BloomFail.setRegistryName("bloom_fail"),
+				CopperIngot.setRegistryName("copper_ingot"), CrackedPot.setRegistryName("cracked_pot"), BloomNiCool.setRegistryName("bloom_nickel_cool"), BloomNiFail.setRegistryName("bloom_nickel_fail"),
+				SandyBrickItem.setRegistryName("sandy_brick_item"), UnfireSandyBrick.setRegistryName("unfired_sandy_brick"), NetherBrickItem.setRegistryName("nether_brick_item"),
+				UnfiredBrick.setRegistryName("unfired_brick"), AlcoholBottle.setRegistryName("alcohol_bottle"), VinegarBucket.setRegistryName("vinegar_bucket"),
+				VinegarBottle.setRegistryName("vinegar_bottle"), Cheese.setRegistryName("cheese"), TinyCoke.setRegistryName("tiny_coke"), Kebabs.setRegistryName("kebabs"),
+				Leek.setRegistryName("leek"), FarfetchStew.setRegistryName("farfetch_stew"), RabbitStew.setRegistryName("rabbit_stew"), MooshroomStew.setRegistryName("mooshroom_stew"),
+				BeetStew.setRegistryName("beet_stew"), Calamari.setRegistryName("calamari"), CookedCalamri.setRegistryName("cooked_calamari"), CookedEgg.setRegistryName("cooked_egg"),
+				Corn.setRegistryName("corn"), CornKernels.setRegistryName("corn_kernels"), PopCorn.setRegistryName("popcorn"), CornStew.setRegistryName("corn_stew"),
 				Sushi.setRegistryName("sushi"),SushiCooked.setRegistryName("cooked_sushi"),Fugu.setRegistryName("fugu"),Cherry.setRegistryName("cherry"),DragonFruit.setRegistryName("dragon_fruit"),
 				ChestNut.setRegistryName("chestnut"),CookedChestNut.setRegistryName("cooked_chestnut"),Bananana.setRegistryName("banana"),Cococonut.setRegistryName("coconut"),
 				TurtleRaw.setRegistryName("turtle_raw"),TurtleCooked.setRegistryName("turtle_cooked"),TurtleSoup.setRegistryName("turtle_stew"),

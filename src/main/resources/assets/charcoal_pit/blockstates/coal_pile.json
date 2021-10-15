@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "lit=false": {
+      "model": "charcoal_pit:block/coal_pile"
+    },
+    "lit=true": {
+      "model": "charcoal_pit:block/active_coal_pile"
+    }
+  }
+}

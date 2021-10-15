@@ -2,8 +2,8 @@ package charcoalPit.core;
 
 import charcoalPit.CharcoalPit;
 import charcoalPit.block.*;
-import net.minecraft.block.*;
 import net.minecraft.block.AbstractBlock.Properties;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraftforge.common.ToolType;
@@ -12,27 +12,31 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
-@EventBusSubscriber(modid=CharcoalPit.MODID, bus=Bus.MOD)
+@EventBusSubscriber(modid = CharcoalPit.MODID, bus = Bus.MOD)
 public class ModBlockRegistry {
-	
-	public static BlockThatch Thatch=new BlockThatch();
-	public static RotatedPillarBlock LogPile=new BlockLogPile();
-	public static Block WoodAsh=new BlockAsh(),CoalAsh=new BlockAsh(),SandyBrick=new Block(Properties.create(Material.ROCK, MaterialColor.ADOBE).hardnessAndResistance(2, 6).setRequiresTool().harvestLevel(0).harvestTool(ToolType.PICKAXE)),
-			CokeBlock=new Block(Properties.create(Material.WOOD, MaterialColor.BLACK).hardnessAndResistance(5F, 6F).harvestLevel(0).harvestTool(ToolType.PICKAXE).setRequiresTool()) {
-		public int getFireSpreadSpeed(net.minecraft.block.BlockState state, net.minecraft.world.IBlockReader world, net.minecraft.util.math.BlockPos pos, net.minecraft.util.Direction face) {
-			return 5;
-		};
-		public int getFlammability(net.minecraft.block.BlockState state, net.minecraft.world.IBlockReader world, net.minecraft.util.math.BlockPos pos, net.minecraft.util.Direction face) {
-			return 5;
-		};
-	};
-	public static FallingBlock Ash=new FallingBlock(Properties.create(Material.SAND, MaterialColor.LIGHT_GRAY).hardnessAndResistance(0.5F).harvestTool(ToolType.SHOVEL).sound(SoundType.SAND));
+
+	public static BlockThatch Thatch = new BlockThatch();
+	public static RotatedPillarBlock LogPile = new BlockLogPile();
+	public static Block CoalPile = new BlockCoalPile();
+	public static Block WoodAsh = new BlockAsh(), CoalAsh = new BlockAsh(), SandyBrick = new Block(Properties.create(Material.ROCK, MaterialColor.ADOBE).hardnessAndResistance(2, 6).setRequiresTool().harvestLevel(0).harvestTool(ToolType.PICKAXE)),
+			CokeBlock = new Block(Properties.create(Material.WOOD, MaterialColor.BLACK).hardnessAndResistance(5F, 6F).harvestLevel(0).harvestTool(ToolType.PICKAXE).setRequiresTool()) {
+				public int getFireSpreadSpeed(net.minecraft.block.BlockState state, net.minecraft.world.IBlockReader world, net.minecraft.util.math.BlockPos pos, net.minecraft.util.Direction face) {
+					return 5;
+				}
+
+				;
+
+				public int getFlammability(net.minecraft.block.BlockState state, net.minecraft.world.IBlockReader world, net.minecraft.util.math.BlockPos pos, net.minecraft.util.Direction face) {
+					return 5;
+				}
+
+				;
+			};
+	public static FallingBlock Ash = new FallingBlock(Properties.create(Material.SAND, MaterialColor.LIGHT_GRAY).hardnessAndResistance(0.5F).harvestTool(ToolType.SHOVEL).sound(SoundType.SAND));
 	public static SlabBlock SandySlab=new SlabBlock(Properties.create(Material.ROCK, MaterialColor.ADOBE).hardnessAndResistance(2, 6).setRequiresTool().harvestLevel(0).harvestTool(ToolType.PICKAXE));
 	public static StairsBlock SandyStair=new StairsBlock(()->SandyBrick.getDefaultState(), Properties.create(Material.ROCK, MaterialColor.ADOBE).hardnessAndResistance(2, 6).setRequiresTool().harvestLevel(0).harvestTool(ToolType.PICKAXE));
 	public static WallBlock SandyWall=new WallBlock(Properties.create(Material.ROCK, MaterialColor.ADOBE).hardnessAndResistance(2, 6).setRequiresTool().harvestLevel(0).harvestTool(ToolType.PICKAXE));
-	
-	public static BlockActivePile ActiveLogPile=new BlockActivePile(false, Properties.create(Material.WOOD, MaterialColor.WOOD).hardnessAndResistance(2F).harvestTool(ToolType.AXE).sound(SoundType.WOOD));
-	public static BlockActivePile ActiveCoalPile=new BlockActivePile(true, Properties.create(Material.ROCK, MaterialColor.BLACK).hardnessAndResistance(5F, 6F).harvestLevel(0).harvestTool(ToolType.PICKAXE).setRequiresTool());
+
 	public static BlockCreosoteCollector BrickCollector=new BlockCreosoteCollector(Properties.from(Blocks.BRICKS)), SandyCollector=new BlockCreosoteCollector(Properties.from(SandyBrick)),
 			NetherCollector=new BlockCreosoteCollector(Properties.from(Blocks.NETHER_BRICKS)),EndCollector=new BlockCreosoteCollector(Properties.from(Blocks.END_STONE_BRICKS));
 	public static BlockPotteryKiln Kiln=new BlockPotteryKiln();
@@ -59,24 +63,6 @@ public class ModBlockRegistry {
 
 	public static BlockLeeks Leeks = new BlockLeeks(Properties.from(Blocks.WHEAT));
 	public static BlockCorn Corn = new BlockCorn(Properties.from(Blocks.WHEAT));
-
-	public static SaplingBlock AppleSapling = new SaplingBlock(new ModFeatures.AppleTree(), AbstractBlock.Properties.create(Material.PLANTS).doesNotBlockMovement().tickRandomly().zeroHardnessAndResistance().sound(SoundType.PLANT));
-	public static SaplingBlock CherrySapling=new SaplingBlock(new ModFeatures.CherryTree(), AbstractBlock.Properties.create(Material.PLANTS).doesNotBlockMovement().tickRandomly().zeroHardnessAndResistance().sound(SoundType.PLANT));
-	public static SaplingBlock DragonSapling=new SaplingBlock(new ModFeatures.DragonTree(),AbstractBlock.Properties.from(Blocks.OAK_SAPLING));
-	public static SaplingBlock BananaSapling=new SaplingBlock(new ModFeatures.BananaTree(),AbstractBlock.Properties.from(Blocks.OAK_SAPLING));
-	public static SaplingBlock ChestnutSapling=new SaplingBlock(new ModFeatures.ChestnutTree(),AbstractBlock.Properties.from(Blocks.OAK_SAPLING));
-	public static SaplingBlock CoconutSapling=new SaplingBlock(new ModFeatures.CoconutTree(),Properties.from(Blocks.OAK_SAPLING));
-	
-	public static BlockFruitLeaves AppleLeaves=new BlockFruitLeaves(Properties.from(Blocks.OAK_LEAVES), null, 0.166F);
-	public static BlockFruitLeaves CherryLeaves=new BlockFruitLeaves(Properties.from(Blocks.BIRCH_LEAVES), null, 0.333F);
-	public static BlockFruitLeaves DragonLeaves=new BlockFruitLeaves(Properties.from(Blocks.BIRCH_LEAVES),null, 0.1F);
-	public static BlockFruitLeaves ChestnutLeaves=new BlockFruitLeaves(Properties.from(Blocks.DARK_OAK_LEAVES),null,0.166F);
-	public static BlockBananaLeaves BananaLeaves=new BlockBananaLeaves(Properties.from(Blocks.JUNGLE_LEAVES));
-	public static BlockCoconutLeaves CoconutLeaves=new BlockCoconutLeaves(Properties.from(Blocks.JUNGLE_LEAVES));
-	
-	public static BlockBananaPod BanananaPod=new BlockBananaPod(Properties.from(Blocks.COCOA));
-	public static BlockCocoPod CoconutPod=new BlockCocoPod(Properties.from(Blocks.COCOA));
-	
 	
 	/*public static DoorBlock BrickDoor=new DoorBlock(AbstractBlock.Properties.from(Blocks.IRON_DOOR)),
 			SandyDoor=new DoorBlock(Properties.from(Blocks.IRON_DOOR)),
@@ -87,27 +73,21 @@ public class ModBlockRegistry {
 	
 	@SubscribeEvent
 	public static void registerBlocks(RegistryEvent.Register<Block> event) {
-		event.getRegistry().registerAll(Thatch.setRegistryName("thatch"), LogPile.setRegistryName("log_pile"),
+		event.getRegistry().registerAll(Thatch.setRegistryName("thatch"), LogPile.setRegistryName("log_pile"), CoalPile.setRegistryName("coal_pile"),
 				WoodAsh.setRegistryName("wood_ash"), CoalAsh.setRegistryName("coal_ash"),
 				CokeBlock.setRegistryName("coke"), Ash.setRegistryName("ash"),
-				ActiveLogPile.setRegistryName("active_log_pile"), ActiveCoalPile.setRegistryName("active_coal_pile"),
 				SandyBrick.setRegistryName("sandy_brick"), SandySlab.setRegistryName("sandy_slab"), SandyStair.setRegistryName("sandy_stair"), SandyWall.setRegistryName("sandy_wall"),
 				Creosote.setRegistryName("creosote_oil"), BrickCollector.setRegistryName("brick_collector"), SandyCollector.setRegistryName("sandy_collector"),
 				NetherCollector.setRegistryName("nether_collector"), EndCollector.setRegistryName("end_collector"), Kiln.setRegistryName("pottery_kiln"), Bellows.setRegistryName("bellows"),
 				TuyereBrick.setRegistryName("brick_tuyere"), TuyereSandy.setRegistryName("sandy_tuyere"), TuyereNether.setRegistryName("nether_tuyere"), TuyereEnd.setRegistryName("end_tuyere"),
 				CopperOre.setRegistryName("copper_ore"), CopperBlock.setRegistryName("copper_block"), Bloomery.setRegistryName("bloomery"), MainBloomery.setRegistryName("mainbloomery"),
 				Barrel.setRegistryName("barrel")/*,BrickDoor.setRegistryName("brick_door"),SandyDoor.setRegistryName("sandy_door"),NetherDoor.setRegistryName("nether_door"),
-				EndDoor.setRegistryName("end_door")*/, MechanicalBellows.setRegistryName("mechanical_bellows"), Leeks.setRegistryName("leeks"), Corn.setRegistryName("corn"),
-				AppleLeaves.setRegistryName("apple_leaves"), AppleSapling.setRegistryName("apple_sapling"), CherrySapling.setRegistryName("cherry_sapling"),
-				CherryLeaves.setRegistryName("cherry_leaves"), DragonSapling.setRegistryName("dragon_sapling"), DragonLeaves.setRegistryName("dragon_leaves"),
-				BananaSapling.setRegistryName("banana_sapling"), BananaLeaves.setRegistryName("banana_leaves"),
-				ChestnutSapling.setRegistryName("chestnut_sapling"), ChestnutLeaves.setRegistryName("chestnut_leaves"), BanananaPod.setRegistryName("banana_pod"),
-				CoconutPod.setRegistryName("coconut_pod"), CoconutSapling.setRegistryName("coconut_sapling"), CoconutLeaves.setRegistryName("coconut_leaves"));
-		event.getRegistry().registerAll(CeramicPot.setRegistryName("ceramic_pot"),YellowPot.setRegistryName("yellow_pot"),WhitePot.setRegistryName("white_pot"),
-				RedPot.setRegistryName("red_pot"),PurplePot.setRegistryName("purple_pot"),PinkPot.setRegistryName("pink_pot"),OrangePot.setRegistryName("orange_pot"),
-				MagentaPot.setRegistryName("magenta_pot"),LimePot.setRegistryName("lime_pot"),LightGrayPot.setRegistryName("light_gray_pot"),
-				LightBluePot.setRegistryName("light_blue_pot"),GreenPot.setRegistryName("green_pot"),GrayPot.setRegistryName("gray_pot"),CyanPot.setRegistryName("cyan_pot"),
-				BrownPot.setRegistryName("brown_pot"),BluePot.setRegistryName("blue_pot"),BlackPot.setRegistryName("black_pot"));
+				EndDoor.setRegistryName("end_door")*/, MechanicalBellows.setRegistryName("mechanical_bellows"), Leeks.setRegistryName("leeks"), Corn.setRegistryName("corn"));
+		event.getRegistry().registerAll(CeramicPot.setRegistryName("ceramic_pot"), YellowPot.setRegistryName("yellow_pot"), WhitePot.setRegistryName("white_pot"),
+				RedPot.setRegistryName("red_pot"), PurplePot.setRegistryName("purple_pot"), PinkPot.setRegistryName("pink_pot"), OrangePot.setRegistryName("orange_pot"),
+				MagentaPot.setRegistryName("magenta_pot"), LimePot.setRegistryName("lime_pot"), LightGrayPot.setRegistryName("light_gray_pot"),
+				LightBluePot.setRegistryName("light_blue_pot"), GreenPot.setRegistryName("green_pot"), GrayPot.setRegistryName("gray_pot"), CyanPot.setRegistryName("cyan_pot"),
+				BrownPot.setRegistryName("brown_pot"), BluePot.setRegistryName("blue_pot"), BlackPot.setRegistryName("black_pot"));
 	}
 	
 }

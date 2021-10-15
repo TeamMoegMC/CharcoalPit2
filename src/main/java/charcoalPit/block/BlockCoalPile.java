@@ -3,8 +3,6 @@ package charcoalPit.block;
 import charcoalPit.tile.TileActivePile;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.RotatedPillarBlock;
-import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.state.BooleanProperty;
@@ -16,13 +14,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ToolType;
 
-public class BlockLogPile extends RotatedPillarBlock {
+public class BlockCoalPile extends Block {
 	public static final BooleanProperty LIT = BlockStateProperties.LIT;
 
-	public BlockLogPile() {
-		super(Properties.create(Material.WOOD, MaterialColor.WOOD).hardnessAndResistance(2F).harvestTool(ToolType.AXE).sound(SoundType.WOOD));
+	public BlockCoalPile() {
+		super(Properties.create(Material.ROCK, MaterialColor.STONE).hardnessAndResistance(4F));
 		this.setDefaultState(this.stateContainer.getBaseState().with(LIT, Boolean.valueOf(false)));
 	}
 
@@ -37,9 +34,8 @@ public class BlockLogPile extends RotatedPillarBlock {
 	}
 
 	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-		builder.add(LIT, AXIS);
+		builder.add(LIT);
 	}
-
 
 	@Override
 	public boolean hasTileEntity(BlockState state) {
@@ -48,7 +44,7 @@ public class BlockLogPile extends RotatedPillarBlock {
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new TileActivePile(false);
+		return new TileActivePile(true);
 	}
 
 	@Override
@@ -61,5 +57,4 @@ public class BlockLogPile extends RotatedPillarBlock {
 								boolean isMoving) {
 		((TileActivePile) worldIn.getTileEntity(pos)).isValid = false;
 	}
-
 }

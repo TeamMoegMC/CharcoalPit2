@@ -1,7 +1,6 @@
 package charcoalPit.item;
 
-import java.util.List;
-
+import charcoalPit.CharcoalPit;
 import charcoalPit.core.ModItemRegistry;
 import charcoalPit.gui.ClayPotContainer2;
 import charcoalPit.recipe.OreKilnRecipe;
@@ -13,7 +12,6 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -26,6 +24,8 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.ItemStackHandler;
+
+import java.util.List;
 
 public class ItemClayPot extends Item{
 	
@@ -76,19 +76,24 @@ public class ItemClayPot extends Item{
 	
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
-		if(!worldIn.isRemote)
-			NetworkHooks.openGui((ServerPlayerEntity)playerIn, new INamedContainerProvider() {
-				
-				@Override
-				public Container createMenu(int arg0, PlayerInventory arg1, PlayerEntity arg2) {
-					return new ClayPotContainer2(arg0, arg1, arg2.inventory.currentItem, worldIn);
-				}
-				
-				@Override
-				public ITextComponent getDisplayName() {
-					return new TranslationTextComponent("screen.charcoal_pit.clay_pot");
-				}
-			},buf->buf.writeByte((byte)playerIn.inventory.currentItem));
+		if (!worldIn.isRemote) {
+			if (!playerIn.isSneaking())
+				NetworkHooks.openGui((ServerPlayerEntity) playerIn, new INamedContainerProvider() {
+
+					@Override
+					public Container createMenu(int arg0, PlayerInventory arg1, PlayerEntity arg2) {
+						return new ClayPotContainer2(arg0, arg1, arg2.inventory.currentItem, worldIn);
+					}
+
+					@Override
+					public ITextComponent getDisplayName() {
+						return new TranslationTextComponent("screen.charcoal_pit.clay_pot");
+					}
+				}, buf -> buf.writeByte((byte) playerIn.inventory.currentItem));
+			else {
+				playerIn.sendStatusMessage(new TranslationTextComponent("message." + CharcoalPit.MODID + "." + "nofuel"), true);
+			}
+		}
 		return super.onItemRightClick(worldIn, playerIn, handIn);
 	}
 	

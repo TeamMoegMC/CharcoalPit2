@@ -65,6 +65,7 @@
   "block.charcoal_pit.banana_sapling": "香蕉树苗",
   "block.charcoal_pit.coconut_leaves": "椰子树叶",
   "block.charcoal_pit.coconut_sapling": "椰子树苗",
+  "block.charcoal_pit.coal_pile": "煤炭堆",
   "item.charcoal_pit.straw": "干草",
   "item.charcoal_pit.ash": "灰烬",
   "item.charcoal_pit.coke": "焦煤",
@@ -243,5 +244,6 @@
   "charcoal_pit.instruction.coke_oven": "时运附魔能提高效率。默认 80%，最高可达 95%",
   "charcoal_pit.instruction.charcoal_pit": "时运附魔能提高效率。默认 50%，最多 80%",
   "charcoal_pit.instruction.straw": "用锄头割高草可以获得干草",
-  "charcoal_pit.instruction.build_pit": "在地上放置原料，用有效的方块覆盖，在裸露的一面点火，然后迅速覆盖它，直到烟不再出现"
+  "charcoal_pit.instruction.build_pit": "在地上放置原料，用有效的方块覆盖，在裸露的一面点火，然后迅速覆盖它，直到烟不再出现",
+  "message.charcoal_pit.nofuel": "燃料不足"
 }
