@@ -1,8 +1,10 @@
 package charcoalPit.block;
 
+import charcoalPit.core.ModBlockRegistry;
 import charcoalPit.tile.TileActivePile;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.state.BooleanProperty;
@@ -12,6 +14,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
@@ -55,6 +58,21 @@ public class BlockCoalPile extends Block {
 	@Override
 	public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos,
 								boolean isMoving) {
+		if (worldIn.getBlockState(fromPos).getBlock() == Blocks.FIRE) {
+			if (!state.get(LIT))
+				igniteCoal(worldIn, pos);
+		}
 		((TileActivePile) worldIn.getTileEntity(pos)).isValid = false;
+	}
+
+	public static void igniteCoal(IWorld world, BlockPos pos) {
+		BlockState state = world.getBlockState(pos);
+		if (state.getBlock() == ModBlockRegistry.CoalPile && !state.get(BlockStateProperties.LIT)) {
+			world.setBlockState(pos, state.with(LIT, true), 2);
+			Direction[] neighbors = Direction.values();
+			for (int i = 0; i < neighbors.length; i++) {
+				igniteCoal(world, pos.offset(neighbors[i]));
+			}
+		}
 	}
 }

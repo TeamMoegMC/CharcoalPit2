@@ -3,9 +3,11 @@ package charcoalPit.block;
 import charcoalPit.CharcoalPit;
 import charcoalPit.core.Config;
 import charcoalPit.core.MethodHelper;
+import charcoalPit.core.ModBlockRegistry;
 import charcoalPit.tile.TileBloomery2;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -24,6 +26,7 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -93,7 +96,11 @@ public class BlockBloomery extends Block {
 	@Override
 	public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos,
 			boolean isMoving) {
-		((TileBloomery2)worldIn.getTileEntity(pos)).isValid=false;
+		if (worldIn.getBlockState(fromPos).getBlock() == Blocks.FIRE) {
+			if (state.get(BlockBloomery.STAGE) == 8)
+				igniteBloomery(worldIn, pos);
+		}
+		((TileBloomery2) worldIn.getTileEntity(pos)).isValid = false;
 	}
 	
 	@Override
@@ -207,11 +214,23 @@ public class BlockBloomery extends Block {
 				}
 			}
 			return ActionResultType.FAIL;
-		}else {
+		} else {
 			return ActionResultType.SUCCESS;
 		}
 	}
-	
-	
+
+	public static void igniteBloomery(IWorld world, BlockPos pos) {
+		if (world.getBlockState(pos).getBlock() == ModBlockRegistry.Bloomery &&
+				world.getBlockState(pos).get(BlockBloomery.STAGE) == 8) {
+			world.setBlockState(pos, world.getBlockState(pos).with(BlockBloomery.STAGE, 9), 3);
+			TileBloomery2 tile = ((TileBloomery2) world.getTileEntity(pos));
+			tile.burnTime = Config.BloomeryTime.get() * 2;
+			tile.airTicks = Config.BloomeryTime.get();
+			if (tile.dummy) {
+				igniteBloomery(world, pos.offset(Direction.DOWN));
+			}
+		}
+	}
+
 
 }

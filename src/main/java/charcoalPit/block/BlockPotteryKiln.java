@@ -2,6 +2,7 @@ package charcoalPit.block;
 
 import charcoalPit.CharcoalPit;
 import charcoalPit.core.Config;
+import charcoalPit.core.ModBlockRegistry;
 import charcoalPit.recipe.PotteryKilnRecipe;
 import charcoalPit.tile.TilePotteryKiln;
 import net.minecraft.block.Block;
@@ -109,14 +110,17 @@ public class BlockPotteryKiln extends Block{
 	@Override
 	public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos,
 			boolean isMoving) {
-		if(state.get(TYPE)==EnumKilnTypes.ACTIVE) {
-			if(pos.offset(Direction.UP).equals(fromPos)) {
-				if(!(worldIn.getBlockState(fromPos).getBlock()==Blocks.FIRE)) {
-					((TilePotteryKiln)worldIn.getTileEntity(pos)).isValid=false;
+		if (state.get(TYPE) == EnumKilnTypes.ACTIVE) {
+			if (pos.offset(Direction.UP).equals(fromPos)) {
+				if (!(worldIn.getBlockState(fromPos).getBlock() == Blocks.FIRE)) {
+					((TilePotteryKiln) worldIn.getTileEntity(pos)).isValid = false;
 				}
-			}else {
-				((TilePotteryKiln)worldIn.getTileEntity(pos)).isValid=false;
+			} else {
+				((TilePotteryKiln) worldIn.getTileEntity(pos)).isValid = false;
 			}
+		} else if (worldIn.getBlockState(fromPos).getBlock() == Blocks.FIRE) {
+			if (state.get(BlockPotteryKiln.TYPE) == EnumKilnTypes.WOOD)
+				ignitePottery(worldIn, pos);
 		}
 	}
 	
@@ -221,15 +225,29 @@ public class BlockPotteryKiln extends Block{
 		COMPLETE("complete");
 
 		private String name;
+
 		private EnumKilnTypes(String id) {
-			name=id;
+			name = id;
 		}
+
 		@Override
 		public String getString() {
 			return name;
 		}
-		
+
 	}
-	
-	
+
+	public static void ignitePottery(IWorld world, BlockPos pos) {
+		if (world.getBlockState(pos).getBlock() == ModBlockRegistry.Kiln &&
+				world.getBlockState(pos).get(BlockPotteryKiln.TYPE) == EnumKilnTypes.WOOD) {
+			world.setBlockState(pos, ModBlockRegistry.Kiln.getDefaultState().with(BlockPotteryKiln.TYPE, EnumKilnTypes.ACTIVE), 3);
+			((TilePotteryKiln) world.getTileEntity(pos)).setActive(true);
+			for (int x = -1; x <= 1; x++) {
+				for (int z = -1; z <= 1; z++) {
+					ignitePottery(world, new BlockPos(pos.getX() + x, pos.getY(), pos.getZ() + z));
+				}
+			}
+		}
+	}
+
 }
