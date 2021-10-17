@@ -97,10 +97,11 @@ public class BlockBloomery extends Block {
 	public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos,
 			boolean isMoving) {
 		if (worldIn.getBlockState(fromPos).getBlock() == Blocks.FIRE) {
-			if (state.get(BlockBloomery.STAGE) == 8)
-				igniteBloomery(worldIn, pos);
-		}
-		((TileBloomery2) worldIn.getTileEntity(pos)).isValid = false;
+            if (state.get(BlockBloomery.STAGE) == 8)
+                igniteBloomery(worldIn, pos);
+        } else if (state.get(BlockBloomery.STAGE) == 9) {
+            ((TileBloomery2) worldIn.getTileEntity(pos)).isValid = false;
+        }
 	}
 	
 	@Override

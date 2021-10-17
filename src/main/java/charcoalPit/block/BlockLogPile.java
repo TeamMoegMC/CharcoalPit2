@@ -26,12 +26,14 @@ public class BlockLogPile extends RotatedPillarBlock {
 	}
 
 	@Override
-	public int getFireSpreadSpeed(BlockState state, IBlockReader world, BlockPos pos, Direction face) {
-		return 5;
+	public boolean isFireSource(BlockState state, IWorldReader world, BlockPos pos, Direction side) {
+		return true;
 	}
 
 	@Override
 	public int getFlammability(BlockState state, IBlockReader world, BlockPos pos, Direction face) {
+		if (state.get(LIT))
+			return 0;
 		return 5;
 	}
 
@@ -51,18 +53,14 @@ public class BlockLogPile extends RotatedPillarBlock {
 	}
 
 	@Override
-	public boolean isFireSource(BlockState state, IWorldReader world, BlockPos pos, Direction side) {
-		return true;
-	}
-
-	@Override
 	public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos,
 								boolean isMoving) {
 		if (worldIn.getBlockState(fromPos).getBlock() == Blocks.FIRE) {
 			if (!state.get(LIT))
 				igniteLogs(worldIn, pos);
+		} else if (state.get(LIT)) {
+			((TileActivePile) worldIn.getTileEntity(pos)).isValid = false;
 		}
-		((TileActivePile) worldIn.getTileEntity(pos)).isValid = false;
 	}
 
 	public static void igniteLogs(IWorld world, BlockPos pos) {

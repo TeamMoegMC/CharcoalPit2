@@ -76,8 +76,6 @@ public class TileActivePile extends TileEntity implements ITickableTileEntity {
 				double centerZ = pos.getZ() + 0.5F;
 				world.addParticle(ParticleTypes.SMOKE, centerX + (random.nextDouble() - 0.5), centerY, centerZ + (random.nextDouble() - 0.5), 0.0D, 0.1D, 0.0D);
 				world.addParticle(ParticleTypes.SMOKE, centerX + (random.nextDouble() - 0.5), centerY, centerZ + (random.nextDouble() - 0.5), 0.0D, 0.15D, 0.0D);
-				world.addParticle(ParticleTypes.SMOKE, centerX + (random.nextDouble() - 0.5), centerY - 1, centerZ + (random.nextDouble() - 0.5), 0.0D, 0.1D, 0.0D);
-				world.addParticle(ParticleTypes.SMOKE, centerX + (random.nextDouble() - 0.5), centerY - 1, centerZ + (random.nextDouble() - 0.5), 0.0D, 0.15D, 0.0D);
 			}
 		}
 	}

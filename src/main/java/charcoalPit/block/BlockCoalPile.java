@@ -27,12 +27,9 @@ public class BlockCoalPile extends Block {
 	}
 
 	@Override
-	public int getFireSpreadSpeed(BlockState state, IBlockReader world, BlockPos pos, Direction face) {
-		return 5;
-	}
-
-	@Override
 	public int getFlammability(BlockState state, IBlockReader world, BlockPos pos, Direction face) {
+		if (state.get(LIT))
+			return 0;
 		return 5;
 	}
 
@@ -61,8 +58,9 @@ public class BlockCoalPile extends Block {
 		if (worldIn.getBlockState(fromPos).getBlock() == Blocks.FIRE) {
 			if (!state.get(LIT))
 				igniteCoal(worldIn, pos);
+		} else if (state.get(LIT)) {
+			((TileActivePile) worldIn.getTileEntity(pos)).isValid = false;
 		}
-		((TileActivePile) worldIn.getTileEntity(pos)).isValid = false;
 	}
 
 	public static void igniteCoal(IWorld world, BlockPos pos) {
