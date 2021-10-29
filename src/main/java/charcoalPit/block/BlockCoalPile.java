@@ -5,8 +5,6 @@ import charcoalPit.tile.TileActivePile;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.material.MaterialColor;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
@@ -22,7 +20,7 @@ public class BlockCoalPile extends Block {
 	public static final BooleanProperty LIT = BlockStateProperties.LIT;
 
 	public BlockCoalPile() {
-		super(Properties.create(Material.ROCK, MaterialColor.STONE).hardnessAndResistance(4F));
+		super(Properties.from(Blocks.COAL_BLOCK));
 		this.setDefaultState(this.stateContainer.getBaseState().with(LIT, Boolean.valueOf(false)));
 	}
 
