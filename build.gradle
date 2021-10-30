@@ -162,9 +162,7 @@ curseforge {
         addGameVersion project.minecraft_version
 
         mainArtifact (jar) {
-            relations {
 
-            }
         }
     }
 }
