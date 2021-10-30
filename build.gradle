@@ -34,7 +34,7 @@ minecraft {
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
             property 'forge.logging.console.level', 'debug'
             mods {
-                examplemod {
+                charcoal_pit {
                     source sourceSets.main
                 }
             }
@@ -45,7 +45,7 @@ minecraft {
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
             property 'forge.logging.console.level', 'debug'
             mods {
-                examplemod {
+                charcoal_pit {
                     source sourceSets.main
                 }
             }
@@ -55,9 +55,9 @@ minecraft {
             workingDirectory project.file('run')
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
             property 'forge.logging.console.level', 'debug'
-            args '--mod', 'examplemod', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+            args '--mod', 'charcoal_pit', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
             mods {
-                examplemod {
+                charcoal_pit {
                     source sourceSets.main
                 }
             }
