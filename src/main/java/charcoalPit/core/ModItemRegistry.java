@@ -34,7 +34,7 @@ public class ModItemRegistry {
 			SandyBrick = buildBlockItem(ModBlockRegistry.SandyBrick), SandySlab = buildBlockItem(ModBlockRegistry.SandySlab), SandyStair = buildBlockItem(ModBlockRegistry.SandyStair), SandyWall = buildBlockItem(ModBlockRegistry.SandyWall), MainMainBloomery = buildBlockItem(ModBlockRegistry.MainBloomery);
 
 	public static ItemFuel Straw = buildItem(CHARCOAL_PIT, 50), Coke = buildItem(CHARCOAL_PIT, 3200);
-	public static Item Ash = buildItem(CHARCOAL_PIT), Aeternalis = new ItemAeternalis();
+	public static Item Ash = buildItem(CHARCOAL_PIT);
 	public static BoneMealItem Fertilizer = new BoneMealItem(new Item.Properties().group(CHARCOAL_PIT));
 	public static ItemFireStarter FireStarter = new ItemFireStarter();
 	public static Item BloomCool = buildItem(CHARCOAL_PIT), BloomFail = buildItem(CHARCOAL_PIT), BloomNiCool = buildItem(CHARCOAL_PIT), BloomNiFail = buildItem(CHARCOAL_PIT);
@@ -116,7 +116,7 @@ public class ModItemRegistry {
 				Barrel.setRegistryName("barrel")/*,BrickDoor.setRegistryName("brick_door"),SandyDoor.setRegistryName("sandy_door"),NetherDoor.setRegistryName("nether_door"),
 				EndDoor.setRegistryName("end_door")*/, MechanicalBeellows.setRegistryName("mechanical_bellows"));
 		event.getRegistry().registerAll(Straw.setRegistryName("straw"), Ash.setRegistryName("ash"), Coke.setRegistryName("coke"),
-				Aeternalis.setRegistryName("aeternalis_fuel"), Fertilizer.setRegistryName("fertilizer"), FireStarter.setRegistryName("fire_starter"),
+				Fertilizer.setRegistryName("fertilizer"), FireStarter.setRegistryName("fire_starter"),
 				CreosoteBucket.setRegistryName("creosote_bucket"), ClayPot.setRegistryName("clay_pot"), BloomCool.setRegistryName("bloom_cool"), BloomFail.setRegistryName("bloom_fail"),
 				CopperIngot.setRegistryName("copper_ingot"), CrackedPot.setRegistryName("cracked_pot"), BloomNiCool.setRegistryName("bloom_nickel_cool"), BloomNiFail.setRegistryName("bloom_nickel_fail"),
 				SandyBrickItem.setRegistryName("sandy_brick_item"), UnfireSandyBrick.setRegistryName("unfired_sandy_brick"), NetherBrickItem.setRegistryName("nether_brick_item"),

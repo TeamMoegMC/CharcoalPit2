@@ -65,7 +65,6 @@ public class Jei implements IModPlugin {
         recipes.add(new CharcoalPitRecipeCategory.CharcoalPitRecipe(new ItemStack(ModBlockRegistry.LogPile), new ItemStack(Items.CHARCOAL, 9), false));
         recipes.add(new CharcoalPitRecipeCategory.CharcoalPitRecipe(new ItemStack(ModBlockRegistry.CoalPile), new ItemStack(ModItemRegistry.Coke, 9), true));
         registration.addRecipes(recipes, CharcoalPitRecipeCategory.ID);
-        registration.addIngredientInfo(new ItemStack(ModItemRegistry.Straw), VanillaTypes.ITEM, I18n.format("charcoal_pit.instruction.straw"));
         registration.addIngredientInfo(Arrays.asList(new ItemStack(Items.CHARCOAL), new ItemStack(ModItemRegistry.Coke), new ItemStack(ModBlockRegistry.LogPile), new ItemStack(ModBlockRegistry.CoalPile)),
                 VanillaTypes.ITEM, I18n.format("charcoal_pit.instruction.build_pit"));
         registration.addRecipes(Minecraft.getInstance().world.getRecipeManager().getRecipesForType(BarrelRecipe.BARREL_RECIPE), BarrelRecipeCategory.ID);

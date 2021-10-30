@@ -2,17 +2,17 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "rolls": 9,
+      "rolls": 8,
       "entries": [
         {
           "type": "minecraft:item",
-          "weight": 80,
+          "weight": 90,
 	  "quality": 5,
           "name": "charcoal_pit:coke"
         },
         {
           "type": "minecraft:item",
-          "weight": 20,
+          "weight": 10,
 	  "quality": -5,
           "name": "charcoal_pit:ash"
         }
