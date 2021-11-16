@@ -58,9 +58,6 @@ public class ModItemRegistry {
 	public static ItemClayPot ClayPot=new ItemClayPot();
 	public static ItemCrackedPot CrackedPot=new ItemCrackedPot();
 	
-	public static BlockItem CopperOre=buildBlockItem(ModBlockRegistry.CopperOre),CopperBlock=buildBlockItem(ModBlockRegistry.CopperBlock);
-	public static Item CopperIngot=buildItem(CHARCOAL_PIT);
-	
 	public static ItemBarrel Barrel=new ItemBarrel(ModBlockRegistry.Barrel,new Item.Properties().group(CHARCOAL_PIT));
 	
 	public static BucketItem CreosoteBucket=new BucketItem(()->ModFluidRegistry.CreosoteStill, new Item.Properties().group(CHARCOAL_PIT).maxStackSize(1).containerItem(Items.BUCKET));
@@ -112,13 +109,12 @@ public class ModItemRegistry {
 				SandyBrick.setRegistryName("sandy_brick"), SandySlab.setRegistryName("sandy_slab"), SandyStair.setRegistryName("sandy_stair"), SandyWall.setRegistryName("sandy_wall"), MainMainBloomery.setRegistryName("main_bloomery"),
 				BrickCollector.setRegistryName("brick_collector"), SandyCollector.setRegistryName("sandy_collector"), NetherCollector.setRegistryName("nether_collector"), EndCollector.setRegistryName("end_collector"),
 				Bellows.setRegistryName("bellows"), TuyereBrick.setRegistryName("brick_tuyere"), TuyereSandy.setRegistryName("sandy_tuyere"), TuyereNether.setRegistryName("nether_tuyere"), TuyereEnd.setRegistryName("end_tuyere"),
-				CopperOre.setRegistryName("copper_ore"), CopperBlock.setRegistryName("copper_block"),
 				Barrel.setRegistryName("barrel")/*,BrickDoor.setRegistryName("brick_door"),SandyDoor.setRegistryName("sandy_door"),NetherDoor.setRegistryName("nether_door"),
 				EndDoor.setRegistryName("end_door")*/, MechanicalBeellows.setRegistryName("mechanical_bellows"));
 		event.getRegistry().registerAll(Straw.setRegistryName("straw"), Ash.setRegistryName("ash"), Coke.setRegistryName("coke"),
 				Fertilizer.setRegistryName("fertilizer"), FireStarter.setRegistryName("fire_starter"),
 				CreosoteBucket.setRegistryName("creosote_bucket"), ClayPot.setRegistryName("clay_pot"), BloomCool.setRegistryName("bloom_cool"), BloomFail.setRegistryName("bloom_fail"),
-				CopperIngot.setRegistryName("copper_ingot"), CrackedPot.setRegistryName("cracked_pot"), BloomNiCool.setRegistryName("bloom_nickel_cool"), BloomNiFail.setRegistryName("bloom_nickel_fail"),
+				CrackedPot.setRegistryName("cracked_pot"), BloomNiCool.setRegistryName("bloom_nickel_cool"), BloomNiFail.setRegistryName("bloom_nickel_fail"),
 				SandyBrickItem.setRegistryName("sandy_brick_item"), UnfireSandyBrick.setRegistryName("unfired_sandy_brick"), NetherBrickItem.setRegistryName("nether_brick_item"),
 				UnfiredBrick.setRegistryName("unfired_brick"), AlcoholBottle.setRegistryName("alcohol_bottle"), VinegarBucket.setRegistryName("vinegar_bucket"),
 				VinegarBottle.setRegistryName("vinegar_bottle"), Cheese.setRegistryName("cheese"), TinyCoke.setRegistryName("tiny_coke"), Kebabs.setRegistryName("kebabs"),

@@ -171,8 +171,9 @@ public class TileBloomery2 extends TileEntity implements ITickableTileEntity {
 				InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), fuel.extractItem(i, 1, false));
 		}
 		if(ingots>0) {
-			if(workCount!=-1) {
-				InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(getRecipe().output.getMatchingStacks()[0].getItem(), workCount));
+			ItemStack output = new ItemStack(getRecipe().output.getMatchingStacks()[0].getItem(), workCount);
+			if(workCount!=-1 && output!=null) {
+				InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(),output);
 				ingots-=workCount;
 				while(workCount>0) {
 					int i=ExperienceOrbEntity.getXPSplit(workCount);

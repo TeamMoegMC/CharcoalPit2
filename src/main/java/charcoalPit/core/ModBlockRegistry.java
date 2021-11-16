@@ -55,9 +55,6 @@ public class ModBlockRegistry {
 	//public static BlockClayPot ClayPot=new BlockClayPot();
 	public static BlockBloomery Bloomery = new BlockBloomery();
 	public static BlockMainBloomery MainBloomery = new BlockMainBloomery();
-	public static Block CopperOre = new Block(Properties.create(Material.ROCK).hardnessAndResistance(3).setRequiresTool().harvestTool(ToolType.PICKAXE).harvestLevel(1)),
-			CopperBlock = new Block(Properties.create(Material.IRON, MaterialColor.ORANGE_TERRACOTTA).setRequiresTool().hardnessAndResistance(4, 6).harvestTool(ToolType.PICKAXE).harvestLevel(1));
-
 	public static BlockBarrel Barrel = new BlockBarrel();
 	public static BlockMechanicalBellows MechanicalBellows = new BlockMechanicalBellows();
 
@@ -80,7 +77,7 @@ public class ModBlockRegistry {
 				Creosote.setRegistryName("creosote_oil"), BrickCollector.setRegistryName("brick_collector"), SandyCollector.setRegistryName("sandy_collector"),
 				NetherCollector.setRegistryName("nether_collector"), EndCollector.setRegistryName("end_collector"), Kiln.setRegistryName("pottery_kiln"), Bellows.setRegistryName("bellows"),
 				TuyereBrick.setRegistryName("brick_tuyere"), TuyereSandy.setRegistryName("sandy_tuyere"), TuyereNether.setRegistryName("nether_tuyere"), TuyereEnd.setRegistryName("end_tuyere"),
-				CopperOre.setRegistryName("copper_ore"), CopperBlock.setRegistryName("copper_block"), Bloomery.setRegistryName("bloomery"), MainBloomery.setRegistryName("mainbloomery"),
+				Bloomery.setRegistryName("bloomery"), MainBloomery.setRegistryName("mainbloomery"),
 				Barrel.setRegistryName("barrel")/*,BrickDoor.setRegistryName("brick_door"),SandyDoor.setRegistryName("sandy_door"),NetherDoor.setRegistryName("nether_door"),
 				EndDoor.setRegistryName("end_door")*/, MechanicalBellows.setRegistryName("mechanical_bellows"), Leeks.setRegistryName("leeks"), Corn.setRegistryName("corn"));
 		event.getRegistry().registerAll(CeramicPot.setRegistryName("ceramic_pot"), YellowPot.setRegistryName("yellow_pot"), WhitePot.setRegistryName("white_pot"),
