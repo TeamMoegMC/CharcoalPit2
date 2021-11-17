@@ -162,29 +162,30 @@ public class TileBloomery2 extends TileEntity implements ITickableTileEntity {
 	}
 	
 	public void dropInventory() {
-		for(int i=0;i<ore.getSlots();i++) {
-			if(!ore.getStackInSlot(i).isEmpty())
-				InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), ore.extractItem(i, 1, false));
-		}
-		for(int i=0;i<fuel.getSlots();i++) {
-			if(!fuel.getStackInSlot(i).isEmpty())
-				InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), fuel.extractItem(i, 1, false));
-		}
-		if(ingots>0) {
-			ItemStack output = new ItemStack(getRecipe().output.getMatchingStacks()[0].getItem(), workCount);
-			if(workCount!=-1 && output!=null) {
-				InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(),output);
-				ingots-=workCount;
-				while(workCount>0) {
-					int i=ExperienceOrbEntity.getXPSplit(workCount);
-					workCount-=i;
-					world.addEntity(new ExperienceOrbEntity(world, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D, i));
+		if (world!=null) {
+			for (int i = 0; i < ore.getSlots(); i++) {
+				if (!ore.getStackInSlot(i).isEmpty())
+					InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), ore.extractItem(i, 1, false));
+			}
+			for (int i = 0; i < fuel.getSlots(); i++) {
+				if (!fuel.getStackInSlot(i).isEmpty())
+					InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), fuel.extractItem(i, 1, false));
+			}
+			if (ingots > 0) {
+				if (workCount != -1) {
+					InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(getRecipe().output.getMatchingStacks()[0].getItem(), workCount));
+					ingots -= workCount;
+					while (workCount > 0) {
+						int i = ExperienceOrbEntity.getXPSplit(workCount);
+						workCount -= i;
+						world.addEntity(new ExperienceOrbEntity(world, (double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D, (double) pos.getZ() + 0.5D, i));
+					}
+					if (ingots > 0) {
+						InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(getRecipe().cool.getMatchingStacks()[0].getItem(), ingots));
+					}
+				} else {
+					InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(getRecipe().fail.getMatchingStacks()[0].getItem(), ingots));
 				}
-				if(ingots>0) {
-					InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(getRecipe().cool.getMatchingStacks()[0].getItem(), ingots));
-				}
-			}else {
-				InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(getRecipe().fail.getMatchingStacks()[0].getItem(), ingots));
 			}
 		}
 	}
