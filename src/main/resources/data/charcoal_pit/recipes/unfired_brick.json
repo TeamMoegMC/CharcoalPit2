@@ -1,13 +1,13 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "##"
-  ],
-  "key": {
-    "#": {
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:clay_ball"
+    },
+    {
       "item": "minecraft:clay_ball"
     }
-  },
+  ],
   "result": {
     "item": "charcoal_pit:unfired_brick",
     "count": 2
