@@ -12,6 +12,7 @@ import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer.Builder;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
@@ -28,15 +29,13 @@ import java.util.Random;
 
 public class BlockBellows extends Block{
 	
-	public static final DirectionProperty FACING=DirectionalBlock.FACING;
+	public static final DirectionProperty FACING= BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty PUSH=BooleanProperty.create("push");
 	
 	public static final VoxelShape NORTH=VoxelShapes.create(0D, 0D, 0D, 1D, 1D, 6D/16D);
 	public static final VoxelShape SOUTH=VoxelShapes.create(0D, 0D, 10D/16D, 1D, 1D, 1D);
 	public static final VoxelShape WEST=VoxelShapes.create(0D, 0D, 0D, 6D/16D, 1D, 1D);
 	public static final VoxelShape EAST=VoxelShapes.create(10D/16D, 0D, 0D, 1D, 1D, 1D);
-	public static final VoxelShape UP=VoxelShapes.create(0D, 10D/16D, 0D, 1D, 1D, 1D);
-	public static final VoxelShape DOWN=VoxelShapes.create(0D, 0D, 0D, 1D, 6D/16D, 1D);
 
 	public BlockBellows() {
 		super(Properties.create(Material.WOOD).hardnessAndResistance(2, 3).harvestTool(ToolType.AXE));
@@ -53,11 +52,9 @@ public class BlockBellows extends Block{
 		if(!state.get(PUSH))
 			return VoxelShapes.fullCube();
 		switch(state.get(FACING)) {
-		case DOWN:return DOWN;
 		case EAST:return EAST;
 		case NORTH:return NORTH;
 		case SOUTH:return SOUTH;
-		case UP:return UP;
 		case WEST:return WEST;
 		default:return VoxelShapes.fullCube();
 		
@@ -78,9 +75,9 @@ public class BlockBellows extends Block{
 	public boolean isTransparent(BlockState state) {
 		return true;
 	}
-	
+
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
-	      return this.getDefaultState().with(FACING, context.getNearestLookingDirection());
+	      return this.getDefaultState().with(FACING, context.getPlacementHorizontalFacing());
 	   }
 	
 	@Override

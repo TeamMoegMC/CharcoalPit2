@@ -164,8 +164,8 @@ public class BlockBloomery extends Block {
 	@Override
 	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player,
 			Hand handIn, BlockRayTraceResult hit) {
+		int size=state.get(STAGE);
 		if(!worldIn.isRemote) {
-			int size=state.get(STAGE);
 			TileBloomery2 tile=((TileBloomery2)worldIn.getTileEntity(pos));
 			if(tile.getRecipe().input.test(player.getHeldItem(handIn))) {
 				if(size<8) {
@@ -216,7 +216,10 @@ public class BlockBloomery extends Block {
 			}
 			return ActionResultType.FAIL;
 		} else {
-			return ActionResultType.SUCCESS;
+			if (size>=8){
+				return ActionResultType.FAIL;
+			}
+			else return ActionResultType.SUCCESS;
 		}
 	}
 

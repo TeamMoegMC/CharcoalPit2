@@ -284,37 +284,7 @@ public class TileBloomery2 extends TileEntity implements ITickableTileEntity {
 		fuel.deserializeNBT(nbt.getCompound("fuel"));
 		ingots=nbt.getInt("ingots");
 	}
-	
-	public static class BloomeryStackHandler extends ItemStackHandler{
-		TileBloomery2 tile;
-		public BloomeryStackHandler(TileBloomery2 tile) {
-			super(4);
-			this.tile=tile;
-		}
-		@Override
-		public boolean isItemValid(int slot, ItemStack stack) {
-			if(tile.getRecipe()==null)
-				return false;
-			return tile.getRecipe().input.test(stack);
-		}
-		@Override
-		public int getSlotLimit(int slot) {
-			return 1;
-		}
-	}
-	public static class BloomeryFuelHandler extends ItemStackHandler{
-        public BloomeryFuelHandler() {
-			super(4);
-		}
-		@Override
-		public boolean isItemValid(int slot, ItemStack stack) {
-			return stack.getItem()==Items.COAL||stack.getItem()==Items.CHARCOAL;
-		}
-		@Override
-		public int getSlotLimit(int slot) {
-			return 1;
-		}
-	}
+
 	public static class OneItemHandler extends ItemStackHandler{
 		public OneItemHandler(int s) {
 			super(s);
