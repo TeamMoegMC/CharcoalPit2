@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.util.LazyOptional;
@@ -53,13 +54,14 @@ public class TileCeramicPot extends TileEntity{
 	
 	public static class CeramicPotHandler extends ItemStackHandler{
 		Runnable function;
+		private static final ResourceLocation forbid=new ResourceLocation("immersiveengineering:forbidden_in_crates");
 		public CeramicPotHandler(int i,Runnable r) {
 			super(i);
 			function=r;
 		}
 		@Override
 		public boolean isItemValid(int slot, ItemStack stack) {
-			return !(Block.getBlockFromItem(stack.getItem()) instanceof BlockCeramicPot||Block.getBlockFromItem(stack.getItem()) instanceof ShulkerBoxBlock);
+			return !(Block.getBlockFromItem(stack.getItem()) instanceof BlockCeramicPot||Block.getBlockFromItem(stack.getItem()) instanceof ShulkerBoxBlock||stack.getItem().getTags().contains(forbid));
 		}
 		@Override
 		protected void onContentsChanged(int slot) {
