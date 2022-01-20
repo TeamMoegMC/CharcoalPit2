@@ -40,10 +40,7 @@ public class ModItemRegistry {
 	public static Item BloomCool = buildItem(CHARCOAL_PIT), BloomFail = buildItem(CHARCOAL_PIT), BloomNiCool = buildItem(CHARCOAL_PIT), BloomNiFail = buildItem(CHARCOAL_PIT);
 	public static Item SandyBrickItem = buildItem(CHARCOAL_PIT), NetherBrickItem = buildItem(CHARCOAL_PIT), UnfireSandyBrick = buildItem(CHARCOAL_PIT), UnfiredBrick = buildItem(CHARCOAL_PIT);
 
-	public static BlockItem BrickCollector = buildBlockItem(ModBlockRegistry.BrickCollector, CHARCOAL_PIT),
-			SandyCollector = buildBlockItem(ModBlockRegistry.SandyCollector, CHARCOAL_PIT),
-			NetherCollector=buildBlockItem(ModBlockRegistry.NetherCollector,CHARCOAL_PIT),
-			EndCollector=buildBlockItem(ModBlockRegistry.EndCollector,CHARCOAL_PIT);
+	public static BlockItem SandyCollector = buildBlockItem(ModBlockRegistry.SandyCollector, CHARCOAL_PIT);
 	public static BlockItem CeramicPot=buildBlockItemP(ModBlockRegistry.CeramicPot),WhitePot=buildBlockItemP(ModBlockRegistry.WhitePot),
 			OrangePot=buildBlockItemP(ModBlockRegistry.OrangePot),MagentaPot=buildBlockItemP(ModBlockRegistry.MagentaPot),
 			LightBluePot=buildBlockItemP(ModBlockRegistry.LightBluePot),YellowPot=buildBlockItemP(ModBlockRegistry.YellowPot),
@@ -53,8 +50,7 @@ public class ModItemRegistry {
 			BluePot=buildBlockItemP(ModBlockRegistry.BluePot),BrownPot=buildBlockItemP(ModBlockRegistry.BrownPot),
 			GreenPot=buildBlockItemP(ModBlockRegistry.GreenPot),RedPot=buildBlockItemP(ModBlockRegistry.RedPot),
 			BlackPot=buildBlockItemP(ModBlockRegistry.BlackPot);
-	public static BlockItem Bellows=buildBlockItem(ModBlockRegistry.Bellows),TuyereBrick=buildBlockItem(ModBlockRegistry.TuyereBrick),TuyereSandy=buildBlockItem(ModBlockRegistry.TuyereSandy),
-			TuyereNether=buildBlockItem(ModBlockRegistry.TuyereNether),TuyereEnd=buildBlockItem(ModBlockRegistry.TuyereEnd);
+	public static BlockItem Bellows=buildBlockItem(ModBlockRegistry.Bellows),TuyereSandy=buildBlockItem(ModBlockRegistry.TuyereSandy);
 	public static ItemClayPot ClayPot=new ItemClayPot();
 	public static ItemCrackedPot CrackedPot=new ItemCrackedPot();
 	
@@ -107,8 +103,8 @@ public class ModItemRegistry {
 		event.getRegistry().registerAll(Thatch.setRegistryName("thatch"), LogPile.setRegistryName("log_pile"), CoalPile.setRegistryName("coal_pile"), WoodAsh.setRegistryName("wood_ash"),
 				CoalAsh.setRegistryName("coal_ash"), CokeBlock.setRegistryName("coke_block"), AshBlock.setRegistryName("ash_block"),
 				SandyBrick.setRegistryName("sandy_brick"), SandySlab.setRegistryName("sandy_slab"), SandyStair.setRegistryName("sandy_stair"), SandyWall.setRegistryName("sandy_wall"), MainMainBloomery.setRegistryName("main_bloomery"),
-				BrickCollector.setRegistryName("brick_collector"), SandyCollector.setRegistryName("sandy_collector"), NetherCollector.setRegistryName("nether_collector"), EndCollector.setRegistryName("end_collector"),
-				Bellows.setRegistryName("bellows"), TuyereBrick.setRegistryName("brick_tuyere"), TuyereSandy.setRegistryName("sandy_tuyere"), TuyereNether.setRegistryName("nether_tuyere"), TuyereEnd.setRegistryName("end_tuyere"),
+				SandyCollector.setRegistryName("sandy_collector"),
+				Bellows.setRegistryName("bellows"), TuyereSandy.setRegistryName("sandy_tuyere"),
 				Barrel.setRegistryName("barrel")/*,BrickDoor.setRegistryName("brick_door"),SandyDoor.setRegistryName("sandy_door"),NetherDoor.setRegistryName("nether_door"),
 				EndDoor.setRegistryName("end_door")*/, MechanicalBeellows.setRegistryName("mechanical_bellows"));
 		event.getRegistry().registerAll(Straw.setRegistryName("straw"), Ash.setRegistryName("ash"), Coke.setRegistryName("coke"),

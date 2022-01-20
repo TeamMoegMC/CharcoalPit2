@@ -37,8 +37,7 @@ public class ModBlockRegistry {
 	public static StairsBlock SandyStair=new StairsBlock(()->SandyBrick.getDefaultState(), Properties.create(Material.ROCK, MaterialColor.ADOBE).hardnessAndResistance(2, 6).setRequiresTool().harvestLevel(0).harvestTool(ToolType.PICKAXE));
 	public static WallBlock SandyWall=new WallBlock(Properties.create(Material.ROCK, MaterialColor.ADOBE).hardnessAndResistance(2, 6).setRequiresTool().harvestLevel(0).harvestTool(ToolType.PICKAXE));
 
-	public static BlockCreosoteCollector BrickCollector=new BlockCreosoteCollector(Properties.from(Blocks.BRICKS)), SandyCollector=new BlockCreosoteCollector(Properties.from(SandyBrick)),
-			NetherCollector=new BlockCreosoteCollector(Properties.from(Blocks.NETHER_BRICKS)),EndCollector=new BlockCreosoteCollector(Properties.from(Blocks.END_STONE_BRICKS));
+	public static BlockCreosoteCollector SandyCollector=new BlockCreosoteCollector(Properties.from(SandyBrick));
 	public static BlockPotteryKiln Kiln=new BlockPotteryKiln();
 	public static BlockCeramicPot CeramicPot=new BlockCeramicPot(MaterialColor.ADOBE),WhitePot=new BlockCeramicPot(MaterialColor.WHITE_TERRACOTTA),
 			OrangePot=new BlockCeramicPot(MaterialColor.ORANGE_TERRACOTTA),MagentaPot=new BlockCeramicPot(MaterialColor.MAGENTA_TERRACOTTA),
@@ -50,8 +49,7 @@ public class ModBlockRegistry {
 			GreenPot = new BlockCeramicPot(MaterialColor.GREEN_TERRACOTTA), RedPot = new BlockCeramicPot(MaterialColor.RED_TERRACOTTA),
 			BlackPot = new BlockCeramicPot(MaterialColor.BLACK_TERRACOTTA);
 	public static BlockBellows Bellows = new BlockBellows();
-	public static Block TuyereBrick = new Block(Properties.from(Blocks.BRICKS)), TuyereSandy = new Block(Properties.from(SandyBrick)), TuyereNether = new Block(Properties.from(Blocks.NETHER_BRICKS)),
-			TuyereEnd = new Block(Properties.from(Blocks.END_STONE_BRICKS));
+	public static Block TuyereSandy = new Block(Properties.from(SandyBrick));
 	//public static BlockClayPot ClayPot=new BlockClayPot();
 	public static BlockBloomery Bloomery = new BlockBloomery();
 	public static BlockMainBloomery MainBloomery = new BlockMainBloomery();
@@ -74,9 +72,9 @@ public class ModBlockRegistry {
 				WoodAsh.setRegistryName("wood_ash"), CoalAsh.setRegistryName("coal_ash"),
 				CokeBlock.setRegistryName("coke"), Ash.setRegistryName("ash"),
 				SandyBrick.setRegistryName("sandy_brick"), SandySlab.setRegistryName("sandy_slab"), SandyStair.setRegistryName("sandy_stair"), SandyWall.setRegistryName("sandy_wall"),
-				Creosote.setRegistryName("creosote_oil"), BrickCollector.setRegistryName("brick_collector"), SandyCollector.setRegistryName("sandy_collector"),
-				NetherCollector.setRegistryName("nether_collector"), EndCollector.setRegistryName("end_collector"), Kiln.setRegistryName("pottery_kiln"), Bellows.setRegistryName("bellows"),
-				TuyereBrick.setRegistryName("brick_tuyere"), TuyereSandy.setRegistryName("sandy_tuyere"), TuyereNether.setRegistryName("nether_tuyere"), TuyereEnd.setRegistryName("end_tuyere"),
+				Creosote.setRegistryName("creosote_oil"),SandyCollector.setRegistryName("sandy_collector"),
+				Kiln.setRegistryName("pottery_kiln"), Bellows.setRegistryName("bellows"),
+				TuyereSandy.setRegistryName("sandy_tuyere"),
 				Bloomery.setRegistryName("bloomery"), MainBloomery.setRegistryName("mainbloomery"),
 				Barrel.setRegistryName("barrel")/*,BrickDoor.setRegistryName("brick_door"),SandyDoor.setRegistryName("sandy_door"),NetherDoor.setRegistryName("nether_door"),
 				EndDoor.setRegistryName("end_door")*/, MechanicalBellows.setRegistryName("mechanical_bellows"), Leeks.setRegistryName("leeks"), Corn.setRegistryName("corn"));

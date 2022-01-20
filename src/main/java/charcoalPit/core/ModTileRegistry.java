@@ -13,8 +13,7 @@ public class ModTileRegistry {
 
 
     public static TileEntityType<TileActivePile> ActivePile = TileEntityType.Builder.create(TileActivePile::new, ModBlockRegistry.LogPile, ModBlockRegistry.CoalPile).build(null);
-    public static TileEntityType<TileCreosoteCollector> CreosoteCollector = TileEntityType.Builder.create(TileCreosoteCollector::new, ModBlockRegistry.BrickCollector, ModBlockRegistry.SandyCollector,
-            ModBlockRegistry.NetherCollector, ModBlockRegistry.EndCollector).build(null);
+    public static TileEntityType<TileCreosoteCollector> CreosoteCollector = TileEntityType.Builder.create(TileCreosoteCollector::new, ModBlockRegistry.SandyCollector).build(null);
     public static TileEntityType<TilePotteryKiln> PotteryKiln = TileEntityType.Builder.create(TilePotteryKiln::new, ModBlockRegistry.Kiln).build(null);
     public static TileEntityType<TileCeramicPot> CeramicPot = TileEntityType.Builder.create(TileCeramicPot::new, ModBlockRegistry.CeramicPot, ModBlockRegistry.BlackPot,
             ModBlockRegistry.BluePot, ModBlockRegistry.BrownPot, ModBlockRegistry.CyanPot, ModBlockRegistry.GrayPot, ModBlockRegistry.GreenPot,
