@@ -18,6 +18,8 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.items.ItemStackHandler;
 
@@ -94,6 +96,7 @@ public class TileBloomery2 extends TileEntity implements ITickableTileEntity {
 								ingots += 4;
 								dummy.ore = new OneItemHandler(4);
 								dummy.fuel = new OneItemHandler(4);
+								world.playSound(null, pos, SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 0.5F, 1F);
 								world.removeBlock(pos.offset(Direction.UP), false);
 							}else {
 								if(world.getBlockState(pos.offset(Direction.UP)).getBlock()==Blocks.FIRE)
