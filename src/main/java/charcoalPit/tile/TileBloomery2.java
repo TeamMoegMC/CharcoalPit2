@@ -94,7 +94,7 @@ public class TileBloomery2 extends TileEntity implements ITickableTileEntity {
 								ingots += 4;
 								dummy.ore = new OneItemHandler(4);
 								dummy.fuel = new OneItemHandler(4);
-								world.playSound(null, pos, SoundEvents.BLOCK_LAVA_AMBIENT, SoundCategory.BLOCKS, 0.6F, 1.5F);
+								world.playSound(null, pos, SoundEvents.BLOCK_LAVA_AMBIENT, SoundCategory.BLOCKS, 0.5F, 1F);
 								world.removeBlock(pos.offset(Direction.UP), false);
 							}else {
 								if(world.getBlockState(pos.offset(Direction.UP)).getBlock()==Blocks.FIRE)
