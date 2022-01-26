@@ -25,7 +25,6 @@ import net.minecraftforge.items.ItemStackHandler;
 
 public class TileBloomery2 extends TileEntity implements ITickableTileEntity {
 
-	public boolean dummy;
 	public boolean isValid;
 	public int changetime;
 	public int burnTime;
@@ -41,7 +40,6 @@ public class TileBloomery2 extends TileEntity implements ITickableTileEntity {
 	
 	public TileBloomery2() {
 		super(ModTileRegistry.Bloomery2);
-		dummy = false;
 		isValid = false;
 		changetime = 0;
 		invalidTicks = 0;
@@ -60,7 +58,7 @@ public class TileBloomery2 extends TileEntity implements ITickableTileEntity {
 		if(!world.isRemote) {
 			if(!done) {
 				checkValid();
-				if(!dummy) {
+				if(!getBlockState().get(BlockBloomery.DUMMY)) {
 					if (burnTime > 0 && airTicks > 0) {
 						burnTime--;
 						changetime++;
@@ -70,10 +68,10 @@ public class TileBloomery2 extends TileEntity implements ITickableTileEntity {
 							airBuffer--;
 							airTicks--;
 						}
-						if (changetime > 50) {
+						if (changetime > 40) {
 							BlockPos down = pos.offset(Direction.DOWN);
 							if (world.getBlockState(down).getBlock() == ModBlockRegistry.MainBloomery) {
-								if (airBuffer == 0) {
+								if (airBuffer < 1) {
 									world.setBlockState(down, ModBlockRegistry.MainBloomery.getDefaultState().with(BlockMainBloomery.STAGE, 1));
 								} else {
 									world.setBlockState(down, ModBlockRegistry.MainBloomery.getDefaultState().with(BlockMainBloomery.STAGE, 2));
@@ -96,7 +94,7 @@ public class TileBloomery2 extends TileEntity implements ITickableTileEntity {
 								ingots += 4;
 								dummy.ore = new OneItemHandler(4);
 								dummy.fuel = new OneItemHandler(4);
-								world.playSound(null, pos, SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 0.5F, 1F);
+								world.playSound(null, pos, SoundEvents.BLOCK_LAVA_AMBIENT, SoundCategory.BLOCKS, 0.6F, 1.5F);
 								world.removeBlock(pos.offset(Direction.UP), false);
 							}else {
 								if(world.getBlockState(pos.offset(Direction.UP)).getBlock()==Blocks.FIRE)
@@ -127,7 +125,7 @@ public class TileBloomery2 extends TileEntity implements ITickableTileEntity {
 
 
 	public BloomeryRecipe getRecipe() {
-		if(recipe==null && dummy) {
+		if(recipe==null && getBlockState().get(BlockBloomery.DUMMY)) {
 			TileBloomery2 master=((TileBloomery2)world.getTileEntity(pos.offset(Direction.DOWN)));
 			recipe=master.getRecipe();
 		}
@@ -135,15 +133,6 @@ public class TileBloomery2 extends TileEntity implements ITickableTileEntity {
 			recipe=BloomeryRecipe.getRecipe(ore.getStackInSlot(0), world);
 		}
 		return recipe;
-	}
-	
-	@Override
-	public void remove() {
-		super.remove();
-		if(!dummy) {
-			if(world.getBlockState(pos.offset(Direction.UP)).getBlock()==ModBlockRegistry.Bloomery)
-				world.removeBlock(pos.offset(Direction.UP), false);
-		}
 	}
 	
 	public void ignite() {
@@ -194,11 +183,11 @@ public class TileBloomery2 extends TileEntity implements ITickableTileEntity {
 	}
 	//pile ignitr
 	public void setDummy(boolean dum) {
-		dummy=dum;
+		world.setBlockState(pos,getBlockState().with(BlockBloomery.DUMMY,dum));
 	}
 	public void checkValid() {
 		if(!isValid) {
-			if(done || burnTime<0 || MethodHelper.Bloomery2ValidPosition(world, pos, dummy, burnTime>0)) {
+			if(done || burnTime<0 || MethodHelper.Bloomery2ValidPosition(world, pos, getBlockState().get(BlockBloomery.DUMMY), burnTime>0)) {
 				isValid=true;
 				invalidTicks=0;
 			}else {
@@ -220,7 +209,7 @@ public class TileBloomery2 extends TileEntity implements ITickableTileEntity {
 
 					BlockPos charm = pos.offset(Direction.UP);
 					BlockPos down = pos.offset(Direction.DOWN);
-					if (dummy) {
+					if (getBlockState().get(BlockBloomery.DUMMY)) {
 						if (world.getBlockState(down.offset(Direction.DOWN)).getBlock() == ModBlockRegistry.MainBloomery) {
 							world.setBlockState(down.offset(Direction.DOWN), ModBlockRegistry.MainBloomery.getDefaultState().with(BlockMainBloomery.STAGE, 0));
 						}
@@ -258,7 +247,6 @@ public class TileBloomery2 extends TileEntity implements ITickableTileEntity {
 	@Override
 	public CompoundNBT write(CompoundNBT compound) {
 		super.write(compound);
-		compound.putBoolean("dummy", dummy);
 		compound.putBoolean("valid", isValid);
 		compound.putInt("burn", burnTime);
 		compound.putInt("air", airTicks);
@@ -275,7 +263,6 @@ public class TileBloomery2 extends TileEntity implements ITickableTileEntity {
 	@Override
 	public void read(BlockState state, CompoundNBT nbt) {
 		super.read(state, nbt);
-		dummy=nbt.getBoolean("dummy");
 		isValid=nbt.getBoolean("valid");
 		burnTime=nbt.getInt("burn");
 		airTicks=nbt.getInt("air");

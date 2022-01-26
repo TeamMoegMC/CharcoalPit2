@@ -15,6 +15,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.tags.ItemTags;
@@ -38,6 +39,7 @@ import java.util.Random;
 public class BlockBloomery extends Block {
 
 	public static final IntegerProperty STAGE = IntegerProperty.create("stage", 1, 12);
+	public static final BooleanProperty DUMMY = BooleanProperty.create("dummy");
 	//1-8 layers,9 active,10 done,11 worked,12 cooled
 
 	protected static final VoxelShape[] SHAPES = new VoxelShape[]{VoxelShapes.empty(),
@@ -52,6 +54,7 @@ public class BlockBloomery extends Block {
 
 	public BlockBloomery() {
 		super(Properties.create(Material.ROCK).hardnessAndResistance(5F, 6F).harvestTool(ToolType.PICKAXE).harvestLevel(1));
+		this.setDefaultState(this.getDefaultState().with(DUMMY,false));
 	}
 	
 	@Override
@@ -75,7 +78,7 @@ public class BlockBloomery extends Block {
 	
 	@Override
 	protected void fillStateContainer(Builder<Block, BlockState> builder) {
-		builder.add(STAGE);
+		builder.add(STAGE,DUMMY);
 	}
 	
 	@Override
@@ -109,6 +112,10 @@ public class BlockBloomery extends Block {
 		if (state.hasTileEntity() && (!state.isIn(newState.getBlock()) || !newState.hasTileEntity())) {
 			 ((TileBloomery2)worldIn.getTileEntity(pos)).dropInventory();
 	         worldIn.removeTileEntity(pos);
+			if(!state.get(BlockBloomery.DUMMY)) {
+				if(worldIn.getBlockState(pos.offset(Direction.UP)).getBlock()==ModBlockRegistry.Bloomery)
+					worldIn.removeBlock(pos.offset(Direction.UP), false);
+			}
 	      }
 	}
 	
@@ -180,12 +187,11 @@ public class BlockBloomery extends Block {
 				}else {
 					BlockPos up = pos.offset(Direction.UP);
 					if (worldIn.isAirBlock(up) && MethodHelper.Bloomery2ValidPosition(worldIn, up, true, false) && worldIn.getBlockState(pos.offset(Direction.DOWN)).getBlock() != this) {
-						worldIn.setBlockState(up, state.with(STAGE, 1));
+						worldIn.setBlockState(up, state.with(STAGE, 1).with(DUMMY,true));
 						TileBloomery2 dummy = ((TileBloomery2) worldIn.getTileEntity(up));
 						dummy.recipe = tile.recipe;
-						dummy.dummy = true;
 						player.setHeldItem(handIn, dummy.ore.insertItem(0, player.getHeldItem(handIn), false));
-						worldIn.playSound(null, pos, SoundEvents.BLOCK_GRAVEL_PLACE, SoundCategory.BLOCKS, 1F, 1F);
+						worldIn.playSound(null, pos, SoundEvents.BLOCK_GRAVEL_PLACE, SoundCategory.BLOCKS, 0.6F, 1F);
 						return ActionResultType.SUCCESS;
 					}
 				}
@@ -203,10 +209,9 @@ public class BlockBloomery extends Block {
 					}else {
 						BlockPos up = pos.offset(Direction.UP);
 						if (worldIn.isAirBlock(up) && MethodHelper.Bloomery2ValidPosition(worldIn, up, true, false) && worldIn.getBlockState(pos.offset(Direction.DOWN)).getBlock() != this) {
-							worldIn.setBlockState(up, state.with(STAGE, 1));
+							worldIn.setBlockState(up, state.with(STAGE, 1).with(DUMMY,true));
 							TileBloomery2 dummy = ((TileBloomery2) worldIn.getTileEntity(up));
 							dummy.recipe = tile.recipe;
-							dummy.dummy = true;
 							player.setHeldItem(handIn, dummy.fuel.insertItem(0, player.getHeldItem(handIn), false));
 							worldIn.playSound(null, pos, SoundEvents.BLOCK_GRAVEL_PLACE, SoundCategory.BLOCKS, 1F, 1F);
 							return ActionResultType.SUCCESS;
@@ -230,7 +235,7 @@ public class BlockBloomery extends Block {
 			TileBloomery2 tile = ((TileBloomery2) world.getTileEntity(pos));
 			tile.burnTime = Config.BloomeryTime.get() * 2;
 			tile.airTicks = Config.BloomeryTime.get();
-			if (tile.dummy) {
+			if (world.getBlockState(pos).get(DUMMY)) {
 				igniteBloomery(world, pos.offset(Direction.DOWN));
 			}
 		}

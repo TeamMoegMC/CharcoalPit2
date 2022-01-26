@@ -112,14 +112,14 @@ public class BlockBellows extends Block{
 			for(Direction dir:Direction.Plane.HORIZONTAL) {
 				BlockPos pos3=pos2.offset(dir);
 				if(world.getBlockState(pos3).getBlock()==ModBlockRegistry.Bloomery&&
-						((TileBloomery2)world.getTileEntity(pos3)).dummy==false)
+						!world.getBlockState(pos3).get(BlockBloomery.DUMMY))
 					divs++;
 			}
 			if(divs>0) {
 				for(Direction dir:Direction.Plane.HORIZONTAL) {
 					BlockPos pos3=pos2.offset(dir);
 					if(world.getBlockState(pos3).getBlock()==ModBlockRegistry.Bloomery&&
-							((TileBloomery2)world.getTileEntity(pos3)).dummy==false) {
+							!world.getBlockState(pos3).get(BlockBloomery.DUMMY)) {
 						((TileBloomery2) world.getTileEntity(pos3)).blow(140 / divs);
 					}
 				}
