@@ -53,7 +53,7 @@ public class BlockBloomery extends Block {
 			Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D)};
 
 	public BlockBloomery() {
-		super(Properties.create(Material.ROCK).hardnessAndResistance(5F, 6F).harvestTool(ToolType.PICKAXE).harvestLevel(1));
+		super(Properties.create(Material.ROCK).hardnessAndResistance(4F, 6F).harvestTool(ToolType.PICKAXE).harvestLevel(1));
 		this.setDefaultState(this.getDefaultState().with(DUMMY,false));
 	}
 	
