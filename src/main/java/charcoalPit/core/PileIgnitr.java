@@ -6,7 +6,7 @@ import charcoalPit.block.BlockCeramicPot;
 import charcoalPit.block.BlockCoalPile;
 import charcoalPit.recipe.BloomeryRecipe;
 import charcoalPit.recipe.PotteryKilnRecipe;
-import charcoalPit.tile.TileBloomery2;
+import charcoalPit.tile.TileBloomery;
 import charcoalPit.tile.TilePotteryKiln;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -63,7 +63,7 @@ public class PileIgnitr {
 						world.getBlockState(event.getPos().offset(Direction.UP)).getMaterial().isReplaceable() &&
 						MethodHelper.Bloomery2ValidPosition(world, event.getPos().offset(Direction.UP), false, false)) {
 					world.setBlockState(event.getPos().offset(Direction.UP), ModBlockRegistry.Bloomery.getDefaultState().with(BlockBloomery.STAGE, 1));
-					TileBloomery2 tile = ((TileBloomery2) world.getTileEntity(event.getPos().offset(Direction.UP)));
+					TileBloomery tile = ((TileBloomery) world.getTileEntity(event.getPos().offset(Direction.UP)));
 					tile.recipe = BloomeryRecipe.getRecipe(event.getItemStack(), world);
 					event.getPlayer().setHeldItem(event.getHand(), tile.ore.insertItem(0, event.getItemStack(), false));
 					world.playSound(null, event.getPos(), SoundEvents.BLOCK_GRAVEL_PLACE, SoundCategory.BLOCKS, 1F, 1F);

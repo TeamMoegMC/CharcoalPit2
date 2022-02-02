@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "charcoal_pit:coke"
+      "tag": "forge:coal_coke"
     }
   ],
   "result": {

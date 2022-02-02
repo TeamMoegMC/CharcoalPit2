@@ -6,7 +6,7 @@
   ],
   "key": {
     "#": {
-      "tag": "forge:fuels/coke"
+      "tag": "forge:coal_coke"
     },
     "I": {
       "item": "minecraft:stick"

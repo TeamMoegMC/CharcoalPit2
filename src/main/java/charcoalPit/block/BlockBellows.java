@@ -2,10 +2,9 @@ package charcoalPit.block;
 
 import charcoalPit.CharcoalPit;
 import charcoalPit.core.ModBlockRegistry;
-import charcoalPit.tile.TileBloomery2;
+import charcoalPit.tile.TileBloomery;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.DirectionalBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
@@ -120,7 +119,7 @@ public class BlockBellows extends Block{
 					BlockPos pos3=pos2.offset(dir);
 					if(world.getBlockState(pos3).getBlock()==ModBlockRegistry.Bloomery&&
 							!world.getBlockState(pos3).get(BlockBloomery.DUMMY)) {
-						((TileBloomery2) world.getTileEntity(pos3)).blow(140 / divs);
+						((TileBloomery) world.getTileEntity(pos3)).blow(140 / divs);
 					}
 				}
 			}

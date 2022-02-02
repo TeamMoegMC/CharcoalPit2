@@ -13,7 +13,6 @@ import net.minecraft.block.Blocks;
 import net.minecraft.entity.item.ExperienceOrbEntity;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
@@ -23,7 +22,7 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class TileBloomery2 extends TileEntity implements ITickableTileEntity {
+public class TileBloomery extends TileEntity implements ITickableTileEntity {
 
 	public boolean isValid;
 	public int changetime;
@@ -38,7 +37,7 @@ public class TileBloomery2 extends TileEntity implements ITickableTileEntity {
 	public int ingots;
 	public BloomeryRecipe recipe;
 	
-	public TileBloomery2() {
+	public TileBloomery() {
 		super(ModTileRegistry.Bloomery2);
 		isValid = false;
 		changetime = 0;
@@ -90,7 +89,7 @@ public class TileBloomery2 extends TileEntity implements ITickableTileEntity {
 							fuel = new OneItemHandler(4);
 							burnTime = Config.BloomCooldown.get();
 							if (world.getBlockState(pos.offset(Direction.UP)).getBlock() == ModBlockRegistry.Bloomery) {
-								TileBloomery2 dummy = ((TileBloomery2) world.getTileEntity(pos.offset(Direction.UP)));
+								TileBloomery dummy = ((TileBloomery) world.getTileEntity(pos.offset(Direction.UP)));
 								ingots += 4;
 								dummy.ore = new OneItemHandler(4);
 								dummy.fuel = new OneItemHandler(4);
@@ -126,7 +125,7 @@ public class TileBloomery2 extends TileEntity implements ITickableTileEntity {
 
 	public BloomeryRecipe getRecipe() {
 		if(recipe==null && getBlockState().get(BlockBloomery.DUMMY)) {
-			TileBloomery2 master=((TileBloomery2)world.getTileEntity(pos.offset(Direction.DOWN)));
+			TileBloomery master=((TileBloomery)world.getTileEntity(pos.offset(Direction.DOWN)));
 			recipe=master.getRecipe();
 		}
 		if(recipe==null) {
@@ -205,7 +204,7 @@ public class TileBloomery2 extends TileEntity implements ITickableTileEntity {
 					burnTime = -1;
 					airBuffer = 0;
 					airTicks = -1;
-					world.setBlockState(this.pos, ModBlockRegistry.Bloomery.getDefaultState().with(BlockBloomery.STAGE, 8));
+					world.setBlockState(this.pos, getBlockState().with(BlockBloomery.STAGE, 8));
 
 					BlockPos charm = pos.offset(Direction.UP);
 					BlockPos down = pos.offset(Direction.DOWN);
@@ -215,7 +214,7 @@ public class TileBloomery2 extends TileEntity implements ITickableTileEntity {
 						}
 						if (world.getBlockState(down).getBlock() == ModBlockRegistry.Bloomery) {
 							world.setBlockState(down, ModBlockRegistry.Bloomery.getDefaultState().with(BlockBloomery.STAGE, 8));
-							TileBloomery2 master = ((TileBloomery2) world.getTileEntity(down));
+							TileBloomery master = ((TileBloomery) world.getTileEntity(down));
 							master.airBuffer = 0;
 							master.airTicks = -1;
 							master.burnTime = -1;
@@ -228,8 +227,8 @@ public class TileBloomery2 extends TileEntity implements ITickableTileEntity {
 							world.setBlockState(down, ModBlockRegistry.MainBloomery.getDefaultState().with(BlockMainBloomery.STAGE, 0));
 						}
 						if (world.getBlockState(charm).getBlock() == ModBlockRegistry.Bloomery) {
-							world.setBlockState(charm, ModBlockRegistry.Bloomery.getDefaultState().with(BlockBloomery.STAGE, 8));
-							TileBloomery2 dummy = ((TileBloomery2) world.getTileEntity(charm));
+							world.setBlockState(charm, ModBlockRegistry.Bloomery.getDefaultState().with(BlockBloomery.STAGE, 8).with(BlockBloomery.DUMMY,true));
+							TileBloomery dummy = ((TileBloomery) world.getTileEntity(charm));
 							dummy.burnTime = -1;
 							BlockPos top = charm.offset(Direction.UP);
 							if (world.getBlockState(top).getBlock() == Blocks.FIRE)

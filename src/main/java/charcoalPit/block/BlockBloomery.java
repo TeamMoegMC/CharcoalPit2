@@ -4,7 +4,7 @@ import charcoalPit.CharcoalPit;
 import charcoalPit.core.Config;
 import charcoalPit.core.MethodHelper;
 import charcoalPit.core.ModBlockRegistry;
-import charcoalPit.tile.TileBloomery2;
+import charcoalPit.tile.TileBloomery;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -103,14 +103,14 @@ public class BlockBloomery extends Block {
             if (state.get(BlockBloomery.STAGE) == 8)
                 igniteBloomery(worldIn, pos);
         } else if (state.get(BlockBloomery.STAGE) == 9) {
-            ((TileBloomery2) worldIn.getTileEntity(pos)).isValid = false;
+            ((TileBloomery) worldIn.getTileEntity(pos)).isValid = false;
         }
 	}
 	
 	@Override
 	public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (state.hasTileEntity() && (!state.isIn(newState.getBlock()) || !newState.hasTileEntity())) {
-			 ((TileBloomery2)worldIn.getTileEntity(pos)).dropInventory();
+			 ((TileBloomery)worldIn.getTileEntity(pos)).dropInventory();
 	         worldIn.removeTileEntity(pos);
 			if(!state.get(BlockBloomery.DUMMY)) {
 				if(worldIn.getBlockState(pos.offset(Direction.UP)).getBlock()==ModBlockRegistry.Bloomery)
@@ -126,7 +126,7 @@ public class BlockBloomery extends Block {
 			getBlock().onBlockHarvested(world, pos, state, player);
 			player.addExhaustion(0.01F);
 			world.playSound(player, pos, SoundEvents.BLOCK_ANVIL_USE, SoundCategory.BLOCKS, 1F, 1F);
-			TileBloomery2 tile=((TileBloomery2)world.getTileEntity(pos));
+			TileBloomery tile=((TileBloomery)world.getTileEntity(pos));
 			tile.work();
 			return false;
 		}else
@@ -165,7 +165,7 @@ public class BlockBloomery extends Block {
 	
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new TileBloomery2();
+		return new TileBloomery();
 	}
 	
 	@Override
@@ -173,7 +173,7 @@ public class BlockBloomery extends Block {
 			Hand handIn, BlockRayTraceResult hit) {
 		int size=state.get(STAGE);
 		if(!worldIn.isRemote) {
-			TileBloomery2 tile=((TileBloomery2)worldIn.getTileEntity(pos));
+			TileBloomery tile=((TileBloomery)worldIn.getTileEntity(pos));
 			if(tile.getRecipe().input.test(player.getHeldItem(handIn))) {
 				if(size<8) {
 					for(int i=0;i<tile.ore.getSlots();i++) {
@@ -188,7 +188,7 @@ public class BlockBloomery extends Block {
 					BlockPos up = pos.offset(Direction.UP);
 					if (worldIn.isAirBlock(up) && MethodHelper.Bloomery2ValidPosition(worldIn, up, true, false) && worldIn.getBlockState(pos.offset(Direction.DOWN)).getBlock() != this) {
 						worldIn.setBlockState(up, state.with(STAGE, 1).with(DUMMY,true));
-						TileBloomery2 dummy = ((TileBloomery2) worldIn.getTileEntity(up));
+						TileBloomery dummy = ((TileBloomery) worldIn.getTileEntity(up));
 						dummy.recipe = tile.recipe;
 						player.setHeldItem(handIn, dummy.ore.insertItem(0, player.getHeldItem(handIn), false));
 						worldIn.playSound(null, pos, SoundEvents.BLOCK_GRAVEL_PLACE, SoundCategory.BLOCKS, 0.6F, 1F);
@@ -210,7 +210,7 @@ public class BlockBloomery extends Block {
 						BlockPos up = pos.offset(Direction.UP);
 						if (worldIn.isAirBlock(up) && MethodHelper.Bloomery2ValidPosition(worldIn, up, true, false) && worldIn.getBlockState(pos.offset(Direction.DOWN)).getBlock() != this) {
 							worldIn.setBlockState(up, state.with(STAGE, 1).with(DUMMY,true));
-							TileBloomery2 dummy = ((TileBloomery2) worldIn.getTileEntity(up));
+							TileBloomery dummy = ((TileBloomery) worldIn.getTileEntity(up));
 							dummy.recipe = tile.recipe;
 							player.setHeldItem(handIn, dummy.fuel.insertItem(0, player.getHeldItem(handIn), false));
 							worldIn.playSound(null, pos, SoundEvents.BLOCK_GRAVEL_PLACE, SoundCategory.BLOCKS, 1F, 1F);
@@ -232,7 +232,7 @@ public class BlockBloomery extends Block {
 		if (world.getBlockState(pos).getBlock() == ModBlockRegistry.Bloomery &&
 				world.getBlockState(pos).get(BlockBloomery.STAGE) == 8) {
 			world.setBlockState(pos, world.getBlockState(pos).with(BlockBloomery.STAGE, 9), 3);
-			TileBloomery2 tile = ((TileBloomery2) world.getTileEntity(pos));
+			TileBloomery tile = ((TileBloomery) world.getTileEntity(pos));
 			tile.burnTime = Config.BloomeryTime.get() * 2;
 			tile.airTicks = Config.BloomeryTime.get();
 			if (world.getBlockState(pos).get(DUMMY)) {

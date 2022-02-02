@@ -7,7 +7,7 @@
   ],
   "key": {
     "#": {
-      "tag": "forge:fuels/coke"
+      "item": "charcoal_pit:coke"
     }
   },
   "result": {

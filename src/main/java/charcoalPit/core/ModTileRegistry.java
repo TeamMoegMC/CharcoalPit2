@@ -20,7 +20,7 @@ public class ModTileRegistry {
             ModBlockRegistry.LightBluePot, ModBlockRegistry.LightGrayPot, ModBlockRegistry.LimePot, ModBlockRegistry.MagentaPot, ModBlockRegistry.OrangePot,
             ModBlockRegistry.PinkPot, ModBlockRegistry.PurplePot, ModBlockRegistry.RedPot, ModBlockRegistry.WhitePot, ModBlockRegistry.YellowPot).build(null);
     //public static TileEntityType<TileClayPot> ClayPot=TileEntityType.Builder.create(TileClayPot::new, ModBlockRegistry.ClayPot).build(null);
-    public static TileEntityType<TileBloomery2> Bloomery2 = TileEntityType.Builder.create(TileBloomery2::new, ModBlockRegistry.Bloomery).build(null);
+    public static TileEntityType<TileBloomery> Bloomery2 = TileEntityType.Builder.create(TileBloomery::new, ModBlockRegistry.Bloomery).build(null);
     public static TileEntityType<TileBarrel> Barrel = TileEntityType.Builder.create(TileBarrel::new, ModBlockRegistry.Barrel).build(null);
 	
 	
