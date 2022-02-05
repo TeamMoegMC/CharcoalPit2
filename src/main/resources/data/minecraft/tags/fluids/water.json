@@ -1,8 +1,6 @@
 {
   "replace": false,
   "values": [
-    "charcoal_pit:creosote_still",
-    "charcoal_pit:creosote_flowing",
     "charcoal_pit:alcohol_still",
     "charcoal_pit:alcohol_flowing"
   ]

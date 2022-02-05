@@ -64,15 +64,14 @@ public class ModBlockRegistry {
 			NetherDoor=new DoorBlock(Properties.from(Blocks.IRON_DOOR)),
 			EndDoor=new DoorBlock(Properties.from(Blocks.IRON_DOOR));*/
 	
-	public static BlockCreosote Creosote=new BlockCreosote();
-	
+
 	@SubscribeEvent
 	public static void registerBlocks(RegistryEvent.Register<Block> event) {
 		event.getRegistry().registerAll(Thatch.setRegistryName("thatch"), LogPile.setRegistryName("log_pile"), CoalPile.setRegistryName("coal_pile"),
 				WoodAsh.setRegistryName("wood_ash"), CoalAsh.setRegistryName("coal_ash"),
 				CokeBlock.setRegistryName("coke"), Ash.setRegistryName("ash"),
 				SandyBrick.setRegistryName("sandy_brick"), SandySlab.setRegistryName("sandy_slab"), SandyStair.setRegistryName("sandy_stair"), SandyWall.setRegistryName("sandy_wall"),
-				Creosote.setRegistryName("creosote_oil"),SandyCollector.setRegistryName("sandy_collector"),
+				SandyCollector.setRegistryName("sandy_collector"),
 				Kiln.setRegistryName("pottery_kiln"), Bellows.setRegistryName("bellows"),
 				TuyereSandy.setRegistryName("sandy_tuyere"),
 				Bloomery.setRegistryName("bloomery"), MainBloomery.setRegistryName("mainbloomery"),

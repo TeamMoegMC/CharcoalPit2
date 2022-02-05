@@ -2,7 +2,7 @@
   "parent": "charcoal_pit:charcoal_pit/iron",
   "display": {
     "icon": {
-      "item": "charcoal_pit:creosote_bucket"
+      "item": "charcoal_pit:sandy_collector"
     },
     "title": {
       "translate": "advancements.charcoal_pit.creosote.title"
@@ -21,7 +21,7 @@
       "conditions": {
         "items": [
           {
-            "item": "charcoal_pit:creosote_bucket"
+            "item": "charcoal_pit:sandy_collector"
           }
         ]
       }

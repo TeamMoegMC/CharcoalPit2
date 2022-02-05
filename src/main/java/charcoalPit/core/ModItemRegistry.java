@@ -55,8 +55,7 @@ public class ModItemRegistry {
 	public static ItemCrackedPot CrackedPot=new ItemCrackedPot();
 	
 	public static ItemBarrel Barrel=new ItemBarrel(ModBlockRegistry.Barrel,new Item.Properties().group(CHARCOAL_PIT));
-	
-	public static BucketItem CreosoteBucket=new BucketItem(()->ModFluidRegistry.CreosoteStill, new Item.Properties().group(CHARCOAL_PIT).maxStackSize(1).containerItem(Items.BUCKET));
+
 	//public static BucketItem AlcoholBucket=new BucketItem(()->ModFluidRegistry.AlcoholStill, new Item.Properties().group(ItemGroup.MISC).maxStackSize(1).containerItem(Items.BUCKET));
 	public static ItemAlcoholBottle AlcoholBottle=new ItemAlcoholBottle();
 	public static BucketItem VinegarBucket=new BucketItem(()->ModFluidRegistry.VinegarStill, new Item.Properties().group(CHARCOAL_PIT).maxStackSize(1).containerItem(Items.BUCKET));
@@ -109,7 +108,7 @@ public class ModItemRegistry {
 				EndDoor.setRegistryName("end_door")*/, MechanicalBeellows.setRegistryName("mechanical_bellows"));
 		event.getRegistry().registerAll(Straw.setRegistryName("straw"), Ash.setRegistryName("ash"), Coke.setRegistryName("coke"),
 				Fertilizer.setRegistryName("fertilizer"), FireStarter.setRegistryName("fire_starter"),
-				CreosoteBucket.setRegistryName("creosote_bucket"), ClayPot.setRegistryName("clay_pot"), BloomCool.setRegistryName("bloom_cool"), BloomFail.setRegistryName("bloom_fail"),
+				ClayPot.setRegistryName("clay_pot"), BloomCool.setRegistryName("bloom_cool"), BloomFail.setRegistryName("bloom_fail"),
 				CrackedPot.setRegistryName("cracked_pot"), BloomNiCool.setRegistryName("bloom_nickel_cool"), BloomNiFail.setRegistryName("bloom_nickel_fail"),
 				SandyBrickItem.setRegistryName("sandy_brick_item"), UnfireSandyBrick.setRegistryName("unfired_sandy_brick"), NetherBrickItem.setRegistryName("nether_brick_item"),
 				UnfiredBrick.setRegistryName("unfired_brick"), AlcoholBottle.setRegistryName("alcohol_bottle"), VinegarBucket.setRegistryName("vinegar_bucket"),
@@ -117,9 +116,9 @@ public class ModItemRegistry {
 				Leek.setRegistryName("leek"), FarfetchStew.setRegistryName("farfetch_stew"), RabbitStew.setRegistryName("rabbit_stew"), MooshroomStew.setRegistryName("mooshroom_stew"),
 				BeetStew.setRegistryName("beet_stew"), Calamari.setRegistryName("calamari"), CookedCalamri.setRegistryName("cooked_calamari"), CookedEgg.setRegistryName("cooked_egg"),
 				Corn.setRegistryName("corn"), CornKernels.setRegistryName("corn_kernels"), PopCorn.setRegistryName("popcorn"), CornStew.setRegistryName("corn_stew"),
-				Sushi.setRegistryName("sushi"),SushiCooked.setRegistryName("cooked_sushi"),Fugu.setRegistryName("fugu"),Cherry.setRegistryName("cherry"),DragonFruit.setRegistryName("dragon_fruit"),
-				ChestNut.setRegistryName("chestnut"),CookedChestNut.setRegistryName("cooked_chestnut"),Bananana.setRegistryName("banana"),Cococonut.setRegistryName("coconut"),
-				TurtleRaw.setRegistryName("turtle_raw"),TurtleCooked.setRegistryName("turtle_cooked"),TurtleSoup.setRegistryName("turtle_stew"),
+				Sushi.setRegistryName("sushi"), SushiCooked.setRegistryName("cooked_sushi"), Fugu.setRegistryName("fugu"), Cherry.setRegistryName("cherry"), DragonFruit.setRegistryName("dragon_fruit"),
+				ChestNut.setRegistryName("chestnut"), CookedChestNut.setRegistryName("cooked_chestnut"), Bananana.setRegistryName("banana"), Cococonut.setRegistryName("coconut"),
+				TurtleRaw.setRegistryName("turtle_raw"), TurtleCooked.setRegistryName("turtle_cooked"), TurtleSoup.setRegistryName("turtle_stew"),
 				ChocoPoweder.setRegistryName("choco_powder"),Chocolate.setRegistryName("chocolate"));
 		event.getRegistry().registerAll(CeramicPot.setRegistryName("ceramic_pot"),YellowPot.setRegistryName("yellow_pot"),WhitePot.setRegistryName("white_pot"),
 				RedPot.setRegistryName("red_pot"),PurplePot.setRegistryName("purple_pot"),PinkPot.setRegistryName("pink_pot"),OrangePot.setRegistryName("orange_pot"),

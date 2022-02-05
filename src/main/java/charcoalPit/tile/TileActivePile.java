@@ -4,18 +4,20 @@ import charcoalPit.core.Config;
 import charcoalPit.core.MethodHelper;
 import charcoalPit.core.ModBlockRegistry;
 import charcoalPit.core.ModTileRegistry;
-import charcoalPit.fluid.ModFluidRegistry;
 import net.minecraft.block.AbstractFireBlock;
 import net.minecraft.block.BlockState;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Random;
 
@@ -28,6 +30,7 @@ public class TileActivePile extends TileEntity implements ITickableTileEntity {
 	public boolean isValid;
 	public boolean isCoke;
 	public FluidTank creosote;
+	public static Fluid creosote_fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation("immersiveengineering", "creosote"));
 
 	public TileActivePile() {
 		this(false);
@@ -35,10 +38,10 @@ public class TileActivePile extends TileEntity implements ITickableTileEntity {
 
 	public TileActivePile(boolean coal) {
 		super(ModTileRegistry.ActivePile);
-		invalidTicks=0;
-		burnTime=coal?Config.CokeTime.get()/10:Config.CharcoalTime.get()/10;
-		itemsLeft=9;
-		isValid=false;
+		invalidTicks = 0;
+		burnTime = coal ? Config.CokeTime.get() / 10 : Config.CharcoalTime.get() / 10;
+		itemsLeft = 9;
+		isValid = false;
 		isCoke=coal;
 		creosote=new FluidTank(1000);
 	}
@@ -46,7 +49,7 @@ public class TileActivePile extends TileEntity implements ITickableTileEntity {
 	@Override
 	public void tick() {
 		if(!this.world.isRemote) {
-			if (world.getBlockState(this.pos).get(BlockStateProperties.LIT)) {
+			if (getBlockState().get(BlockStateProperties.LIT)) {
 				checkValid();
 				if (burnTime > 0) {
 					burnTime--;
@@ -55,7 +58,7 @@ public class TileActivePile extends TileEntity implements ITickableTileEntity {
 				} else {
 					if (itemsLeft > 0) {
 						itemsLeft--;
-						creosote.fill(new FluidStack(ModFluidRegistry.CreosoteStill, isCoke ? Config.CokeCreosote.get() : Config.CharcoalCreosote.get()), FluidAction.EXECUTE);
+						creosote.fill(new FluidStack(creosote_fluid, isCoke ? Config.CokeCreosote.get() : Config.CharcoalCreosote.get()), FluidAction.EXECUTE);
 						burnTime = isCoke ? Config.CokeTime.get() / 10 : Config.CharcoalTime.get() / 10;
 					}else{
 						this.world.setBlockState(this.pos, isCoke ? ModBlockRegistry.CoalAsh.getDefaultState() : ModBlockRegistry.WoodAsh.getDefaultState());

@@ -20,11 +20,6 @@ import java.util.function.BiFunction;
 @EventBusSubscriber(modid=CharcoalPit.MODID, bus=Bus.MOD)
 public class ModFluidRegistry {
 	
-	public static final ResourceLocation creosote_still=new ResourceLocation(CharcoalPit.MODID, "block/creosote_still"),
-			creosote_flowing=new ResourceLocation(CharcoalPit.MODID, "block/creosote_flow");
-	public static ForgeFlowingFluid CreosoteStill, CreosoteFlowing;
-	public static ForgeFlowingFluid.Properties Creosote;
-	
 	public static final ResourceLocation alcohol_still=new ResourceLocation("minecraft:block/water_still"),
 			alcohol_flowing=new ResourceLocation("minecraft:block/water_flow");
 	public static ForgeFlowingFluid AlcoholStill, AlcoholFlowing;
@@ -37,26 +32,21 @@ public class ModFluidRegistry {
 	
 	@SubscribeEvent
 	public static void registerFluids(RegistryEvent.Register<Fluid> event) {
-		Creosote=new Properties(()->CreosoteStill, ()->CreosoteFlowing, FluidAttributes.builder(creosote_still, creosote_flowing).density(800).viscosity(2000))
-				.bucket(()->ModItemRegistry.CreosoteBucket).block(()->ModBlockRegistry.Creosote);
-		CreosoteStill=new ForgeFlowingFluid.Source(Creosote);
-		CreosoteStill.setRegistryName("creosote_still");
-		CreosoteFlowing=new ForgeFlowingFluid.Flowing(Creosote);
-		CreosoteFlowing.setRegistryName("creosote_flowing");
+
 		
 		Alcohol=new Properties(()->AlcoholStill, ()->AlcoholFlowing, AlcoholProperties.builder(alcohol_still, alcohol_flowing).density(950).color(0xFFFFFF));
 		AlcoholStill=new ForgeFlowingFluid.Source(Alcohol);
-		AlcoholFlowing=new ForgeFlowingFluid.Flowing(Alcohol);
+		AlcoholFlowing = new ForgeFlowingFluid.Flowing(Alcohol);
 		AlcoholStill.setRegistryName("alcohol_still");
 		AlcoholFlowing.setRegistryName("alcohol_flowing");
 
-		Vinegar=new Properties(()->VinegarStill,()->VinegarFlowing, FluidAttributes.builder(vinegar_still,vinegar_flowing).color(0xFFCEB301)).bucket(()->ModItemRegistry.VinegarBucket);
-		VinegarStill=new ForgeFlowingFluid.Source(Vinegar);
-		VinegarFlowing=new ForgeFlowingFluid.Flowing(Vinegar);
+		Vinegar = new Properties(() -> VinegarStill, () -> VinegarFlowing, FluidAttributes.builder(vinegar_still, vinegar_flowing).color(0xFFCEB301)).bucket(() -> ModItemRegistry.VinegarBucket);
+		VinegarStill = new ForgeFlowingFluid.Source(Vinegar);
+		VinegarFlowing = new ForgeFlowingFluid.Flowing(Vinegar);
 		VinegarStill.setRegistryName("vinegar_still");
 		VinegarFlowing.setRegistryName("vinegar_flowing");
 
-		event.getRegistry().registerAll(CreosoteStill,CreosoteFlowing,AlcoholStill,AlcoholFlowing,VinegarStill,VinegarFlowing);
+		event.getRegistry().registerAll(AlcoholStill, AlcoholFlowing, VinegarStill, VinegarFlowing);
 	}
 
 	public static class AlcoholProperties extends FluidAttributes{

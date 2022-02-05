@@ -1,5 +1,5 @@
 {
-  "parent": "charcoal_pit:charcoal_pit/copper",
+  "parent": "charcoal_pit:charcoal_pit/clay_pot",
   "display": {
     "icon": {
       "item": "charcoal_pit:bellows"
@@ -21,42 +21,12 @@
       "conditions": {
         "items": [
           {
-            "item": "charcoal_pit:brick_tuyere"
-          }
-        ]
-      }
-    },
-    "item2": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
             "item": "charcoal_pit:sandy_tuyere"
           }
         ]
       }
     },
-    "item3": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "item": "charcoal_pit:nether_tuyere"
-          }
-        ]
-      }
-    },
-    "item4": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "item": "charcoal_pit:end_tuyere"
-          }
-        ]
-      }
-    },
-    "item5": {
+    "item2": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
@@ -69,10 +39,10 @@
   },
   "requirements": [
     [
-      "item1", "item2", "item3", "item4"
+      "item1"
     ],
-    [ 
-      "item5" 
+    [
+      "item2"
     ]
   ]
 }
