@@ -18,7 +18,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class MethodHelper {
-	
+	private static ResourceLocation cow=new ResourceLocation(CharcoalPit.MODID, "coke_oven_walls");
 	public static boolean CharcoalPitIsValidBlock(World world, BlockPos pos, Direction facing, boolean isCoke) {
 		BlockState state=world.getBlockState(pos.offset(facing));
 		if(state.isFlammable(world, pos.offset(facing), facing.getOpposite())) {
@@ -32,7 +32,7 @@ public class MethodHelper {
 	
 	public static boolean CokeOvenIsValidBlock(BlockState state) {
         Block block = state.getBlock();
-        return block == ModBlockRegistry.CoalPile || block.isIn(BlockTags.getCollection().get(new ResourceLocation(CharcoalPit.MODID, "coke_oven_walls")));
+        return block == ModBlockRegistry.CoalPile || block.getTags().contains(cow);
     }
 	//for placement
 	/*public static boolean BloomeryIsValidPosition(World world, BlockPos pos, boolean init) {
