@@ -74,7 +74,7 @@ public class ModBlockRegistry {
 				SandyCollector.setRegistryName("sandy_collector"),
 				Kiln.setRegistryName("pottery_kiln"), Bellows.setRegistryName("bellows"),
 				TuyereSandy.setRegistryName("sandy_tuyere"),
-				Bloomery.setRegistryName("bloomery"), MainBloomery.setRegistryName("mainbloomery"),
+				Bloomery.setRegistryName("bloomery"), MainBloomery.setRegistryName("main_bloomery"),
 				Barrel.setRegistryName("barrel")/*,BrickDoor.setRegistryName("brick_door"),SandyDoor.setRegistryName("sandy_door"),NetherDoor.setRegistryName("nether_door"),
 				EndDoor.setRegistryName("end_door")*/, MechanicalBellows.setRegistryName("mechanical_bellows"), Leeks.setRegistryName("leeks"), Corn.setRegistryName("corn"));
 		event.getRegistry().registerAll(CeramicPot.setRegistryName("ceramic_pot"), YellowPot.setRegistryName("yellow_pot"), WhitePot.setRegistryName("white_pot"),

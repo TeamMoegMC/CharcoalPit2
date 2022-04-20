@@ -31,7 +31,7 @@ public class ModItemRegistry {
 
 	public static BlockItemFuel Thatch = buildBlockItem(ModBlockRegistry.Thatch, 200), LogPile = buildBlockItem(ModBlockRegistry.LogPile, 3000), CoalPile = buildBlockItem(ModBlockRegistry.CoalPile, 12000), CokeBlock = buildBlockItem(ModBlockRegistry.CokeBlock, 32000);
 	public static BlockItem WoodAsh = buildBlockItem(ModBlockRegistry.WoodAsh), CoalAsh = buildBlockItem(ModBlockRegistry.CoalAsh), AshBlock = buildBlockItem(ModBlockRegistry.Ash),
-			SandyBrick = buildBlockItem(ModBlockRegistry.SandyBrick), SandySlab = buildBlockItem(ModBlockRegistry.SandySlab), SandyStair = buildBlockItem(ModBlockRegistry.SandyStair), SandyWall = buildBlockItem(ModBlockRegistry.SandyWall), MainMainBloomery = buildBlockItem(ModBlockRegistry.MainBloomery);
+			SandyBrick = buildBlockItem(ModBlockRegistry.SandyBrick), SandySlab = buildBlockItem(ModBlockRegistry.SandySlab), SandyStair = buildBlockItem(ModBlockRegistry.SandyStair), SandyWall = buildBlockItem(ModBlockRegistry.SandyWall), MainBloomery = buildBlockItem(ModBlockRegistry.MainBloomery);
 
 	public static ItemFuel Straw = buildItem(CHARCOAL_PIT, 50), Coke = buildItem(CHARCOAL_PIT, 3200);
 	public static Item Ash = buildItem(CHARCOAL_PIT);
@@ -41,7 +41,7 @@ public class ModItemRegistry {
 	public static Item SandyBrickItem = buildItem(CHARCOAL_PIT), NetherBrickItem = buildItem(CHARCOAL_PIT), UnfireSandyBrick = buildItem(CHARCOAL_PIT), UnfiredBrick = buildItem(CHARCOAL_PIT);
 
 	public static BlockItem SandyCollector = buildBlockItem(ModBlockRegistry.SandyCollector, CHARCOAL_PIT);
-	public static BlockItem CeramicPot=buildBlockItemP(ModBlockRegistry.CeramicPot),WhitePot=buildBlockItemP(ModBlockRegistry.WhitePot),
+	public static BlockItem CeramicPot = buildBlockItemP(ModBlockRegistry.CeramicPot), WhitePot = buildBlockItemP(ModBlockRegistry.WhitePot),
 			OrangePot=buildBlockItemP(ModBlockRegistry.OrangePot),MagentaPot=buildBlockItemP(ModBlockRegistry.MagentaPot),
 			LightBluePot=buildBlockItemP(ModBlockRegistry.LightBluePot),YellowPot=buildBlockItemP(ModBlockRegistry.YellowPot),
 			LimePot=buildBlockItemP(ModBlockRegistry.LimePot),PinkPot=buildBlockItemP(ModBlockRegistry.PinkPot),
@@ -101,7 +101,7 @@ public class ModItemRegistry {
 	public static void registerItems(RegistryEvent.Register<Item> event) {
 		event.getRegistry().registerAll(Thatch.setRegistryName("thatch"), LogPile.setRegistryName("log_pile"), CoalPile.setRegistryName("coal_pile"), WoodAsh.setRegistryName("wood_ash"),
 				CoalAsh.setRegistryName("coal_ash"), CokeBlock.setRegistryName("coke_block"), AshBlock.setRegistryName("ash_block"),
-				SandyBrick.setRegistryName("sandy_brick"), SandySlab.setRegistryName("sandy_slab"), SandyStair.setRegistryName("sandy_stair"), SandyWall.setRegistryName("sandy_wall"), MainMainBloomery.setRegistryName("main_bloomery"),
+				SandyBrick.setRegistryName("sandy_brick"), SandySlab.setRegistryName("sandy_slab"), SandyStair.setRegistryName("sandy_stair"), SandyWall.setRegistryName("sandy_wall"), MainBloomery.setRegistryName("main_bloomery"),
 				SandyCollector.setRegistryName("sandy_collector"),
 				Bellows.setRegistryName("bellows"), TuyereSandy.setRegistryName("sandy_tuyere"),
 				Barrel.setRegistryName("barrel")/*,BrickDoor.setRegistryName("brick_door"),SandyDoor.setRegistryName("sandy_door"),NetherDoor.setRegistryName("nether_door"),
