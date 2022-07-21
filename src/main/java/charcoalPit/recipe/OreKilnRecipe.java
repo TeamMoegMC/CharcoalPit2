@@ -77,13 +77,8 @@ public class OreKilnRecipe implements IRecipe<IInventory>{
 	public static int oreKilnGetFuelRequired(IItemHandler inventory) {
 		int f=0;
 		for(int i=1;i<inventory.getSlots();i++) {
-			Iterator<ResourceLocation> tags=inventory.getStackInSlot(i).getItem().getTags().iterator();
-			while(tags.hasNext()) {
-				ResourceLocation r=tags.next();
-				if(r.toString().startsWith("forge:ores/")) {
-					f++;
-					break;
-				}
+			if (!inventory.getStackInSlot(i).isEmpty()) {
+				f++;
 			}
 		}
 		return f*4;
