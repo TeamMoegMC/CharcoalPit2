@@ -247,5 +247,5 @@
   "charcoal_pit.instruction.charcoal_pit": "Fortune enchant increases efficiency. Default 50%, up to 80%",
   "charcoal_pit.instruction.straw": "Straw is obtained by cutting tall grass with a Hoe",
   "charcoal_pit.instruction.build_pit": "Place ingredients in world, cover in valid blocks, light an exposed side on fire and quickly cover it then wait until smoke stops",
-  "message.charcoal_pit.nofuel": "Can not place or Not enough fuel"
+  "message.charcoal_pit.nofuel": "Not enough fuel or Can not place"
 }

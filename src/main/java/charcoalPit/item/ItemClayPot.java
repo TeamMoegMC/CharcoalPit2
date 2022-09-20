@@ -30,7 +30,7 @@ import java.util.List;
 public class ItemClayPot extends Item{
 	
 	public ItemClayPot() {
-		super(new Item.Properties().maxStackSize(1).group(ModItemRegistry.CHARCOAL_PIT).maxStackSize(1));
+		super(new Item.Properties().group(ModItemRegistry.CHARCOAL_PIT).maxStackSize(1));
 	}
 	
 	@OnlyIn(Dist.CLIENT)
