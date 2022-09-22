@@ -13,6 +13,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.tags.ItemTags;
@@ -156,53 +157,57 @@ public class BlockPotteryKiln extends Block{
 	@Override
 	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player,
 			Hand handIn, BlockRayTraceResult hit) {
-		switch(state.get(TYPE)){
-		case EMPTY:{
-			if(player.getHeldItem(handIn).isEmpty()){
-				if(worldIn.isRemote){
-					return ActionResultType.SUCCESS;
-				}else{
-					TilePotteryKiln tile=((TilePotteryKiln)worldIn.getTileEntity(pos));
+		ItemStack itemStack = player.getHeldItem(handIn);
+		switch (state.get(TYPE)) {
+			case EMPTY: {
+				if (player.getHeldItemMainhand().isEmpty()) {
+					if (worldIn.isRemote) {
+						return ActionResultType.SUCCESS;
+					}
+					TilePotteryKiln tile = ((TilePotteryKiln) worldIn.getTileEntity(pos));
 					player.setHeldItem(handIn, tile.pottery.extractItem(0, 8, false));
 					worldIn.destroyBlock(pos, true);
 					return ActionResultType.SUCCESS;
-				}
-			}else{
-				if(PotteryKilnRecipe.isValidInput(player.getHeldItem(handIn),worldIn)){
-					if(worldIn.isRemote){
-						return ActionResultType.SUCCESS;
-					}else{
-						TilePotteryKiln tile=((TilePotteryKiln)worldIn.getTileEntity(pos));
-						player.setHeldItem(handIn, tile.pottery.insertItem(0, player.getHeldItem(handIn), false));
-						worldIn.notifyBlockUpdate(pos, state, state, 2);
-						return ActionResultType.SUCCESS;
-					}
-				}else{
-					if (player.getHeldItem(handIn).getItem().isIn(ItemTags.getCollection().get(new ResourceLocation(CharcoalPit.MODID, "kiln_straw"))) && player.getHeldItem(handIn).getCount() >= Config.StrawAmount.get()) {
+				} else {
+					if (PotteryKilnRecipe.isValidInput(itemStack, worldIn)) {
 						if (worldIn.isRemote) {
 							return ActionResultType.SUCCESS;
-						} else {
-							player.getHeldItem(handIn).setCount(player.getHeldItem(handIn).getCount() - Config.StrawAmount.get());
-							worldIn.setBlockState(pos, this.getDefaultState().with(TYPE, EnumKilnTypes.THATCH));
-							worldIn.playSound(null, pos, SoundEvents.BLOCK_GRASS_PLACE, SoundCategory.BLOCKS, 1F, 1F);
-							return ActionResultType.SUCCESS;
 						}
-					} else
-						player.sendStatusMessage(new TranslationTextComponent("message." + CharcoalPit.MODID + "." + "nofuel"), true);
-						return ActionResultType.FAIL;
+						TilePotteryKiln tile = ((TilePotteryKiln) worldIn.getTileEntity(pos));
+						player.setHeldItem(handIn, tile.pottery.insertItem(0, itemStack, false));
+						worldIn.notifyBlockUpdate(pos, state, state, 2);
+						return ActionResultType.SUCCESS;
+					} else {
+						if (itemStack.getItem().isIn(ItemTags.getCollection().get(new ResourceLocation(CharcoalPit.MODID, "kiln_straw")))) {
+							if (worldIn.isRemote) {
+								return ActionResultType.SUCCESS;
+							}
+							if (itemStack.getCount() >= Config.StrawAmount.get()) {
+								itemStack.setCount(itemStack.getCount() - Config.StrawAmount.get());
+								worldIn.setBlockState(pos, this.getDefaultState().with(TYPE, EnumKilnTypes.THATCH));
+								worldIn.playSound(null, pos, SoundEvents.BLOCK_GRASS_PLACE, SoundCategory.BLOCKS, 1F, 1F);
+								return ActionResultType.SUCCESS;
+							}
+							player.sendStatusMessage(new TranslationTextComponent("message.charcoal_pit.pottery_kiln"), true);
+						} else {
+							player.sendStatusMessage(new TranslationTextComponent("message.charcoal_pit.pottery_kiln"), true);
+							return ActionResultType.FAIL;
+						}
 				}
 			}
 		}
-		case THATCH:{
-			if(player.getHeldItem(handIn).getItem().isIn(ItemTags.LOGS_THAT_BURN)&&player.getHeldItem(handIn).getCount()>=Config.WoodAmount.get()) {
-				if(worldIn.isRemote){
+		case THATCH: {
+			if (itemStack.getItem().isIn(ItemTags.LOGS_THAT_BURN)) {
+				if (worldIn.isRemote) {
 					return ActionResultType.SUCCESS;
-				}else{
-					player.getHeldItem(handIn).setCount(player.getHeldItem(handIn).getCount()-Config.WoodAmount.get());
+				}
+				if (itemStack.getCount() >= Config.WoodAmount.get()) {
+					itemStack.setCount(itemStack.getCount() - Config.WoodAmount.get());
 					worldIn.setBlockState(pos, this.getDefaultState().with(TYPE, EnumKilnTypes.WOOD));
 					worldIn.playSound(null, pos, SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 1F, 1F);
 					return ActionResultType.SUCCESS;
 				}
+				player.sendStatusMessage(new TranslationTextComponent("message.charcoal_pit.pottery_kiln"), true);
 			}else
 				return ActionResultType.FAIL;
 		}

@@ -247,5 +247,6 @@
   "charcoal_pit.instruction.charcoal_pit": "时运附魔能提高效率。默认 50%，最多 80%",
   "charcoal_pit.instruction.straw": "用锄头割高草可以获得干草",
   "charcoal_pit.instruction.build_pit": "在地上放置原料，用有效的方块覆盖，在裸露的一面点火，然后迅速覆盖它，直到烟不再出现",
-  "message.charcoal_pit.nofuel": "燃料不足或无法放置"
+  "message.charcoal_pit.nofuel": "燃料不足或无法放置",
+  "message.charcoal_pit.pottery_kiln": "没有足够的干草或者木头"
 }
