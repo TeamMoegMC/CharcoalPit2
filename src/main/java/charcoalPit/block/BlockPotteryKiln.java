@@ -179,35 +179,31 @@ public class BlockPotteryKiln extends Block{
 						return ActionResultType.SUCCESS;
 					} else {
 						if (itemStack.getItem().isIn(ItemTags.getCollection().get(new ResourceLocation(CharcoalPit.MODID, "kiln_straw")))) {
-							if (worldIn.isRemote) {
-								return ActionResultType.SUCCESS;
+							if (!worldIn.isRemote) {
+								if (itemStack.getCount() >= Config.StrawAmount.get()) {
+									itemStack.setCount(itemStack.getCount() - Config.StrawAmount.get());
+									worldIn.setBlockState(pos, this.getDefaultState().with(TYPE, EnumKilnTypes.THATCH));
+									worldIn.playSound(null, pos, SoundEvents.BLOCK_GRASS_PLACE, SoundCategory.BLOCKS, 1F, 1F);
+								} else
+									player.sendStatusMessage(new TranslationTextComponent("message.charcoal_pit.pottery_kiln"), true);
 							}
-							if (itemStack.getCount() >= Config.StrawAmount.get()) {
-								itemStack.setCount(itemStack.getCount() - Config.StrawAmount.get());
-								worldIn.setBlockState(pos, this.getDefaultState().with(TYPE, EnumKilnTypes.THATCH));
-								worldIn.playSound(null, pos, SoundEvents.BLOCK_GRASS_PLACE, SoundCategory.BLOCKS, 1F, 1F);
-								return ActionResultType.SUCCESS;
-							}
-							player.sendStatusMessage(new TranslationTextComponent("message.charcoal_pit.pottery_kiln"), true);
-						} else {
-							player.sendStatusMessage(new TranslationTextComponent("message.charcoal_pit.pottery_kiln"), true);
-							return ActionResultType.FAIL;
+							return ActionResultType.SUCCESS;
 						}
-				}
+						return ActionResultType.FAIL;
+					}
 			}
 		}
 		case THATCH: {
 			if (itemStack.getItem().isIn(ItemTags.LOGS_THAT_BURN)) {
-				if (worldIn.isRemote) {
-					return ActionResultType.SUCCESS;
+				if (!worldIn.isRemote) {
+					if (itemStack.getCount() >= Config.WoodAmount.get()) {
+						itemStack.setCount(itemStack.getCount() - Config.WoodAmount.get());
+						worldIn.setBlockState(pos, this.getDefaultState().with(TYPE, EnumKilnTypes.WOOD));
+						worldIn.playSound(null, pos, SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 1F, 1F);
+					} else
+						player.sendStatusMessage(new TranslationTextComponent("message.charcoal_pit.pottery_kiln"), true);
 				}
-				if (itemStack.getCount() >= Config.WoodAmount.get()) {
-					itemStack.setCount(itemStack.getCount() - Config.WoodAmount.get());
-					worldIn.setBlockState(pos, this.getDefaultState().with(TYPE, EnumKilnTypes.WOOD));
-					worldIn.playSound(null, pos, SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 1F, 1F);
-					return ActionResultType.SUCCESS;
-				}
-				player.sendStatusMessage(new TranslationTextComponent("message.charcoal_pit.pottery_kiln"), true);
+				return ActionResultType.SUCCESS;
 			}else
 				return ActionResultType.FAIL;
 		}
