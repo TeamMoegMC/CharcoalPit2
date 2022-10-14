@@ -62,6 +62,7 @@ public class ModItemRegistry {
 	public static Item VinegarBottle = new Item(new Item.Properties().group(CHARCOAL_PIT).maxStackSize(16).containerItem(Items.GLASS_BOTTLE));
 	public static Item Cheese = new Item(new Item.Properties().group(CHARCOAL_PIT_FOODS).food(new Food.Builder().hunger(5).saturation(1.2F).build()));
 	public static Item CookedEgg = new Item(new Item.Properties().group(CHARCOAL_PIT_FOODS).food(new Food.Builder().hunger(4).saturation(1.2F).meat().build()));
+	public static Item Chocolate = new Item(new Item.Properties().group(CHARCOAL_PIT_FOODS).food(new Food.Builder().hunger(4).saturation(0.2F).fastToEat().build()));
 	public static Item TinyCoke = buildItem(CHARCOAL_PIT, 1600);
 	public static BlockItem MechanicalBeellows = buildBlockItem(ModBlockRegistry.MechanicalBellows);
 
@@ -86,7 +87,8 @@ public class ModItemRegistry {
 				CrackedPot.setRegistryName("cracked_pot"), BloomNiCool.setRegistryName("bloom_nickel_cool"), BloomNiFail.setRegistryName("bloom_nickel_fail"),
 				SandyBrickItem.setRegistryName("sandy_brick_item"), UnfireSandyBrick.setRegistryName("unfired_sandy_brick"), NetherBrickItem.setRegistryName("nether_brick_item"),
 				UnfiredBrick.setRegistryName("unfired_brick"), AlcoholBottle.setRegistryName("alcohol_bottle"), VinegarBucket.setRegistryName("vinegar_bucket"),
-				VinegarBottle.setRegistryName("vinegar_bottle"), Cheese.setRegistryName("cheese"), TinyCoke.setRegistryName("tiny_coke"), CookedEgg.setRegistryName("cooked_egg"));
+				VinegarBottle.setRegistryName("vinegar_bottle"), Cheese.setRegistryName("cheese"), TinyCoke.setRegistryName("tiny_coke"), CookedEgg.setRegistryName("cooked_egg"),
+				Chocolate.setRegistryName("chocolate"));
 		event.getRegistry().registerAll(CeramicPot.setRegistryName("ceramic_pot"), YellowPot.setRegistryName("yellow_pot"), WhitePot.setRegistryName("white_pot"),
 				RedPot.setRegistryName("red_pot"), PurplePot.setRegistryName("purple_pot"), PinkPot.setRegistryName("pink_pot"), OrangePot.setRegistryName("orange_pot"),
 				MagentaPot.setRegistryName("magenta_pot"), LimePot.setRegistryName("lime_pot"), LightGrayPot.setRegistryName("light_gray_pot"),
