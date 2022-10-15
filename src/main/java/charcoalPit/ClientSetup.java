@@ -31,8 +31,6 @@ public class ClientSetup {
 		ScreenManager.registerFactory(ModContainerRegistry.ClayPot, ClayPotScreen::new);
 		ScreenManager.registerFactory(ModContainerRegistry.Barrel, BarrelScreen::new);
 		ClientRegistry.bindTileEntityRenderer(ModTileRegistry.PotteryKiln, TESRPotteryKiln::new);
-		RenderTypeLookup.setRenderLayer(ModBlockRegistry.Leeks, RenderType.getCutout());
-		RenderTypeLookup.setRenderLayer(ModBlockRegistry.Corn,RenderType.getCutout());
 	}
 	@SubscribeEvent
 	public static void registerColors(ColorHandlerEvent.Item event){

@@ -56,9 +56,6 @@ public class ModBlockRegistry {
 	public static BlockBarrel Barrel = new BlockBarrel();
 	public static BlockMechanicalBellows MechanicalBellows = new BlockMechanicalBellows();
 
-	public static BlockLeeks Leeks = new BlockLeeks(Properties.from(Blocks.WHEAT));
-	public static BlockCorn Corn = new BlockCorn(Properties.from(Blocks.WHEAT));
-	
 	/*public static DoorBlock BrickDoor=new DoorBlock(AbstractBlock.Properties.from(Blocks.IRON_DOOR)),
 			SandyDoor=new DoorBlock(Properties.from(Blocks.IRON_DOOR)),
 			NetherDoor=new DoorBlock(Properties.from(Blocks.IRON_DOOR)),
@@ -76,7 +73,7 @@ public class ModBlockRegistry {
 				TuyereSandy.setRegistryName("sandy_tuyere"),
 				Bloomery.setRegistryName("bloomery"), MainBloomery.setRegistryName("main_bloomery"),
 				Barrel.setRegistryName("barrel")/*,BrickDoor.setRegistryName("brick_door"),SandyDoor.setRegistryName("sandy_door"),NetherDoor.setRegistryName("nether_door"),
-				EndDoor.setRegistryName("end_door")*/, MechanicalBellows.setRegistryName("mechanical_bellows"), Leeks.setRegistryName("leeks"), Corn.setRegistryName("corn"));
+				EndDoor.setRegistryName("end_door")*/, MechanicalBellows.setRegistryName("mechanical_bellows"));
 		event.getRegistry().registerAll(CeramicPot.setRegistryName("ceramic_pot"), YellowPot.setRegistryName("yellow_pot"), WhitePot.setRegistryName("white_pot"),
 				RedPot.setRegistryName("red_pot"), PurplePot.setRegistryName("purple_pot"), PinkPot.setRegistryName("pink_pot"), OrangePot.setRegistryName("orange_pot"),
 				MagentaPot.setRegistryName("magenta_pot"), LimePot.setRegistryName("lime_pot"), LightGrayPot.setRegistryName("light_gray_pot"),
