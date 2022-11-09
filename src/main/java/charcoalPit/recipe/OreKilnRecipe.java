@@ -18,6 +18,7 @@ import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.tileentity.AbstractFurnaceTileEntity;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.NonNullList;
@@ -85,7 +86,11 @@ public class OreKilnRecipe implements IRecipe<IInventory>{
 	}
 	
 	public static int oreKilnGetFuelAvailable(IItemHandler inventory) {
-		return inventory.getStackInSlot(0).getCount()*(ForgeHooks.getBurnTime(inventory.getStackInSlot(0))/200);
+		if (inventory.getStackInSlot(0).getItem()
+				.isIn(ItemTags.getCollection().get(new ResourceLocation("forge:coal_coke")))) {
+			return inventory.getStackInSlot(0).getCount() * 16;
+		}
+		return inventory.getStackInSlot(0).getCount() * 8;
 	}
 	
 	public static boolean oreKilnIsEmpty(IItemHandler inventory) {
