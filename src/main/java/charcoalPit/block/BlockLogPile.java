@@ -30,17 +30,9 @@ public class BlockLogPile extends RotatedPillarBlock {
 		return true;
 	}
 
-	@Override
-	public int getFlammability(BlockState state, IBlockReader world, BlockPos pos, Direction face) {
-		if (state.get(LIT))
-			return 0;
-		return 5;
-	}
-
 	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
 		builder.add(LIT, AXIS);
 	}
-
 
 	@Override
 	public boolean hasTileEntity(BlockState state) {

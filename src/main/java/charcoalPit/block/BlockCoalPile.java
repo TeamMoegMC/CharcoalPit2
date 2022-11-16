@@ -24,13 +24,6 @@ public class BlockCoalPile extends Block {
 		this.setDefaultState(this.stateContainer.getBaseState().with(LIT, Boolean.valueOf(false)));
 	}
 
-	@Override
-	public int getFlammability(BlockState state, IBlockReader world, BlockPos pos, Direction face) {
-		if (state.get(LIT))
-			return 0;
-		return 5;
-	}
-
 	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
 		builder.add(LIT);
 	}
