@@ -38,7 +38,7 @@ public class ModItemRegistry {
 	public static BoneMealItem Fertilizer = new BoneMealItem(new Item.Properties().group(CHARCOAL_PIT));
 	public static ItemFireStarter FireStarter = new ItemFireStarter();
 	public static Item BloomCool = buildItem(CHARCOAL_PIT), BloomFail = buildItem(CHARCOAL_PIT), BloomNiCool = buildItem(CHARCOAL_PIT), BloomNiFail = buildItem(CHARCOAL_PIT);
-	public static Item SandyBrickItem = buildItem(CHARCOAL_PIT), NetherBrickItem = buildItem(CHARCOAL_PIT), UnfireSandyBrick = buildItem(CHARCOAL_PIT), UnfiredBrick = buildItem(CHARCOAL_PIT);
+	public static Item SandyBrickItem = buildItem(CHARCOAL_PIT), UnfireSandyBrick = buildItem(CHARCOAL_PIT), UnfiredBrick = buildItem(CHARCOAL_PIT);
 
 	public static BlockItem SandyCollector = buildBlockItem(ModBlockRegistry.SandyCollector, CHARCOAL_PIT);
 	public static BlockItem CeramicPot = buildBlockItemP(ModBlockRegistry.CeramicPot), WhitePot = buildBlockItemP(ModBlockRegistry.WhitePot),
@@ -77,13 +77,13 @@ public class ModItemRegistry {
 				SandyBrick.setRegistryName("sandy_brick"), SandySlab.setRegistryName("sandy_slab"), SandyStair.setRegistryName("sandy_stair"), SandyWall.setRegistryName("sandy_wall"), MainBloomery.setRegistryName("main_bloomery"),
 				SandyCollector.setRegistryName("sandy_collector"),
 				Bellows.setRegistryName("bellows"), TuyereSandy.setRegistryName("sandy_tuyere"),
-				Barrel.setRegistryName("barrel")/*,BrickDoor.setRegistryName("brick_door"),SandyDoor.setRegistryName("sandy_door"),NetherDoor.setRegistryName("nether_door"),
+				Barrel.setRegistryName("barrel")/*,BrickDoor.setRegistryName("brick_door"),SandyDoor.setRegistryNNetherame("sandy_door"),NetherDoor.setRegistryName("nether_door"),
 				EndDoor.setRegistryName("end_door")*/, MechanicalBeellows.setRegistryName("mechanical_bellows"));
 		event.getRegistry().registerAll(Straw.setRegistryName("straw"), Ash.setRegistryName("ash"), Coke.setRegistryName("coke"),
 				Fertilizer.setRegistryName("fertilizer"), FireStarter.setRegistryName("fire_starter"),
 				ClayPot.setRegistryName("clay_pot"), BloomCool.setRegistryName("bloom_cool"), BloomFail.setRegistryName("bloom_fail"),
 				CrackedPot.setRegistryName("cracked_pot"), BloomNiCool.setRegistryName("bloom_nickel_cool"), BloomNiFail.setRegistryName("bloom_nickel_fail"),
-				SandyBrickItem.setRegistryName("sandy_brick_item"), UnfireSandyBrick.setRegistryName("unfired_sandy_brick"), NetherBrickItem.setRegistryName("nether_brick_item"),
+				SandyBrickItem.setRegistryName("sandy_brick_item"), UnfireSandyBrick.setRegistryName("unfired_sandy_brick"),
 				UnfiredBrick.setRegistryName("unfired_brick"), AlcoholBottle.setRegistryName("alcohol_bottle"), VinegarBucket.setRegistryName("vinegar_bucket"),
 				VinegarBottle.setRegistryName("vinegar_bottle"), Cheese.setRegistryName("cheese"), TinyCoke.setRegistryName("tiny_coke"));
 		event.getRegistry().registerAll(CeramicPot.setRegistryName("ceramic_pot"), YellowPot.setRegistryName("yellow_pot"), WhitePot.setRegistryName("white_pot"),
