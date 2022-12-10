@@ -39,7 +39,8 @@ public class ClayPotContainer2 extends Container{
 					 @Override
 					 public void onSlotChanged() {
 						 super.onSlotChanged();
-						 inv.getStackInSlot(slot).setTagInfo("inventory", pot.serializeNBT());
+						 if (pot.isItemValid(slot, inv.getStackInSlot(slot)))
+							 inv.getStackInSlot(slot).setTagInfo("inventory", pot.serializeNBT());
 					 }
 				 });
 	         }
