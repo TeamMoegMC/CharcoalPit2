@@ -77,19 +77,25 @@ public class ItemClayPot extends Item{
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
 		if (!worldIn.isRemote) {
-			if (!playerIn.isSneaking())
+			if (!playerIn.isSneaking()) {
+				int slot;
+				if (handIn == Hand.MAIN_HAND)
+					slot = playerIn.inventory.currentItem;
+				else slot = 40;
+
 				NetworkHooks.openGui((ServerPlayerEntity) playerIn, new INamedContainerProvider() {
 
 					@Override
 					public Container createMenu(int arg0, PlayerInventory arg1, PlayerEntity arg2) {
-						return new ClayPotContainer2(arg0, arg1, arg2.inventory.currentItem, worldIn);
+						return new ClayPotContainer2(arg0, arg1, slot, worldIn);
 					}
 
 					@Override
 					public ITextComponent getDisplayName() {
 						return new TranslationTextComponent("screen.charcoal_pit.clay_pot");
 					}
-				}, buf -> buf.writeByte((byte) playerIn.inventory.currentItem));
+				}, buf -> buf.writeByte((byte) slot));
+			}
 			else {
 				playerIn.sendStatusMessage(new TranslationTextComponent("message." + CharcoalPit.MODID + "." + "nofuel"), true);
 			}
