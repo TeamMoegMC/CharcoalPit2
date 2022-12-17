@@ -2,6 +2,7 @@ package charcoalPit.gui;
 
 import charcoalPit.CharcoalPit;
 import charcoalPit.core.ModContainerRegistry;
+import charcoalPit.core.ModItemRegistry;
 import charcoalPit.recipe.OreKilnRecipe;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -15,6 +16,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
+
+import javax.annotation.Nonnull;
 
 public class ClayPotContainer2 extends Container{
 	
@@ -48,13 +51,13 @@ public class ClayPotContainer2 extends Container{
 		
 		for(int k = 0; k < 3; ++k) {
 	         for(int i1 = 0; i1 < 9; ++i1) {
-	            this.addSlot(new Slot(inv, i1 + k * 9 + 9, 8 + i1 * 18, 84 + k * 18));
-	         }
+				 this.addSlot(new SlotLocked(inv, i1 + k * 9 + 9, 8 + i1 * 18, 84 + k * 18));
+			 }
 	      }
 
 	      for(int l = 0; l < 9; ++l) {
-	         this.addSlot(new SlotLocked(inv, l, 8 + l * 18, 142, slot));
-	      }
+			  this.addSlot(new SlotLocked(inv, l, 8 + l * 18, 142));
+		  }
 		
 	}
 	
@@ -67,8 +70,8 @@ public class ClayPotContainer2 extends Container{
 	}
 
 	@Override
-	public boolean canInteractWith(PlayerEntity playerIn) {
-		return true;
+	public boolean canInteractWith(@Nonnull PlayerEntity entityplayer) {
+		return inv.getStackInSlot(this.slot).getItem() == ModItemRegistry.ClayPot;
 	}
 	
 	@Override
@@ -140,20 +143,18 @@ public class ClayPotContainer2 extends Container{
 			function.run();
 		}
 	}
-	
-	public static class SlotLocked extends Slot{
 
-		int lock;
-		public SlotLocked(IInventory inventoryIn, int index, int xPosition, int yPosition, int lock) {
+	public static class SlotLocked extends Slot {
+
+		public SlotLocked(IInventory inventoryIn, int index, int xPosition, int yPosition) {
 			super(inventoryIn, index, xPosition, yPosition);
-			this.lock=lock;
 		}
-		
+
 		@Override
 		public boolean canTakeStack(PlayerEntity playerIn) {
-			return lock!=this.getSlotIndex();
+			return inventory.getStackInSlot(getSlotIndex()).getItem() != ModItemRegistry.ClayPot;
 		}
-		
+
 	}
 
 }
