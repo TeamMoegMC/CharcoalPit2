@@ -87,8 +87,8 @@ public class ItemClayPot extends Item{
 
 					@Override
 					public Container createMenu(int arg0, PlayerInventory arg1, PlayerEntity arg2) {
-						return new ClayPotContainer2(arg0, arg1, slot, worldIn);
-					}
+                        return new ClayPotContainer2(arg0, arg1, slot);
+                    }
 
 					@Override
 					public ITextComponent getDisplayName() {

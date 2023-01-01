@@ -10,7 +10,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -19,32 +18,34 @@ import net.minecraftforge.items.SlotItemHandler;
 
 import javax.annotation.Nonnull;
 
-public class ClayPotContainer2 extends Container{
-	
-	
-	ClayPotHandler pot;
-	PlayerInventory inv;
-	int slot;
-	public ClayPotContainer2(int id, PlayerInventory inv, int slot, World world) {
-		super(ModContainerRegistry.ClayPot, id);
-		this.inv=inv;
-		this.slot=slot;
-		pot=new ClayPotHandler(9, ()->{
-			this.inv.getStackInSlot(this.slot).setTagInfo("inventory", pot.serializeNBT());
-		}, inv.player.world);
-		if(this.inv.getStackInSlot(this.slot).hasTag()&&
-				this.inv.getStackInSlot(this.slot).getTag().contains("inventory"))
-			pot.deserializeNBT(this.inv.getStackInSlot(this.slot).getTag().getCompound("inventory"));
+public class ClayPotContainer2 extends Container {
+
+
+    ClayPotHandler pot;
+    PlayerInventory inv;
+    int slot;
+
+    public ClayPotContainer2(int id, PlayerInventory inv, int slot) {
+        super(ModContainerRegistry.ClayPot, id);
+        this.inv = inv;
+        this.slot = slot;
+        pot = new ClayPotHandler(9, () -> {
+            this.inv.getStackInSlot(this.slot).setTagInfo("inventory", pot.serializeNBT());
+        }, inv.player.world);
+        if (this.inv.getStackInSlot(this.slot).hasTag() &&
+                this.inv.getStackInSlot(this.slot).getTag().contains("inventory"))
+            pot.deserializeNBT(this.inv.getStackInSlot(this.slot).getTag().getCompound("inventory"));
 		
 		for(int i = 0; i < 3; ++i) {
 	         for(int j = 0; j < 3; ++j) {
 	        	 this.addSlot(new SlotItemHandler(pot, getIndex(j+i*3), 62 + j * 18, 17 + i * 18){
 					 @Override
 					 public void onSlotChanged() {
-						 super.onSlotChanged();
-						 if (pot.isItemValid(slot, inv.getStackInSlot(slot)))
-							 inv.getStackInSlot(slot).setTagInfo("inventory", pot.serializeNBT());
-					 }
+                         if (pot.isItemValid(getSlotIndex(), inv.getItemStack()) || inv.getItemStack().isEmpty()) {
+                             inv.getStackInSlot(slot).setTagInfo("inventory", pot.serializeNBT());
+                             super.onSlotChanged();
+                         }
+                     }
 				 });
 	         }
 	      }
