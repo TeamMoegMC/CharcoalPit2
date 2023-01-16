@@ -104,9 +104,11 @@ public class BarrelScreen extends ContainerScreen<BarrelContainer> {
 
 		super.render(matrixStack, mouseX, mouseY, partialTicks);
 		this.renderHoveredTooltip(matrixStack, mouseX, mouseY);
-		if (isMouseIn(mouseX, mouseY, 62, 14, 15, 57))
+		if (isMouseIn(mouseX, mouseY, 62, 14, 15, 57)) {
+			ITextComponent displayName = fluid.getDisplayName();
+			tooltip.add(displayName);
 			tooltip.add(applyFormat(new StringTextComponent(fluid.getAmount() + "/" + "16000mB"), TextFormatting.GOLD));
-
+		}
 		if (!tooltip.isEmpty())
 			GuiUtils.drawHoveringText(matrixStack, tooltip, mouseX, mouseY, width, height, -1, font);
 	}
