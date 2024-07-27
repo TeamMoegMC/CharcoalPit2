@@ -2,21 +2,21 @@ package charcoalPit.tile;
 
 import charcoalPit.block.BlockCeramicPot;
 import charcoalPit.core.ModTileRegistry;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.ShulkerBoxBlock;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.ShulkerBoxBlock;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class TileCeramicPot extends TileEntity{
+public class TileCeramicPot extends BlockEntity{
 	
 	public CeramicPotHandler inventory;
 	@CapabilityInject(IItemHandler.class)
@@ -26,7 +26,7 @@ public class TileCeramicPot extends TileEntity{
 	public TileCeramicPot() {
 		super(ModTileRegistry.CeramicPot);
 		inventory=new CeramicPotHandler(9,()->{
-			markDirty();
+			setChanged();
 		});
 		out=LazyOptional.of(()->inventory);
 	}
@@ -40,15 +40,15 @@ public class TileCeramicPot extends TileEntity{
 	}
 	
 	@Override
-	public CompoundNBT write(CompoundNBT compound) {
-		super.write(compound);
+	public CompoundTag save(CompoundTag compound) {
+		super.save(compound);
 		compound.put("inventory", inventory.serializeNBT());
 		return compound;
 	}
 	
 	@Override
-	public void read(BlockState state, CompoundNBT nbt) {
-		super.read(state, nbt);
+	public void load(BlockState state, CompoundTag nbt) {
+		super.load(state, nbt);
 		inventory.deserializeNBT(nbt.getCompound("inventory"));
 	}
 	
@@ -61,7 +61,7 @@ public class TileCeramicPot extends TileEntity{
 		}
 		@Override
 		public boolean isItemValid(int slot, ItemStack stack) {
-			return !(Block.getBlockFromItem(stack.getItem()) instanceof BlockCeramicPot||Block.getBlockFromItem(stack.getItem()) instanceof ShulkerBoxBlock||stack.getItem().getTags().contains(forbid));
+			return !(Block.byItem(stack.getItem()) instanceof BlockCeramicPot||Block.byItem(stack.getItem()) instanceof ShulkerBoxBlock||stack.getItem().getTags().contains(forbid));
 		}
 		@Override
 		protected void onContentsChanged(int slot) {

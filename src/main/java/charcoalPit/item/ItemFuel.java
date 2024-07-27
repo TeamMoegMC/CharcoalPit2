@@ -1,7 +1,9 @@
 package charcoalPit.item;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+
+import net.minecraft.world.item.Item.Properties;
 
 public class ItemFuel extends Item{
 

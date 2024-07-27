@@ -14,10 +14,10 @@ import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.registration.*;
 import mezz.jei.api.runtime.IJeiRuntime;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -56,14 +56,14 @@ public class Jei implements IModPlugin {
 	
 	@Override
 	public void registerRecipes(IRecipeRegistration registration) {
-		registration.addRecipes(Minecraft.getInstance().world.getRecipeManager().getRecipesForType(PotteryKilnRecipe.POTTERY_RECIPE), PotteryRecipeCategory.ID);
-		registration.addRecipes(Minecraft.getInstance().world.getRecipeManager().getRecipesForType(OreKilnRecipe.ORE_KILN_RECIPE).stream().filter((r) -> !r.output.test(new ItemStack(Items.BARRIER))).collect(Collectors.toList()),
+		registration.addRecipes(Minecraft.getInstance().level.getRecipeManager().getAllRecipesFor(PotteryKilnRecipe.POTTERY_RECIPE), PotteryRecipeCategory.ID);
+		registration.addRecipes(Minecraft.getInstance().level.getRecipeManager().getAllRecipesFor(OreKilnRecipe.ORE_KILN_RECIPE).stream().filter((r) -> !r.output.test(new ItemStack(Items.BARRIER))).collect(Collectors.toList()),
 				OreKilnRecipeCategory.ID);
-		registration.addRecipes(Minecraft.getInstance().world.getRecipeManager().getRecipesForType(BloomeryRecipe.BLOOMERY_RECIPE), BloomeryRecipeCategory.ID);
+		registration.addRecipes(Minecraft.getInstance().level.getRecipeManager().getAllRecipesFor(BloomeryRecipe.BLOOMERY_RECIPE), BloomeryRecipeCategory.ID);
 
 		registration.addIngredientInfo(Arrays.asList(new ItemStack(Items.CHARCOAL), new ItemStack(ModItemRegistry.Coke), new ItemStack(ModBlockRegistry.LogPile), new ItemStack(ModBlockRegistry.CoalPile)),
-				VanillaTypes.ITEM, I18n.format("charcoal_pit.instruction.build_pit"));
-		registration.addRecipes(Minecraft.getInstance().world.getRecipeManager().getRecipesForType(BarrelRecipe.BARREL_RECIPE), BarrelRecipeCategory.ID);
+				VanillaTypes.ITEM, I18n.get("charcoal_pit.instruction.build_pit"));
+		registration.addRecipes(Minecraft.getInstance().level.getRecipeManager().getAllRecipesFor(BarrelRecipe.BARREL_RECIPE), BarrelRecipeCategory.ID);
 	}
 	
 	@Override

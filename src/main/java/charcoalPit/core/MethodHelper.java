@@ -1,33 +1,33 @@
 package charcoalPit.core;
 
 import charcoalPit.CharcoalPit;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.ITag;
+import net.minecraft.tags.Tag;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class MethodHelper {
 	private static ResourceLocation cow=new ResourceLocation(CharcoalPit.MODID, "coke_oven_walls");
-	public static boolean CharcoalPitIsValidBlock(World world, BlockPos pos, Direction facing, boolean isCoke) {
-		BlockState state=world.getBlockState(pos.offset(facing));
-		if(state.isFlammable(world, pos.offset(facing), facing.getOpposite())) {
+	public static boolean CharcoalPitIsValidBlock(Level world, BlockPos pos, Direction facing, boolean isCoke) {
+		BlockState state=world.getBlockState(pos.relative(facing));
+		if(state.isFlammable(world, pos.relative(facing), facing.getOpposite())) {
 			return false;
 		}
 		if(isCoke&&!CokeOvenIsValidBlock(state)) {
 			return false;
 		}
-		return state.isSolidSide(world, pos.offset(facing), facing.getOpposite());
+		return state.isFaceSturdy(world, pos.relative(facing), facing.getOpposite());
 	}
 	
 	public static boolean CokeOvenIsValidBlock(BlockState state) {
@@ -59,12 +59,12 @@ public class MethodHelper {
 			
 	}*/
 	
-	public static boolean Bloomery2ValidPosition(World world, BlockPos pos, boolean dummy, boolean active) {
+	public static boolean Bloomery2ValidPosition(Level world, BlockPos pos, boolean dummy, boolean active) {
 		for(Direction dir:Direction.Plane.HORIZONTAL) {
-			if(!(world.getBlockState(pos.offset(dir)).getBlock().isIn(BlockTags.getCollection().get(new ResourceLocation(CharcoalPit.MODID, "bloomery_walls")))))
+			if(!(world.getBlockState(pos.relative(dir)).getBlock().is(BlockTags.getAllTags().getTag(new ResourceLocation(CharcoalPit.MODID, "bloomery_walls")))))
 				return false;
 		}
-		Block block=world.getBlockState(pos.offset(Direction.DOWN)).getBlock();
+		Block block=world.getBlockState(pos.relative(Direction.DOWN)).getBlock();
 		if(		!(
                 (!dummy && block == ModBlockRegistry.MainBloomery)
                         ||
@@ -72,7 +72,7 @@ public class MethodHelper {
         )
 			)
 			return false;
-		block=world.getBlockState(pos.offset(Direction.UP)).getBlock();
+		block=world.getBlockState(pos.relative(Direction.UP)).getBlock();
 		if(
 				!(
 					(!dummy && block==ModBlockRegistry.Bloomery)||
@@ -99,7 +99,7 @@ public class MethodHelper {
 	         }
 
 	         f = f / (float)inv.getSlots();
-	         return MathHelper.floor(f * 14.0F) + (i > 0 ? 1 : 0);
+	         return Mth.floor(f * 14.0F) + (i > 0 ? 1 : 0);
 	      }
 	   }
 	
@@ -108,21 +108,21 @@ public class MethodHelper {
 			return key.substring(5).equals(item.getRegistryName().toString());
 		}
 		if(key.startsWith("tag:")) {
-			ITag<Item> tag=ItemTags.getCollection().get(new ResourceLocation(key.substring(4)));
+			Tag<Item> tag=ItemTags.getAllTags().getTag(new ResourceLocation(key.substring(4)));
 			return tag!=null&&tag.contains(item);
 		}
 		if(key.startsWith("ore:")) {
-			ITag<Item> tag;
+			Tag<Item> tag;
 			String ore="forge:ores/".concat(key.substring(4));
-			tag=ItemTags.getCollection().get(new ResourceLocation(ore));
+			tag=ItemTags.getAllTags().getTag(new ResourceLocation(ore));
 			if(tag!=null&&tag.contains(item))
 				return true;
 			String ingot="forge:ingots/".concat(key.substring(4));
-			tag=ItemTags.getCollection().get(new ResourceLocation(ingot));
+			tag=ItemTags.getAllTags().getTag(new ResourceLocation(ingot));
 			if(tag!=null&&tag.contains(item))
 				return true;
 			String dust="forge:dusts/".concat(key.substring(4));
-			tag=ItemTags.getCollection().get(new ResourceLocation(dust));
+			tag=ItemTags.getAllTags().getTag(new ResourceLocation(dust));
 			if(tag!=null&&tag.contains(item))
 				return true;
 		}
@@ -134,20 +134,20 @@ public class MethodHelper {
 			return ForgeRegistries.ITEMS.getValue(new ResourceLocation(key.substring(5)))!=null;
 		}
 		if(key.startsWith("tag:")) {
-			return ItemTags.getCollection().get(new ResourceLocation(key.substring(4)))!=null;
+			return ItemTags.getAllTags().getTag(new ResourceLocation(key.substring(4)))!=null;
 		}
 		if(key.startsWith("ore:")) {
-			ITag<Item> tag;
+			Tag<Item> tag;
 			String ore="forge:ores/".concat(key.substring(4));
-			tag=ItemTags.getCollection().get(new ResourceLocation(ore));
+			tag=ItemTags.getAllTags().getTag(new ResourceLocation(ore));
 			if(tag!=null)
 				return true;
 			String ingot="forge:ingots/".concat(key.substring(4));
-			tag=ItemTags.getCollection().get(new ResourceLocation(ingot));
+			tag=ItemTags.getAllTags().getTag(new ResourceLocation(ingot));
 			if(tag!=null)
 				return true;
 			String dust="forge:dusts/".concat(key.substring(4));
-			tag=ItemTags.getCollection().get(new ResourceLocation(dust));
+			tag=ItemTags.getAllTags().getTag(new ResourceLocation(dust));
 			if(tag!=null)
 				return true;
 		}
@@ -159,23 +159,23 @@ public class MethodHelper {
 			return ForgeRegistries.ITEMS.getValue(new ResourceLocation(key.substring(5)));
 		}
 		if(key.startsWith("tag:")) {
-			ITag<Item> tag=ItemTags.getCollection().get(new ResourceLocation(key.substring(4)));
-			return tag==null?null:tag.getAllElements().get(0);
+			Tag<Item> tag=ItemTags.getAllTags().getTag(new ResourceLocation(key.substring(4)));
+			return tag==null?null:tag.getValues().get(0);
 		}
 		if(key.contains("ore:")) {
-			ITag<Item> tag;
+			Tag<Item> tag;
 			String ore="forge:ores/".concat(key.substring(4));
-			tag=ItemTags.getCollection().get(new ResourceLocation(ore));
+			tag=ItemTags.getAllTags().getTag(new ResourceLocation(ore));
 			if(tag!=null)
-				return tag.getAllElements().get(0);
+				return tag.getValues().get(0);
 			String ingot="forge:ingots/".concat(key.substring(4));
-			tag=ItemTags.getCollection().get(new ResourceLocation(ingot));
+			tag=ItemTags.getAllTags().getTag(new ResourceLocation(ingot));
 			if(tag!=null)
-				return tag.getAllElements().get(0);
+				return tag.getValues().get(0);
 			String dust="forge:dusts/".concat(key.substring(4));
-			tag=ItemTags.getCollection().get(new ResourceLocation(dust));
+			tag=ItemTags.getAllTags().getTag(new ResourceLocation(dust));
 			if(tag!=null)
-				return tag.getAllElements().get(0);
+				return tag.getValues().get(0);
 		}
 		return null;
 	}

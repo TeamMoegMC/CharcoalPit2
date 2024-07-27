@@ -3,8 +3,8 @@ package charcoalPit.core;
 import charcoalPit.CharcoalPit;
 import charcoalPit.fluid.ModFluidRegistry;
 import charcoalPit.item.*;
-import net.minecraft.block.Block;
-import net.minecraft.block.DispenserBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.item.*;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
@@ -13,18 +13,27 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
+import net.minecraft.world.food.FoodProperties;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.BoneMealItem;
+import net.minecraft.world.item.BucketItem;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+
 @EventBusSubscriber(modid=CharcoalPit.MODID, bus=Bus.MOD)
 public class ModItemRegistry {
 	
-	public static ItemGroup CHARCOAL_PIT=new ItemGroup("charcoal_pit") {
+	public static CreativeModeTab CHARCOAL_PIT=new CreativeModeTab("charcoal_pit") {
 		@Override
-		public ItemStack createIcon() {
+		public ItemStack makeIcon() {
 			return new ItemStack(Items.CHARCOAL);
 		}
 	};
-	public static ItemGroup CHARCOAL_PIT_FOODS = new ItemGroup("charcoal_pit_foods") {
+	public static CreativeModeTab CHARCOAL_PIT_FOODS = new CreativeModeTab("charcoal_pit_foods") {
 		@Override
-		public ItemStack createIcon() {
+		public ItemStack makeIcon() {
 			return new ItemStack(ModItemRegistry.Cheese);
 		}
 	};
@@ -35,7 +44,7 @@ public class ModItemRegistry {
 
 	public static ItemFuel Straw = buildItem(CHARCOAL_PIT, 50), Coke = buildItem(CHARCOAL_PIT, 3200);
 	public static Item Ash = buildItem(CHARCOAL_PIT);
-	public static BoneMealItem Fertilizer = new BoneMealItem(new Item.Properties().group(CHARCOAL_PIT));
+	public static BoneMealItem Fertilizer = new BoneMealItem(new Item.Properties().tab(CHARCOAL_PIT));
 	public static ItemFireStarter FireStarter = new ItemFireStarter();
 	public static Item BloomCool = buildItem(CHARCOAL_PIT), BloomFail = buildItem(CHARCOAL_PIT), BloomNiCool = buildItem(CHARCOAL_PIT), BloomNiFail = buildItem(CHARCOAL_PIT);
 	public static Item SandyBrickItem = buildItem(CHARCOAL_PIT), UnfireSandyBrick = buildItem(CHARCOAL_PIT), UnfiredBrick = buildItem(CHARCOAL_PIT);
@@ -54,13 +63,13 @@ public class ModItemRegistry {
 	public static ItemClayPot ClayPot = new ItemClayPot();
 	public static ItemCrackedPot CrackedPot = new ItemCrackedPot();
 
-	public static ItemBarrel Barrel = new ItemBarrel(ModBlockRegistry.Barrel, new Item.Properties().group(CHARCOAL_PIT));
+	public static ItemBarrel Barrel = new ItemBarrel(ModBlockRegistry.Barrel, new Item.Properties().tab(CHARCOAL_PIT));
 
 	//public static BucketItem AlcoholBucket=new BucketItem(()->ModFluidRegistry.AlcoholStill, new Item.Properties().group(ItemGroup.MISC).maxStackSize(1).containerItem(Items.BUCKET));
 	public static ItemAlcoholBottle AlcoholBottle = new ItemAlcoholBottle();
-	public static BucketItem VinegarBucket = new BucketItem(() -> ModFluidRegistry.VinegarStill, new Item.Properties().group(CHARCOAL_PIT).maxStackSize(1).containerItem(Items.BUCKET));
-	public static Item VinegarBottle = new Item(new Item.Properties().group(CHARCOAL_PIT).maxStackSize(16).containerItem(Items.GLASS_BOTTLE));
-	public static Item Cheese = new Item(new Item.Properties().group(CHARCOAL_PIT_FOODS).food(new Food.Builder().hunger(5).saturation(1.2F).build()));
+	public static BucketItem VinegarBucket = new BucketItem(() -> ModFluidRegistry.VinegarStill, new Item.Properties().tab(CHARCOAL_PIT).stacksTo(1).craftRemainder(Items.BUCKET));
+	public static Item VinegarBottle = new Item(new Item.Properties().tab(CHARCOAL_PIT).stacksTo(16).craftRemainder(Items.GLASS_BOTTLE));
+	public static Item Cheese = new Item(new Item.Properties().tab(CHARCOAL_PIT_FOODS).food(new FoodProperties.Builder().nutrition(5).saturationMod(1.2F).build()));
 	public static Item TinyCoke = buildItem(CHARCOAL_PIT, 1600);
 	public static BlockItem MechanicalBeellows = buildBlockItem(ModBlockRegistry.MechanicalBellows);
 
@@ -92,31 +101,31 @@ public class ModItemRegistry {
 				LightBluePot.setRegistryName("light_blue_pot"), GreenPot.setRegistryName("green_pot"), GrayPot.setRegistryName("gray_pot"), CyanPot.setRegistryName("cyan_pot"),
 				BrownPot.setRegistryName("brown_pot"), BluePot.setRegistryName("blue_pot"), BlackPot.setRegistryName("black_pot"));
 
-		DispenserBlock.registerDispenseBehavior(ModItemRegistry.CeramicPot, new DispenserPlacePot());
-		DispenserBlock.registerDispenseBehavior(ModItemRegistry.BlackPot, new DispenserPlacePot());
-		DispenserBlock.registerDispenseBehavior(ModItemRegistry.BluePot, new DispenserPlacePot());
-		DispenserBlock.registerDispenseBehavior(ModItemRegistry.BrownPot, new DispenserPlacePot());
-		DispenserBlock.registerDispenseBehavior(ModItemRegistry.CyanPot, new DispenserPlacePot());
-		DispenserBlock.registerDispenseBehavior(ModItemRegistry.GrayPot, new DispenserPlacePot());
-		DispenserBlock.registerDispenseBehavior(ModItemRegistry.GreenPot, new DispenserPlacePot());
-		DispenserBlock.registerDispenseBehavior(ModItemRegistry.LightBluePot, new DispenserPlacePot());
-		DispenserBlock.registerDispenseBehavior(ModItemRegistry.LightGrayPot, new DispenserPlacePot());
-		DispenserBlock.registerDispenseBehavior(ModItemRegistry.LimePot, new DispenserPlacePot());
-		DispenserBlock.registerDispenseBehavior(ModItemRegistry.MagentaPot, new DispenserPlacePot());
-		DispenserBlock.registerDispenseBehavior(ModItemRegistry.OrangePot, new DispenserPlacePot());
-		DispenserBlock.registerDispenseBehavior(ModItemRegistry.PinkPot, new DispenserPlacePot());
-		DispenserBlock.registerDispenseBehavior(ModItemRegistry.PurplePot, new DispenserPlacePot());
-		DispenserBlock.registerDispenseBehavior(ModItemRegistry.RedPot, new DispenserPlacePot());
-		DispenserBlock.registerDispenseBehavior(ModItemRegistry.WhitePot, new DispenserPlacePot());
-		DispenserBlock.registerDispenseBehavior(ModItemRegistry.YellowPot, new DispenserPlacePot());
+		DispenserBlock.registerBehavior(ModItemRegistry.CeramicPot, new DispenserPlacePot());
+		DispenserBlock.registerBehavior(ModItemRegistry.BlackPot, new DispenserPlacePot());
+		DispenserBlock.registerBehavior(ModItemRegistry.BluePot, new DispenserPlacePot());
+		DispenserBlock.registerBehavior(ModItemRegistry.BrownPot, new DispenserPlacePot());
+		DispenserBlock.registerBehavior(ModItemRegistry.CyanPot, new DispenserPlacePot());
+		DispenserBlock.registerBehavior(ModItemRegistry.GrayPot, new DispenserPlacePot());
+		DispenserBlock.registerBehavior(ModItemRegistry.GreenPot, new DispenserPlacePot());
+		DispenserBlock.registerBehavior(ModItemRegistry.LightBluePot, new DispenserPlacePot());
+		DispenserBlock.registerBehavior(ModItemRegistry.LightGrayPot, new DispenserPlacePot());
+		DispenserBlock.registerBehavior(ModItemRegistry.LimePot, new DispenserPlacePot());
+		DispenserBlock.registerBehavior(ModItemRegistry.MagentaPot, new DispenserPlacePot());
+		DispenserBlock.registerBehavior(ModItemRegistry.OrangePot, new DispenserPlacePot());
+		DispenserBlock.registerBehavior(ModItemRegistry.PinkPot, new DispenserPlacePot());
+		DispenserBlock.registerBehavior(ModItemRegistry.PurplePot, new DispenserPlacePot());
+		DispenserBlock.registerBehavior(ModItemRegistry.RedPot, new DispenserPlacePot());
+		DispenserBlock.registerBehavior(ModItemRegistry.WhitePot, new DispenserPlacePot());
+		DispenserBlock.registerBehavior(ModItemRegistry.YellowPot, new DispenserPlacePot());
 	}
 	
 	public static BlockItemFuel buildBlockItem(Block block, int time) {
 		return buildBlockItem(block, CHARCOAL_PIT, time);
 	}
 	
-	public static BlockItemFuel buildBlockItem(Block block, ItemGroup group, int time) {
-		return new BlockItemFuel(block, new Item.Properties().group(group)).setBurnTime(time);
+	public static BlockItemFuel buildBlockItem(Block block, CreativeModeTab group, int time) {
+		return new BlockItemFuel(block, new Item.Properties().tab(group)).setBurnTime(time);
 	}
 	
 	public static BlockItem buildBlockItem(Block block) {
@@ -124,19 +133,19 @@ public class ModItemRegistry {
 	}
 	
 	public static BlockItem buildBlockItemP(Block block) {
-		return new BlockItem(block, new Item.Properties().group(CHARCOAL_PIT).maxStackSize(1));
+		return new BlockItem(block, new Item.Properties().tab(CHARCOAL_PIT).stacksTo(1));
 	}
 	
-	public static BlockItem buildBlockItem(Block block, ItemGroup group) {
-		return new BlockItem(block, new Item.Properties().group(group));
+	public static BlockItem buildBlockItem(Block block, CreativeModeTab group) {
+		return new BlockItem(block, new Item.Properties().tab(group));
 	}
 	
-	public static ItemFuel buildItem(ItemGroup group,int time) {
-		return new ItemFuel(new Item.Properties().group(group)).setBurnTime(time);
+	public static ItemFuel buildItem(CreativeModeTab group,int time) {
+		return new ItemFuel(new Item.Properties().tab(group)).setBurnTime(time);
 	}
 	
-	public static Item buildItem(ItemGroup group) {
-		return new Item(new Item.Properties().group(group));
+	public static Item buildItem(CreativeModeTab group) {
+		return new Item(new Item.Properties().tab(group));
 	}
 	
 }

@@ -3,22 +3,22 @@ package charcoalPit.jei;
 import charcoalPit.CharcoalPit;
 import charcoalPit.core.ModItemRegistry;
 import charcoalPit.recipe.OreKilnRecipe;
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.common.brewing.VanillaBrewingRecipe;
 
 import java.util.ArrayList;
@@ -34,7 +34,7 @@ public class OreKilnRecipeCategory implements IRecipeCategory<OreKilnRecipe> {
 	public final IDrawable icon;
 	public final IDrawable overlay;
 	public OreKilnRecipeCategory(IGuiHelper helper){
-		loc_name= I18n.format("charcoal_pit.jei.orekiln");
+		loc_name= I18n.get("charcoal_pit.jei.orekiln");
 		backgroung=helper.createBlankDrawable(211,85);
 		icon=helper.createDrawableIngredient(new ItemStack(ModItemRegistry.ClayPot));
 		overlay=helper.createDrawable(new ResourceLocation(CharcoalPit.MODID,"textures/gui/container/ore_kiln.png"),0,0,211,85);
@@ -70,10 +70,10 @@ public class OreKilnRecipeCategory implements IRecipeCategory<OreKilnRecipe> {
 	public void setIngredients(OreKilnRecipe recipe, IIngredients iIngredients) {
 		ArrayList<List<ItemStack>> inputs=new ArrayList();
 		for(Ingredient i: recipe.input){
-			inputs.add(Arrays.asList(i.getMatchingStacks()));
+			inputs.add(Arrays.asList(i.getItems()));
 		}
 		iIngredients.setInputLists(VanillaTypes.ITEM,inputs);
-		iIngredients.setOutput(VanillaTypes.ITEM,new ItemStack(recipe.output.getMatchingStacks()[0].getItem(), recipe.amount));
+		iIngredients.setOutput(VanillaTypes.ITEM,new ItemStack(recipe.output.getItems()[0].getItem(), recipe.amount));
 	}
 	
 	@Override
@@ -91,7 +91,7 @@ public class OreKilnRecipeCategory implements IRecipeCategory<OreKilnRecipe> {
 		iRecipeLayout.getItemStacks().set(index,iIngredients.getOutputs(VanillaTypes.ITEM).get(0));
 		index++;
 		ArrayList<ItemStack> logs=new ArrayList();
-		for(Item i: ItemTags.LOGS_THAT_BURN.getAllElements()){
+		for(Item i: ItemTags.LOGS_THAT_BURN.getValues()){
 			logs.add(new ItemStack(i,3));
 		}
 		iRecipeLayout.getItemStacks().init(index,true,79,16);
@@ -104,7 +104,7 @@ public class OreKilnRecipeCategory implements IRecipeCategory<OreKilnRecipe> {
 		iRecipeLayout.getItemStacks().set(index,new ItemStack(ModItemRegistry.ClayPot));
 		index++;
 		ArrayList<ItemStack> coal=new ArrayList();
-		for(Item i: ItemTags.getCollection().get(new ResourceLocation(CharcoalPit.MODID,"orekiln_fuels")).getAllElements()){
+		for(Item i: ItemTags.getAllTags().getTag(new ResourceLocation(CharcoalPit.MODID,"orekiln_fuels")).getValues()){
 			coal.add(new ItemStack(i));
 		}
 		iRecipeLayout.getItemStacks().init(index,true,25,34);
@@ -119,14 +119,14 @@ public class OreKilnRecipeCategory implements IRecipeCategory<OreKilnRecipe> {
 	}
 	
 	@Override
-	public void draw(OreKilnRecipe recipe, MatrixStack matrixStack, double mouseX, double mouseY) {
+	public void draw(OreKilnRecipe recipe, PoseStack matrixStack, double mouseX, double mouseY) {
 		overlay.draw(matrixStack);
 	}
 	
 	@Override
-	public List<ITextComponent> getTooltipStrings(OreKilnRecipe recipe, double mouseX, double mouseY) {
+	public List<Component> getTooltipStrings(OreKilnRecipe recipe, double mouseX, double mouseY) {
 		if(mouseX>=133&&mouseX<151&&mouseY>=34&&mouseY<52)
-			return Arrays.asList(new TranslationTextComponent("charcoal_pit.instruction.place_kiln"));
+			return Arrays.asList(new TranslatableComponent("charcoal_pit.instruction.place_kiln"));
 		else
 			return Collections.emptyList();
 	}

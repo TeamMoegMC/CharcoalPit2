@@ -2,15 +2,23 @@ package charcoalPit.core;
 
 import charcoalPit.CharcoalPit;
 import charcoalPit.block.*;
-import net.minecraft.block.AbstractBlock.Properties;
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 import net.minecraft.block.*;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.material.MaterialColor;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MaterialColor;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
+
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.FallingBlock;
+import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.WallBlock;
 
 @EventBusSubscriber(modid = CharcoalPit.MODID, bus = Bus.MOD)
 public class ModBlockRegistry {
@@ -18,38 +26,38 @@ public class ModBlockRegistry {
 	public static BlockThatch Thatch = new BlockThatch();
 	public static RotatedPillarBlock LogPile = new BlockLogPile();
 	public static Block CoalPile = new BlockCoalPile();
-	public static Block WoodAsh = new BlockAsh(), CoalAsh = new BlockAsh(), SandyBrick = new Block(Properties.create(Material.ROCK, MaterialColor.ADOBE).hardnessAndResistance(2, 6).setRequiresTool().harvestLevel(0).harvestTool(ToolType.PICKAXE)),
-			CokeBlock = new Block(Properties.create(Material.WOOD, MaterialColor.BLACK).hardnessAndResistance(5F, 6F).harvestLevel(0).harvestTool(ToolType.PICKAXE).setRequiresTool()) {
-				public int getFireSpreadSpeed(net.minecraft.block.BlockState state, net.minecraft.world.IBlockReader world, net.minecraft.util.math.BlockPos pos, net.minecraft.util.Direction face) {
+	public static Block WoodAsh = new BlockAsh(), CoalAsh = new BlockAsh(), SandyBrick = new Block(Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE).strength(2, 6).requiresCorrectToolForDrops().harvestLevel(0).harvestTool(ToolType.PICKAXE)),
+			CokeBlock = new Block(Properties.of(Material.WOOD, MaterialColor.COLOR_BLACK).strength(5F, 6F).harvestLevel(0).harvestTool(ToolType.PICKAXE).requiresCorrectToolForDrops()) {
+				public int getFireSpreadSpeed(net.minecraft.world.level.block.state.BlockState state, net.minecraft.world.level.BlockGetter world, net.minecraft.core.BlockPos pos, net.minecraft.core.Direction face) {
 					return 5;
 				}
 
 				;
 
-				public int getFlammability(net.minecraft.block.BlockState state, net.minecraft.world.IBlockReader world, net.minecraft.util.math.BlockPos pos, net.minecraft.util.Direction face) {
+				public int getFlammability(net.minecraft.world.level.block.state.BlockState state, net.minecraft.world.level.BlockGetter world, net.minecraft.core.BlockPos pos, net.minecraft.core.Direction face) {
 					return 5;
 				}
 
 				;
 			};
-	public static FallingBlock Ash = new FallingBlock(Properties.create(Material.SAND, MaterialColor.LIGHT_GRAY).hardnessAndResistance(0.5F).harvestTool(ToolType.SHOVEL).sound(SoundType.SAND));
-	public static SlabBlock SandySlab=new SlabBlock(Properties.create(Material.ROCK, MaterialColor.ADOBE).hardnessAndResistance(2, 6).setRequiresTool().harvestLevel(0).harvestTool(ToolType.PICKAXE));
-	public static StairsBlock SandyStair=new StairsBlock(()->SandyBrick.getDefaultState(), Properties.create(Material.ROCK, MaterialColor.ADOBE).hardnessAndResistance(2, 6).setRequiresTool().harvestLevel(0).harvestTool(ToolType.PICKAXE));
-	public static WallBlock SandyWall=new WallBlock(Properties.create(Material.ROCK, MaterialColor.ADOBE).hardnessAndResistance(2, 6).setRequiresTool().harvestLevel(0).harvestTool(ToolType.PICKAXE));
+	public static FallingBlock Ash = new FallingBlock(Properties.of(Material.SAND, MaterialColor.COLOR_LIGHT_GRAY).strength(0.5F).harvestTool(ToolType.SHOVEL).sound(SoundType.SAND));
+	public static SlabBlock SandySlab=new SlabBlock(Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE).strength(2, 6).requiresCorrectToolForDrops().harvestLevel(0).harvestTool(ToolType.PICKAXE));
+	public static StairBlock SandyStair=new StairBlock(()->SandyBrick.defaultBlockState(), Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE).strength(2, 6).requiresCorrectToolForDrops().harvestLevel(0).harvestTool(ToolType.PICKAXE));
+	public static WallBlock SandyWall=new WallBlock(Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE).strength(2, 6).requiresCorrectToolForDrops().harvestLevel(0).harvestTool(ToolType.PICKAXE));
 
-	public static BlockCreosoteCollector SandyCollector=new BlockCreosoteCollector(Properties.from(SandyBrick));
+	public static BlockCreosoteCollector SandyCollector=new BlockCreosoteCollector(Properties.copy(SandyBrick));
 	public static BlockPotteryKiln Kiln=new BlockPotteryKiln();
-	public static BlockCeramicPot CeramicPot=new BlockCeramicPot(MaterialColor.ADOBE),WhitePot=new BlockCeramicPot(MaterialColor.WHITE_TERRACOTTA),
-			OrangePot=new BlockCeramicPot(MaterialColor.ORANGE_TERRACOTTA),MagentaPot=new BlockCeramicPot(MaterialColor.MAGENTA_TERRACOTTA),
-			LightBluePot=new BlockCeramicPot(MaterialColor.LIGHT_BLUE_TERRACOTTA),YellowPot=new BlockCeramicPot(MaterialColor.YELLOW_TERRACOTTA),
-			LimePot=new BlockCeramicPot(MaterialColor.LIME_TERRACOTTA),PinkPot=new BlockCeramicPot(MaterialColor.PINK_TERRACOTTA),
-			GrayPot = new BlockCeramicPot(MaterialColor.GRAY_TERRACOTTA), LightGrayPot = new BlockCeramicPot(MaterialColor.LIGHT_GRAY_TERRACOTTA),
-			CyanPot = new BlockCeramicPot(MaterialColor.CYAN_TERRACOTTA), PurplePot = new BlockCeramicPot(MaterialColor.PURPLE_TERRACOTTA),
-			BluePot = new BlockCeramicPot(MaterialColor.BLUE_TERRACOTTA), BrownPot = new BlockCeramicPot(MaterialColor.BROWN_TERRACOTTA),
-			GreenPot = new BlockCeramicPot(MaterialColor.GREEN_TERRACOTTA), RedPot = new BlockCeramicPot(MaterialColor.RED_TERRACOTTA),
-			BlackPot = new BlockCeramicPot(MaterialColor.BLACK_TERRACOTTA);
+	public static BlockCeramicPot CeramicPot=new BlockCeramicPot(MaterialColor.COLOR_ORANGE),WhitePot=new BlockCeramicPot(MaterialColor.TERRACOTTA_WHITE),
+			OrangePot=new BlockCeramicPot(MaterialColor.TERRACOTTA_ORANGE),MagentaPot=new BlockCeramicPot(MaterialColor.TERRACOTTA_MAGENTA),
+			LightBluePot=new BlockCeramicPot(MaterialColor.TERRACOTTA_LIGHT_BLUE),YellowPot=new BlockCeramicPot(MaterialColor.TERRACOTTA_YELLOW),
+			LimePot=new BlockCeramicPot(MaterialColor.TERRACOTTA_LIGHT_GREEN),PinkPot=new BlockCeramicPot(MaterialColor.TERRACOTTA_PINK),
+			GrayPot = new BlockCeramicPot(MaterialColor.TERRACOTTA_GRAY), LightGrayPot = new BlockCeramicPot(MaterialColor.TERRACOTTA_LIGHT_GRAY),
+			CyanPot = new BlockCeramicPot(MaterialColor.TERRACOTTA_CYAN), PurplePot = new BlockCeramicPot(MaterialColor.TERRACOTTA_PURPLE),
+			BluePot = new BlockCeramicPot(MaterialColor.TERRACOTTA_BLUE), BrownPot = new BlockCeramicPot(MaterialColor.TERRACOTTA_BROWN),
+			GreenPot = new BlockCeramicPot(MaterialColor.TERRACOTTA_GREEN), RedPot = new BlockCeramicPot(MaterialColor.TERRACOTTA_RED),
+			BlackPot = new BlockCeramicPot(MaterialColor.TERRACOTTA_BLACK);
 	public static BlockBellows Bellows = new BlockBellows();
-	public static Block TuyereSandy = new Block(Properties.from(SandyBrick));
+	public static Block TuyereSandy = new Block(Properties.copy(SandyBrick));
 	//public static BlockClayPot ClayPot=new BlockClayPot();
 	public static BlockBloomery Bloomery = new BlockBloomery();
 	public static BlockMainBloomery MainBloomery = new BlockMainBloomery();

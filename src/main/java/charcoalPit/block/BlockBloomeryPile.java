@@ -4,68 +4,70 @@ import java.util.ArrayList;
 import java.util.List;
 
 import charcoalPit.core.MethodHelper;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.material.Material;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.loot.LootContext.Builder;
-import net.minecraft.state.IntegerProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.storage.loot.LootContext.Builder;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.World;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.ToolType;
 
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+
 public class BlockBloomeryPile extends Block{
 	
-	public static final IntegerProperty LAYER=BlockStateProperties.LAYERS_1_8;
+	public static final IntegerProperty LAYER=BlockStateProperties.LAYERS;
 	
-	protected static final VoxelShape[] SHAPES = new VoxelShape[]{VoxelShapes.empty(), 
-			Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D), 
-			Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 4.0D, 16.0D), 
-			Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 6.0D, 16.0D), 
-			Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 8.0D, 16.0D), 
-			Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 10.0D, 16.0D), 
-			Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 12.0D, 16.0D), 
-			Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 14.0D, 16.0D), 
-			Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D)};
+	protected static final VoxelShape[] SHAPES = new VoxelShape[]{Shapes.empty(), 
+			Block.box(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D), 
+			Block.box(0.0D, 0.0D, 0.0D, 16.0D, 4.0D, 16.0D), 
+			Block.box(0.0D, 0.0D, 0.0D, 16.0D, 6.0D, 16.0D), 
+			Block.box(0.0D, 0.0D, 0.0D, 16.0D, 8.0D, 16.0D), 
+			Block.box(0.0D, 0.0D, 0.0D, 16.0D, 10.0D, 16.0D), 
+			Block.box(0.0D, 0.0D, 0.0D, 16.0D, 12.0D, 16.0D), 
+			Block.box(0.0D, 0.0D, 0.0D, 16.0D, 14.0D, 16.0D), 
+			Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D)};
 
 	public BlockBloomeryPile() {
-		super(Properties.create(Material.ROCK).hardnessAndResistance(5F, 6F).harvestTool(ToolType.PICKAXE));
+		super(Properties.of(Material.STONE).strength(5F, 6F).harvestTool(ToolType.PICKAXE));
 	}
 	
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		return SHAPES[state.get(LAYER)];
+	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
+		return SHAPES[state.getValue(LAYER)];
 	}
 	
 	@Override
-	public boolean isTransparent(BlockState state) {
+	public boolean useShapeForLightOcclusion(BlockState state) {
 		return true;
 	}
 	
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 	      builder.add(LAYER);
 	}
 	
 	@Override
 	public List<ItemStack> getDrops(BlockState state, Builder builder) {
 		ArrayList<ItemStack> drops=new ArrayList<>();
-		drops.add(new ItemStack(Items.IRON_ORE, Math.min(4, state.get(LAYER))));
-		drops.add(new ItemStack(Items.CHARCOAL, Math.max(0, state.get(LAYER)-4)));
+		drops.add(new ItemStack(Items.IRON_ORE, Math.min(4, state.getValue(LAYER))));
+		drops.add(new ItemStack(Items.CHARCOAL, Math.max(0, state.getValue(LAYER)-4)));
 		return drops;
 	}
 	

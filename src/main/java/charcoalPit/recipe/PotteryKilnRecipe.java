@@ -7,26 +7,26 @@ import com.google.gson.JsonObject;
 
 import charcoalPit.CharcoalPit;
 import charcoalPit.core.ModItemRegistry;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.item.crafting.ShapedRecipe;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.World;
+import net.minecraft.world.Container;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.ShapedRecipe;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.Registry;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
-public class PotteryKilnRecipe implements IRecipe<IInventory>{
+public class PotteryKilnRecipe implements Recipe<Container>{
 	
 	public static final ResourceLocation POTTERY=new ResourceLocation(CharcoalPit.MODID, "pottery");
-	public static final IRecipeType<PotteryKilnRecipe> POTTERY_RECIPE=IRecipeType.register(POTTERY.toString());
+	public static final RecipeType<PotteryKilnRecipe> POTTERY_RECIPE=RecipeType.register(POTTERY.toString());
 	
 	public static final Serializer SERIALIZER=new Serializer();
 	
@@ -42,7 +42,7 @@ public class PotteryKilnRecipe implements IRecipe<IInventory>{
 		xp=exp;
 	}
 	
-	public static boolean isValidInput(ItemStack input, World world) {
+	public static boolean isValidInput(ItemStack input, Level world) {
 		if(input.getItem()==ModItemRegistry.ClayPot) {
 			if(input.hasTag()&&input.getTag().contains("inventory")) {
 				ItemStackHandler inv=new ItemStackHandler();
@@ -59,7 +59,7 @@ public class PotteryKilnRecipe implements IRecipe<IInventory>{
 				}
 			}
 		}
-		List<PotteryKilnRecipe> recipes=world.getRecipeManager().getRecipesForType(POTTERY_RECIPE);
+		List<PotteryKilnRecipe> recipes=world.getRecipeManager().getAllRecipesFor(POTTERY_RECIPE);
 		for(PotteryKilnRecipe recipe:recipes) {
 			if(recipe.input.test(input))
 				return true;
@@ -67,8 +67,8 @@ public class PotteryKilnRecipe implements IRecipe<IInventory>{
 		return false;
 	}
 	
-	public static PotteryKilnRecipe getResult(ItemStack input, World world) {
-		List<PotteryKilnRecipe> recipes=world.getRecipeManager().getRecipesForType(POTTERY_RECIPE);
+	public static PotteryKilnRecipe getResult(ItemStack input, Level world) {
+		List<PotteryKilnRecipe> recipes=world.getRecipeManager().getAllRecipesFor(POTTERY_RECIPE);
 		for(PotteryKilnRecipe recipe:recipes) {
 			if(recipe.input.test(input))
 				return recipe;
@@ -76,13 +76,13 @@ public class PotteryKilnRecipe implements IRecipe<IInventory>{
 		return null;
 	}
 	
-	public static ItemStack processClayPot(ItemStack in, World world) {
+	public static ItemStack processClayPot(ItemStack in, Level world) {
 		if(in.getItem()==ModItemRegistry.ClayPot) {
 			if(in.hasTag()&&in.getTag().contains("inventory")) {
 				ItemStackHandler tag=new ItemStackHandler(1);
 				tag.setStackInSlot(0, OreKilnRecipe.OreKilnGetOutput(in.getTag().getCompound("inventory"), world));
 				ItemStack out=new ItemStack(ModItemRegistry.CrackedPot);
-				out.setTagInfo("inventory", tag.serializeNBT());
+				out.addTagElement("inventory", tag.serializeNBT());
 				ItemStackHandler inv=new ItemStackHandler();
 				inv.deserializeNBT(in.getTag().getCompound("inventory"));
 				out.getTag().putInt("xp", OreKilnRecipe.oreKilnGetFuelRequired(inv)/4);
@@ -94,19 +94,19 @@ public class PotteryKilnRecipe implements IRecipe<IInventory>{
 	}
 	
 	@Override
-	public boolean matches(IInventory inv, World worldIn) {
-		return input.test(inv.getStackInSlot(0));
+	public boolean matches(Container inv, Level worldIn) {
+		return input.test(inv.getItem(0));
 	}
 	@Override
-	public ItemStack getCraftingResult(IInventory inv) {
+	public ItemStack assemble(Container inv) {
 		return new ItemStack(output);
 	}
 	@Override
-	public boolean canFit(int width, int height) {
+	public boolean canCraftInDimensions(int width, int height) {
 		return true;
 	}
 	@Override
-	public ItemStack getRecipeOutput() {
+	public ItemStack getResultItem() {
 		return new ItemStack(output);
 	}
 	@Override
@@ -114,46 +114,46 @@ public class PotteryKilnRecipe implements IRecipe<IInventory>{
 		return id;
 	}
 	@Override
-	public IRecipeSerializer<?> getSerializer() {
+	public RecipeSerializer<?> getSerializer() {
 		return SERIALIZER;
 	}
 	@Override
-	public IRecipeType<?> getType() {
+	public RecipeType<?> getType() {
 		return POTTERY_RECIPE;
 	}
 	
-	public static class Serializer extends ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<PotteryKilnRecipe>{
+	public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<PotteryKilnRecipe>{
 
 		@SuppressWarnings("deprecation")
 		@Override
-		public PotteryKilnRecipe read(ResourceLocation recipeId, JsonObject json) {
-			JsonElement jsonelement = (JsonElement)(JSONUtils.isJsonArray(json, "ingredient") ? JSONUtils.getJsonArray(json, "ingredient") : JSONUtils.getJsonObject(json, "ingredient"));
-		    Ingredient ingredient = Ingredient.deserialize(jsonelement);
+		public PotteryKilnRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
+			JsonElement jsonelement = (JsonElement)(GsonHelper.isArrayNode(json, "ingredient") ? GsonHelper.getAsJsonArray(json, "ingredient") : GsonHelper.getAsJsonObject(json, "ingredient"));
+		    Ingredient ingredient = Ingredient.fromJson(jsonelement);
 		    //Forge: Check if primitive string to keep vanilla or a object which can contain a count field.
 		    if (!json.has("result")) throw new com.google.gson.JsonSyntaxException("Missing result, expected to find a string or object");
 		    ItemStack itemstack;
-		    if (json.get("result").isJsonObject()) itemstack = ShapedRecipe.deserializeItem(JSONUtils.getJsonObject(json, "result"));
+		    if (json.get("result").isJsonObject()) itemstack = ShapedRecipe.itemFromJson(GsonHelper.getAsJsonObject(json, "result"));
 		    else {
-		    String s1 = JSONUtils.getString(json, "result");
+		    String s1 = GsonHelper.getAsString(json, "result");
 		    ResourceLocation resourcelocation = new ResourceLocation(s1);
-		    itemstack = new ItemStack(Registry.ITEM.getOrDefault(resourcelocation));
+		    itemstack = new ItemStack(Registry.ITEM.get(resourcelocation));
 		    }
-		    float f = JSONUtils.getFloat(json, "experience", 0.0F);
+		    float f = GsonHelper.getAsFloat(json, "experience", 0.0F);
 			return new PotteryKilnRecipe(recipeId, ingredient, itemstack.getItem(), f);
 		}
 
 		@Override
-		public PotteryKilnRecipe read(ResourceLocation recipeId, PacketBuffer buffer) {
-			Ingredient in=Ingredient.read(buffer);
-			Item out=buffer.readItemStack().getItem();
+		public PotteryKilnRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
+			Ingredient in=Ingredient.fromNetwork(buffer);
+			Item out=buffer.readItem().getItem();
 			float exp=buffer.readFloat();
 			return new PotteryKilnRecipe(recipeId, in, out, exp);
 		}
 
 		@Override
-		public void write(PacketBuffer buffer, PotteryKilnRecipe recipe) {
-			recipe.input.write(buffer);
-			buffer.writeItemStack(new ItemStack(recipe.output));
+		public void toNetwork(FriendlyByteBuf buffer, PotteryKilnRecipe recipe) {
+			recipe.input.toNetwork(buffer);
+			buffer.writeItem(new ItemStack(recipe.output));
 			buffer.writeFloat(recipe.xp);
 			
 		}

@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import charcoalPit.core.MethodHelper;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
@@ -65,7 +65,7 @@ public class AlloyRecipe {
 		return true;
 	}
 	
-	public static ItemStack oreKilnGetOutput(CompoundNBT nbt) {
+	public static ItemStack oreKilnGetOutput(CompoundTag nbt) {
 		ItemStackHandler kiln=new ItemStackHandler();
 		for(AlloyRecipe recipe:recipes) {
 			if(!MethodHelper.doesStringHaveItem(recipe.output))

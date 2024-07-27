@@ -7,22 +7,22 @@ import charcoalPit.core.MethodHelper;
 import charcoalPit.core.ModBlockRegistry;
 import charcoalPit.core.ModTileRegistry;
 import charcoalPit.recipe.BloomeryRecipe;
-import net.minecraft.block.AbstractFireBlock;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.item.ExperienceOrbEntity;
-import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.level.block.BaseFireBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.entity.ExperienceOrb;
+import net.minecraft.world.Containers;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.entity.TickableBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.core.BlockPos;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class TileBloomery extends TileEntity implements ITickableTileEntity {
+public class TileBloomery extends BlockEntity implements TickableBlockEntity {
 
 	public boolean isValid;
 	public int changetime;
@@ -54,26 +54,26 @@ public class TileBloomery extends TileEntity implements ITickableTileEntity {
 
 	@Override
 	public void tick() {
-		if(!world.isRemote) {
+		if(!level.isClientSide) {
 			if(!done) {
 				checkValid();
-				if(!getBlockState().get(BlockBloomery.DUMMY)) {
+				if(!getBlockState().getValue(BlockBloomery.DUMMY)) {
 					if (burnTime > 0 && airTicks > 0) {
 						burnTime--;
 						changetime++;
 						if (burnTime % 200 == 0)
-							markDirty();
+							setChanged();
 						if (airBuffer > 0) {
 							airBuffer--;
 							airTicks--;
 						}
 						if (changetime > 40) {
-							BlockPos down = pos.offset(Direction.DOWN);
-							if (world.getBlockState(down).getBlock() == ModBlockRegistry.MainBloomery) {
+							BlockPos down = worldPosition.relative(Direction.DOWN);
+							if (level.getBlockState(down).getBlock() == ModBlockRegistry.MainBloomery) {
 								if (airBuffer < 1) {
-									world.setBlockState(down, ModBlockRegistry.MainBloomery.getDefaultState().with(BlockMainBloomery.STAGE, 1));
+									level.setBlockAndUpdate(down, ModBlockRegistry.MainBloomery.defaultBlockState().setValue(BlockMainBloomery.STAGE, 1));
 								} else {
-									world.setBlockState(down, ModBlockRegistry.MainBloomery.getDefaultState().with(BlockMainBloomery.STAGE, 2));
+									level.setBlockAndUpdate(down, ModBlockRegistry.MainBloomery.defaultBlockState().setValue(BlockMainBloomery.STAGE, 2));
 								}
 							}
 							changetime = 0;
@@ -83,40 +83,40 @@ public class TileBloomery extends TileEntity implements ITickableTileEntity {
 						if (burnTime != -1) {
 							//done
 							done = true;
-							world.setBlockState(pos.offset(Direction.DOWN), ModBlockRegistry.MainBloomery.getDefaultState().with(BlockMainBloomery.STAGE, 0));
+							level.setBlockAndUpdate(worldPosition.relative(Direction.DOWN), ModBlockRegistry.MainBloomery.defaultBlockState().setValue(BlockMainBloomery.STAGE, 0));
 							ingots = 4;
 							ore = new OneItemHandler(4);
 							fuel = new OneItemHandler(4);
 							burnTime = Config.BloomCooldown.get();
-							if (world.getBlockState(pos.offset(Direction.UP)).getBlock() == ModBlockRegistry.Bloomery) {
-								TileBloomery dummy = ((TileBloomery) world.getTileEntity(pos.offset(Direction.UP)));
+							if (level.getBlockState(worldPosition.relative(Direction.UP)).getBlock() == ModBlockRegistry.Bloomery) {
+								TileBloomery dummy = ((TileBloomery) level.getBlockEntity(worldPosition.relative(Direction.UP)));
 								ingots += 4;
 								dummy.ore = new OneItemHandler(4);
 								dummy.fuel = new OneItemHandler(4);
-								world.playSound(null, pos, SoundEvents.BLOCK_LAVA_AMBIENT, SoundCategory.BLOCKS, 0.5F, 1F);
-								world.removeBlock(pos.offset(Direction.UP), false);
+								level.playSound(null, worldPosition, SoundEvents.LAVA_AMBIENT, SoundSource.BLOCKS, 0.5F, 1F);
+								level.removeBlock(worldPosition.relative(Direction.UP), false);
 							}else {
-								if(world.getBlockState(pos.offset(Direction.UP)).getBlock()==Blocks.FIRE)
-									world.removeBlock(pos.offset(Direction.UP), false);
+								if(level.getBlockState(worldPosition.relative(Direction.UP)).getBlock()==Blocks.FIRE)
+									level.removeBlock(worldPosition.relative(Direction.UP), false);
 							}
 							if(airTicks<=0) {
 								workCount=0;
-								world.setBlockState(pos, ModBlockRegistry.Bloomery.getDefaultState().with(BlockBloomery.STAGE, 10));
+								level.setBlockAndUpdate(worldPosition, ModBlockRegistry.Bloomery.defaultBlockState().setValue(BlockBloomery.STAGE, 10));
 							}else {
-								world.setBlockState(pos, ModBlockRegistry.Bloomery.getDefaultState().with(BlockBloomery.STAGE, 11));
+								level.setBlockAndUpdate(worldPosition, ModBlockRegistry.Bloomery.defaultBlockState().setValue(BlockBloomery.STAGE, 11));
 							}
-							markDirty();
+							setChanged();
 						}
 					}
 				}
 			}else {
 				burnTime--;
 				if(burnTime%200==0)
-					markDirty();
+					setChanged();
 				if(burnTime==0) {
 					//set cool
-					world.setBlockState(pos, ModBlockRegistry.Bloomery.getDefaultState().with(BlockBloomery.STAGE, 12));
-					markDirty();
+					level.setBlockAndUpdate(worldPosition, ModBlockRegistry.Bloomery.defaultBlockState().setValue(BlockBloomery.STAGE, 12));
+					setChanged();
 				}
 			}
 		}
@@ -124,12 +124,12 @@ public class TileBloomery extends TileEntity implements ITickableTileEntity {
 
 
 	public BloomeryRecipe getRecipe() {
-		if(recipe==null && getBlockState().get(BlockBloomery.DUMMY)) {
-			TileBloomery master=((TileBloomery)world.getTileEntity(pos.offset(Direction.DOWN)));
+		if(recipe==null && getBlockState().getValue(BlockBloomery.DUMMY)) {
+			TileBloomery master=((TileBloomery)level.getBlockEntity(worldPosition.relative(Direction.DOWN)));
 			recipe=master.getRecipe();
 		}
 		if(recipe==null) {
-			recipe=BloomeryRecipe.getRecipe(ore.getStackInSlot(0), world);
+			recipe=BloomeryRecipe.getRecipe(ore.getStackInSlot(0), level);
 		}
 		return recipe;
 	}
@@ -147,98 +147,98 @@ public class TileBloomery extends TileEntity implements ITickableTileEntity {
 		if(workCount!=-1) {
 			workCount++;
 			if(workCount>=ingots) {
-				world.setBlockState(pos, ModBlockRegistry.Bloomery.getDefaultState().with(BlockBloomery.STAGE, 11));
+				level.setBlockAndUpdate(worldPosition, ModBlockRegistry.Bloomery.defaultBlockState().setValue(BlockBloomery.STAGE, 11));
 			}
 		}
 	}
 	
 	public void dropInventory() {
-		if (world!=null) {
+		if (level!=null) {
             for (int i = 0; i < ore.getSlots(); i++) {
                 if (!ore.getStackInSlot(i).isEmpty())
-                    InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), ore.extractItem(i, 1, false));
+                    Containers.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), ore.extractItem(i, 1, false));
             }
             for (int i = 0; i < fuel.getSlots(); i++) {
                 if (!fuel.getStackInSlot(i).isEmpty())
-                    InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), fuel.extractItem(i, 1, false));
+                    Containers.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), fuel.extractItem(i, 1, false));
             }
             if (getRecipe() == null) {
                 return;
             }
             if (ingots > 0) {
                 if (workCount != -1) {
-                    InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(getRecipe().output.getMatchingStacks()[0].getItem(), workCount));
+                    Containers.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), new ItemStack(getRecipe().output.getItems()[0].getItem(), workCount));
                     ingots -= workCount;
                     while (workCount > 0) {
-                        int i = ExperienceOrbEntity.getXPSplit(workCount);
+                        int i = ExperienceOrb.getExperienceValue(workCount);
                         workCount -= i;
-                        world.addEntity(new ExperienceOrbEntity(world, (double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D, (double) pos.getZ() + 0.5D, i));
+                        level.addFreshEntity(new ExperienceOrb(level, (double) worldPosition.getX() + 0.5D, (double) worldPosition.getY() + 0.5D, (double) worldPosition.getZ() + 0.5D, i));
                     }
                     if (ingots > 0) {
-						InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(getRecipe().cool.getMatchingStacks()[0].getItem(), ingots));
+						Containers.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), new ItemStack(getRecipe().cool.getItems()[0].getItem(), ingots));
 					}
 				} else {
-					InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(getRecipe().fail.getMatchingStacks()[0].getItem(), ingots));
+					Containers.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), new ItemStack(getRecipe().fail.getItems()[0].getItem(), ingots));
 				}
 			}
 		}
 	}
 	//pile ignitr
 	public void setDummy(boolean dum) {
-		world.setBlockState(pos,getBlockState().with(BlockBloomery.DUMMY,dum));
+		level.setBlockAndUpdate(worldPosition,getBlockState().setValue(BlockBloomery.DUMMY,dum));
 	}
 	public void checkValid() {
 		if(!isValid) {
-			if(done || burnTime<0 || MethodHelper.Bloomery2ValidPosition(world, pos, getBlockState().get(BlockBloomery.DUMMY), burnTime>0)) {
+			if(done || burnTime<0 || MethodHelper.Bloomery2ValidPosition(level, worldPosition, getBlockState().getValue(BlockBloomery.DUMMY), burnTime>0)) {
 				isValid=true;
 				invalidTicks=0;
 			}else {
 				if(invalidTicks<100) {
 					invalidTicks++;
 					//set fire
-					BlockPos up=pos.offset(Direction.UP);
-					BlockState block=this.world.getBlockState(up);
-					if(block.getBlock().isAir(block, this.world, up)||
-							AbstractFireBlock.canLightBlock(this.world, up,Direction.UP)){
-						BlockState blockstate1 = AbstractFireBlock.getFireForPlacement(this.world, up);
-			            this.world.setBlockState(up, blockstate1, 11);
+					BlockPos up=worldPosition.relative(Direction.UP);
+					BlockState block=this.level.getBlockState(up);
+					if(block.getBlock().isAir(block, this.level, up)||
+							BaseFireBlock.canBePlacedAt(this.level, up,Direction.UP)){
+						BlockState blockstate1 = BaseFireBlock.getState(this.level, up);
+			            this.level.setBlock(up, blockstate1, 11);
 					}
 				}else {
 					burnTime = -1;
 					airBuffer = 0;
 					airTicks = -1;
-					world.setBlockState(this.pos, getBlockState().with(BlockBloomery.STAGE, 8));
+					level.setBlockAndUpdate(this.worldPosition, getBlockState().setValue(BlockBloomery.STAGE, 8));
 
-					BlockPos charm = pos.offset(Direction.UP);
-					BlockPos down = pos.offset(Direction.DOWN);
-					if (getBlockState().get(BlockBloomery.DUMMY)) {
-						if (world.getBlockState(down.offset(Direction.DOWN)).getBlock() == ModBlockRegistry.MainBloomery) {
-							world.setBlockState(down.offset(Direction.DOWN), ModBlockRegistry.MainBloomery.getDefaultState().with(BlockMainBloomery.STAGE, 0));
+					BlockPos charm = worldPosition.relative(Direction.UP);
+					BlockPos down = worldPosition.relative(Direction.DOWN);
+					if (getBlockState().getValue(BlockBloomery.DUMMY)) {
+						if (level.getBlockState(down.relative(Direction.DOWN)).getBlock() == ModBlockRegistry.MainBloomery) {
+							level.setBlockAndUpdate(down.relative(Direction.DOWN), ModBlockRegistry.MainBloomery.defaultBlockState().setValue(BlockMainBloomery.STAGE, 0));
 						}
-						if (world.getBlockState(down).getBlock() == ModBlockRegistry.Bloomery) {
-							world.setBlockState(down, ModBlockRegistry.Bloomery.getDefaultState().with(BlockBloomery.STAGE, 8));
-							TileBloomery master = ((TileBloomery) world.getTileEntity(down));
+						if (level.getBlockState(down).getBlock() == ModBlockRegistry.Bloomery) {
+							level.setBlockAndUpdate(down, ModBlockRegistry.Bloomery.defaultBlockState().setValue(BlockBloomery.STAGE, 8));
+							TileBloomery master = ((TileBloomery) level.getBlockEntity(down));
 							master.airBuffer = 0;
 							master.airTicks = -1;
 							master.burnTime = -1;
 						}
-						if (world.getBlockState(charm).getBlock() == Blocks.FIRE) {
-							world.removeBlock(charm, false);
+						if (level.getBlockState(charm).getBlock() == Blocks.FIRE) {
+							level.removeBlock(charm, false);
 						}
 					}else {
-						if (world.getBlockState(down).getBlock() == ModBlockRegistry.MainBloomery) {
-							world.setBlockState(down, ModBlockRegistry.MainBloomery.getDefaultState().with(BlockMainBloomery.STAGE, 0));
+						if (level.getBlockState(down).getBlock() == ModBlockRegistry.MainBloomery) {
+							level.setBlockAndUpdate(down, ModBlockRegistry.MainBloomery.defaultBlockState().setValue(BlockMainBloomery.STAGE, 0));
 						}
-						if (world.getBlockState(charm).getBlock() == ModBlockRegistry.Bloomery) {
-							world.setBlockState(charm, ModBlockRegistry.Bloomery.getDefaultState().with(BlockBloomery.STAGE, 8).with(BlockBloomery.DUMMY,true));
-							TileBloomery dummy = ((TileBloomery) world.getTileEntity(charm));
+						if (level.getBlockState(charm).getBlock() == ModBlockRegistry.Bloomery) {
+							level.setBlockAndUpdate(charm, ModBlockRegistry.Bloomery.defaultBlockState().setValue(BlockBloomery.STAGE, 8).setValue(BlockBloomery.DUMMY,true));
+							TileBloomery dummy = ((TileBloomery) level.getBlockEntity(charm));
 							dummy.burnTime = -1;
-							BlockPos top = charm.offset(Direction.UP);
-							if (world.getBlockState(top).getBlock() == Blocks.FIRE)
-								world.removeBlock(top, false);
+							BlockPos top = charm.relative(Direction.UP);
+							if (level.getBlockState(top).getBlock() == Blocks.FIRE)
+								level.removeBlock(top, false);
 						}
-						if (world.getBlockState(charm).getBlock() == Blocks.FIRE)
-							world.removeBlock(charm, false);
+						if (level.getBlockState(charm).getBlock() == Blocks.FIRE)
+							level.removeBlock(charm, false);
 						
 					}
 				}
@@ -247,8 +247,8 @@ public class TileBloomery extends TileEntity implements ITickableTileEntity {
 	}
 	
 	@Override
-	public CompoundNBT write(CompoundNBT compound) {
-		super.write(compound);
+	public CompoundTag save(CompoundTag compound) {
+		super.save(compound);
 		compound.putBoolean("valid", isValid);
 		compound.putInt("burn", burnTime);
 		compound.putInt("air", airTicks);
@@ -263,8 +263,8 @@ public class TileBloomery extends TileEntity implements ITickableTileEntity {
 	}
 	
 	@Override
-	public void read(BlockState state, CompoundNBT nbt) {
-		super.read(state, nbt);
+	public void load(BlockState state, CompoundTag nbt) {
+		super.load(state, nbt);
 		isValid=nbt.getBoolean("valid");
 		burnTime=nbt.getInt("burn");
 		airTicks=nbt.getInt("air");

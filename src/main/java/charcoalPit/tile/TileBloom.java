@@ -3,12 +3,12 @@ package charcoalPit.tile;
 import charcoalPit.block.BlockBloom;
 import charcoalPit.core.Config;
 import charcoalPit.core.ModTileRegistry;
-import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.entity.TickableBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
-public class TileBloom extends TileEntity implements ITickableTileEntity{
+public class TileBloom extends BlockEntity implements TickableBlockEntity{
 
 	public int cooldown;
 	
@@ -19,25 +19,25 @@ public class TileBloom extends TileEntity implements ITickableTileEntity{
 
 	@Override
 	public void tick() {
-		if(!world.isRemote) {
+		if(!level.isClientSide) {
 			cooldown--;
 			if(cooldown==0)
-				world.setBlockState(pos, world.getBlockState(pos).with(BlockBloom.HOT, false));
+				level.setBlockAndUpdate(worldPosition, level.getBlockState(worldPosition).setValue(BlockBloom.HOT, false));
 			if(cooldown%200==0)
-				markDirty();
+				setChanged();
 		}
 		
 	}
 	
 	@Override
-	public void read(BlockState state, CompoundNBT nbt) {
-		super.read(state, nbt);
+	public void load(BlockState state, CompoundTag nbt) {
+		super.load(state, nbt);
 		cooldown=nbt.getInt("cooldown");
 	}
 	
 	@Override
-	public CompoundNBT write(CompoundNBT compound) {
-		super.write(compound);
+	public CompoundTag save(CompoundTag compound) {
+		super.save(compound);
 		compound.putInt("cooldown", cooldown);
 		return compound;
 	}

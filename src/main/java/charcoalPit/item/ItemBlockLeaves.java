@@ -1,8 +1,10 @@
 package charcoalPit.item;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
+
+import net.minecraft.world.item.Item.Properties;
 
 public class ItemBlockLeaves extends BlockItem {
 	
@@ -11,18 +13,18 @@ public class ItemBlockLeaves extends BlockItem {
 	}
 	
 	@Override
-	public String getTranslationKey(ItemStack stack) {
+	public String getDescriptionId(ItemStack stack) {
 		if(stack.hasTag()&&stack.getTag().contains("stage")){
 			if(stack.getTag().getInt("stage")==2){
-				return super.getTranslationKey(stack).concat("_flower");
+				return super.getDescriptionId(stack).concat("_flower");
 			}
 			if(stack.getTag().getInt("stage")==6){
-				return super.getTranslationKey(stack).concat("_unripe");
+				return super.getDescriptionId(stack).concat("_unripe");
 			}
 			if(stack.getTag().getInt("stage")==7){
-				return super.getTranslationKey(stack).concat("_ripe");
+				return super.getDescriptionId(stack).concat("_ripe");
 			}
 		}
-		return super.getTranslationKey(stack);
+		return super.getDescriptionId(stack);
 	}
 }

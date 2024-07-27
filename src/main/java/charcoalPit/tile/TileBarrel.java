@@ -9,19 +9,19 @@ import charcoalPit.core.ModItemRegistry;
 import charcoalPit.core.ModTileRegistry;
 import charcoalPit.fluid.ModFluidRegistry;
 import charcoalPit.recipe.BarrelRecipe;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.Containers;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvent;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.entity.TickableBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.util.LazyOptional;
@@ -36,7 +36,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class TileBarrel extends TileEntity implements ITickableTileEntity{
+public class TileBarrel extends BlockEntity implements TickableBlockEntity{
 
 	public FluidTank tank;
 	public ItemStackHandler input, output;
@@ -49,21 +49,21 @@ public class TileBarrel extends TileEntity implements ITickableTileEntity{
 		tank=new FluidTank(16000, f->f.getFluid().getAttributes().getTemperature()<450 && !f.getFluid().getAttributes().isGaseous()) {
 			@Override
 			protected void onContentsChanged() {
-				markDirty();
+				setChanged();
 				valid=false;
 			}
 		};
 		input=new ItemStackHandler(1) {
 			@Override
 			protected void onContentsChanged(int slot) {
-				markDirty();
+				setChanged();
 				valid=false;
 			}
 		};
 		output=new ItemStackHandler(1) {
 			@Override
 			protected void onContentsChanged(int slot) {
-				markDirty();
+				setChanged();
 				valid=false;
 			}
 		};
@@ -75,33 +75,33 @@ public class TileBarrel extends TileEntity implements ITickableTileEntity{
 	
 	@Override
 	public void tick() {
-		if(!world.isRemote) {
+		if(!level.isClientSide) {
 				if(!valid) {
 					valid=true;
-					BarrelRecipe recipe=BarrelRecipe.getRecipe(input.getStackInSlot(0), tank.getFluid(), world);
+					BarrelRecipe recipe=BarrelRecipe.getRecipe(input.getStackInSlot(0), tank.getFluid(), level);
 					if(validateRecipe(recipe)>0) {
 						process=recipe.time;
 						total=process;
 						recipeId=recipe.id.toString();
-						this.markDirty();
+						this.setChanged();
 					}else {
 						process=-1;
 						total=0;
 						recipeId="null";
-						this.markDirty();
+						this.setChanged();
 					}
 				}
 				if(process>0) {
 					process--;
 					if(process%200==0)
-						markDirty();
+						setChanged();
 				}
 				else if(process==0) {
 					process--;
 					total=0;
 					BarrelRecipe recipe;
 					try {
-						recipe=(BarrelRecipe)world.getRecipeManager().getRecipe(new ResourceLocation(recipeId)).get();
+						recipe=(BarrelRecipe)level.getRecipeManager().byKey(new ResourceLocation(recipeId)).get();
 					}catch(NoSuchElementException e) {
 						recipeId="null";
 						e.printStackTrace();
@@ -120,10 +120,10 @@ public class TileBarrel extends TileEntity implements ITickableTileEntity{
 					input.extractItem(0, rounds*recipe.in_amount, false);
 					container=input.insertItem(0,container,false);
 					if(!container.isEmpty()){
-						InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), container);
+						Containers.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), container);
 					}
 					if(has_output_item) {
-						output.insertItem(0, new ItemStack(recipe.item_out.getMatchingStacks()[0].getItem(), rounds*recipe.out_amount, recipe.nbt_out), false);
+						output.insertItem(0, new ItemStack(recipe.item_out.getItems()[0].getItem(), rounds*recipe.out_amount, recipe.nbt_out), false);
 					}
 				}else
 					if(!input.getStackInSlot(0).isEmpty()) {
@@ -169,10 +169,10 @@ public class TileBarrel extends TileEntity implements ITickableTileEntity{
 		//inputs valid;
 		FluidTank sim_tank=new FluidTank(16000);
 		FluidTank sim_fluid=new FluidTank(16000);
-		sim_fluid.readFromNBT(tank.writeToNBT(new CompoundNBT()));
+		sim_fluid.readFromNBT(tank.writeToNBT(new CompoundTag()));
 		if(has_output_fluid&&
 				tank.getFluid().isFluidEqual(new FluidStack(recipe.fluid_out.getFluid(), recipe.fluid_out.amount, recipe.fluid_out.nbt))) {
-			sim_tank.readFromNBT(tank.writeToNBT(new CompoundNBT()));
+			sim_tank.readFromNBT(tank.writeToNBT(new CompoundTag()));
 		}
 		ItemStackHandler sim_in=new ItemStackHandler(1);
 		sim_in.deserializeNBT(input.serializeNBT());
@@ -196,7 +196,7 @@ public class TileBarrel extends TileEntity implements ITickableTileEntity{
 					ok=false;
 			}
 			if(has_output_item) {
-				if(sim_out.insertItem(0, new ItemStack(recipe.item_out.getMatchingStacks()[0].getItem(), recipe.out_amount, recipe.nbt_out), false)!=ItemStack.EMPTY) {
+				if(sim_out.insertItem(0, new ItemStack(recipe.item_out.getItems()[0].getItem(), recipe.out_amount, recipe.nbt_out), false)!=ItemStack.EMPTY) {
 					if(!once_inserted_item||!void_excess_output_item) {
 						ok=false;
 					}
@@ -242,7 +242,7 @@ public class TileBarrel extends TileEntity implements ITickableTileEntity{
 		}
 	}
 	//forge ingores doDrain
-	public static FluidActionResult tryEmptyContainer(@Nonnull ItemStack container, IFluidHandler fluidDestination, int maxAmount, @Nullable PlayerEntity player, boolean doDrain) {
+	public static FluidActionResult tryEmptyContainer(@Nonnull ItemStack container, IFluidHandler fluidDestination, int maxAmount, @Nullable Player player, boolean doDrain) {
 		ItemStack containerCopy = ItemHandlerHelper.copyStackWithSize(container, 1); // do not modify the input
         return FluidUtil.getFluidHandler(containerCopy)
                 .map(containerFluidHandler -> {
@@ -261,7 +261,7 @@ public class TileBarrel extends TileEntity implements ITickableTileEntity{
                     if (doDrain && player != null)
                     {
                         SoundEvent soundevent = transfer.getFluid().getAttributes().getEmptySound(transfer);
-                        player.world.playSound(null, player.getPosX(), player.getPosY() + 0.5, player.getPosZ(), soundevent, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                        player.level.playSound(null, player.getX(), player.getY() + 0.5, player.getZ(), soundevent, SoundSource.BLOCKS, 1.0F, 1.0F);
                     }
 
                     ItemStack resultContainer = containerFluidHandler.getContainer();
@@ -270,7 +270,7 @@ public class TileBarrel extends TileEntity implements ITickableTileEntity{
                 .orElse(FluidActionResult.FAILURE);
 	}
 	
-	public static FluidActionResult tryFillContainer(@Nonnull ItemStack container, IFluidHandler fluidSource, int maxAmount, @Nullable PlayerEntity player, boolean doFill) {
+	public static FluidActionResult tryFillContainer(@Nonnull ItemStack container, IFluidHandler fluidSource, int maxAmount, @Nullable Player player, boolean doFill) {
 		ItemStack containerCopy = ItemHandlerHelper.copyStackWithSize(container, 1); // do not modify the input
         return FluidUtil.getFluidHandler(containerCopy)
                 .map(containerFluidHandler -> {
@@ -283,7 +283,7 @@ public class TileBarrel extends TileEntity implements ITickableTileEntity{
                             if (player != null)
                             {
                                 SoundEvent soundevent = simulatedTransfer.getFluid().getAttributes().getFillSound(simulatedTransfer);
-                                player.world.playSound(null, player.getPosX(), player.getPosY() + 0.5, player.getPosZ(), soundevent, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                                player.level.playSound(null, player.getX(), player.getY() + 0.5, player.getZ(), soundevent, SoundSource.BLOCKS, 1.0F, 1.0F);
                             }
                         }
                         else
@@ -301,8 +301,8 @@ public class TileBarrel extends TileEntity implements ITickableTileEntity{
 	}
 	
 	public void dropInventory() {
-		InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), input.getStackInSlot(0));
-		InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), output.getStackInSlot(0));
+		Containers.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), input.getStackInSlot(0));
+		Containers.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), output.getStackInSlot(0));
 	}
 	
 	@CapabilityInject(IFluidHandler.class)
@@ -316,7 +316,7 @@ public class TileBarrel extends TileEntity implements ITickableTileEntity{
 		@Override
 		public boolean isItemValid(int slot, ItemStack stack) {
 			return stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null).isPresent()||
-					BarrelRecipe.isValidItem(stack, getWorld())||stack.getItem()==Items.GLASS_BOTTLE;
+					BarrelRecipe.isValidItem(stack, getLevel())||stack.getItem()==Items.GLASS_BOTTLE;
 		}
 		
 		@Override
@@ -364,9 +364,9 @@ public class TileBarrel extends TileEntity implements ITickableTileEntity{
 	
 	
 	@Override
-	public CompoundNBT write(CompoundNBT compound) {
-		super.write(compound);
-		compound.put("Fluid", tank.writeToNBT(new CompoundNBT()));
+	public CompoundTag save(CompoundTag compound) {
+		super.save(compound);
+		compound.put("Fluid", tank.writeToNBT(new CompoundTag()));
 		compound.put("input", input.serializeNBT());
 		compound.put("output", output.serializeNBT());
 		compound.putInt("process", process);
@@ -377,8 +377,8 @@ public class TileBarrel extends TileEntity implements ITickableTileEntity{
 	}
 	
 	@Override
-	public void read(BlockState state, CompoundNBT nbt) {
-		super.read(state, nbt);
+	public void load(BlockState state, CompoundTag nbt) {
+		super.load(state, nbt);
 		tank.readFromNBT(nbt.getCompound("Fluid"));
 		input.deserializeNBT(nbt.getCompound("input"));
 		output.deserializeNBT(nbt.getCompound("output"));

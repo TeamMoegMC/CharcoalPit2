@@ -5,56 +5,58 @@ import java.util.List;
 
 import charcoalPit.core.ModItemRegistry;
 import charcoalPit.tile.TileBloom;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.loot.LootContext.Builder;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.IntegerProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.storage.loot.LootContext.Builder;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ToolType;
+
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public class BlockBloom extends Block{
 
-	public static final IntegerProperty LAYER=BlockStateProperties.LAYERS_1_8;
+	public static final IntegerProperty LAYER=BlockStateProperties.LAYERS;
 	public static final BooleanProperty HOT=BooleanProperty.create("hot");
 	public static final BooleanProperty FAIL=BooleanProperty.create("fail");
 	public static final BooleanProperty DOUBLE=BooleanProperty.create("double");
 	
 	public BlockBloom() {
-		super(Properties.create(Material.ROCK).hardnessAndResistance(5, 6).harvestTool(ToolType.PICKAXE).setRequiresTool().sound(SoundType.ANVIL));
+		super(Properties.of(Material.STONE).strength(5, 6).harvestTool(ToolType.PICKAXE).requiresCorrectToolForDrops().sound(SoundType.ANVIL));
 	}
 	
 	@Override
-	public int getLightValue(BlockState state, IBlockReader world, BlockPos pos) {
-		return state.get(HOT)?15:0;
+	public int getLightValue(BlockState state, BlockGetter world, BlockPos pos) {
+		return state.getValue(HOT)?15:0;
 	}
 	
-	public void onEntityWalk(World worldIn, BlockPos pos, Entity entityIn) {
-	      if (!entityIn.isImmuneToFire() && entityIn instanceof LivingEntity && !EnchantmentHelper.hasFrostWalker((LivingEntity)entityIn) && worldIn.getBlockState(pos).get(HOT)) {
-	         entityIn.attackEntityFrom(DamageSource.HOT_FLOOR, 1.0F);
+	public void stepOn(Level worldIn, BlockPos pos, Entity entityIn) {
+	      if (!entityIn.fireImmune() && entityIn instanceof LivingEntity && !EnchantmentHelper.hasFrostWalker((LivingEntity)entityIn) && worldIn.getBlockState(pos).getValue(HOT)) {
+	         entityIn.hurt(DamageSource.HOT_FLOOR, 1.0F);
 	      }
 
-	      super.onEntityWalk(worldIn, pos, entityIn);
+	      super.stepOn(worldIn, pos, entityIn);
 	   }
 	
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 	      builder.add(LAYER,HOT,FAIL,DOUBLE);
 	}
 	
@@ -64,22 +66,22 @@ public class BlockBloom extends Block{
 	}
 	
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public BlockEntity createTileEntity(BlockState state, BlockGetter world) {
 		return new TileBloom();
 	}
 	
 	@Override
-	public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player,
+	public boolean removedByPlayer(BlockState state, Level world, BlockPos pos, Player player,
 			boolean willHarvest, FluidState fluid) {
-		if(state.get(LAYER)>1&&state.get(HOT)&&!state.get(FAIL)) {
-			getBlock().onBlockHarvested(world, pos, state, player);
-			world.setBlockState(pos, state.with(LAYER, state.get(LAYER)-1), 5);
-			player.addExhaustion(0.01F);
-			world.playSound(player, pos, SoundEvents.BLOCK_ANVIL_USE, SoundCategory.BLOCKS, 1F, 1F);
+		if(state.getValue(LAYER)>1&&state.getValue(HOT)&&!state.getValue(FAIL)) {
+			getBlock().playerWillDestroy(world, pos, state, player);
+			world.setBlock(pos, state.setValue(LAYER, state.getValue(LAYER)-1), 5);
+			player.causeFoodExhaustion(0.01F);
+			world.playSound(player, pos, SoundEvents.ANVIL_USE, SoundSource.BLOCKS, 1F, 1F);
 			return false;
 		}else {
-			if(state.get(HOT))
-				world.playSound(player, pos, SoundEvents.BLOCK_ANVIL_USE, SoundCategory.BLOCKS, 1F, 1F);
+			if(state.getValue(HOT))
+				world.playSound(player, pos, SoundEvents.ANVIL_USE, SoundSource.BLOCKS, 1F, 1F);
 			return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
 		}
 		
@@ -87,15 +89,15 @@ public class BlockBloom extends Block{
 	
 	@Override
 	public List<ItemStack> getDrops(BlockState state, Builder builder) {
-		if(state.get(FAIL)) {
+		if(state.getValue(FAIL)) {
 			ArrayList<ItemStack> drops=new ArrayList<>();
-			drops.add(new ItemStack(ModItemRegistry.BloomFail, state.get(DOUBLE)?8:4));
+			drops.add(new ItemStack(ModItemRegistry.BloomFail, state.getValue(DOUBLE)?8:4));
 			return drops;
 		}else {
-			int i=state.get(DOUBLE)?8:4;
+			int i=state.getValue(DOUBLE)?8:4;
 			int j=i;
-			i-=state.get(LAYER);
-			if(state.get(HOT))
+			i-=state.getValue(LAYER);
+			if(state.getValue(HOT))
 				i++;
 			ArrayList<ItemStack> drops=new ArrayList<>();
 			drops.add(new ItemStack(Items.IRON_INGOT, i));

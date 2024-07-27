@@ -5,7 +5,7 @@ import charcoalPit.recipe.BarrelRecipe;
 import charcoalPit.recipe.BloomeryRecipe;
 import charcoalPit.recipe.OreKilnRecipe;
 import charcoalPit.recipe.PotteryKilnRecipe;
-import net.minecraft.item.crafting.IRecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -15,7 +15,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 public class ModRecipeRegistry {
 	
 	@SubscribeEvent
-	public static void registerRecipeType(RegistryEvent.Register<IRecipeSerializer<?>> event) {
+	public static void registerRecipeType(RegistryEvent.Register<RecipeSerializer<?>> event) {
 		event.getRegistry().registerAll(PotteryKilnRecipe.SERIALIZER.setRegistryName("pottery"),OreKilnRecipe.SERIALIZER.setRegistryName("orekiln"),
 				BloomeryRecipe.SERIALIZER.setRegistryName("bloomery"),BarrelRecipe.SERIALIZER.setRegistryName("barrel"));
 	}

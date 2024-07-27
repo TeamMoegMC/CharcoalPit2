@@ -5,22 +5,22 @@ import java.util.List;
 import com.google.gson.JsonObject;
 
 import charcoalPit.CharcoalPit;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
+import net.minecraft.world.Container;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
-public class BloomeryRecipe implements IRecipe<IInventory>{
+public class BloomeryRecipe implements Recipe<Container>{
 	
 	public static final ResourceLocation BLOOMERY=new ResourceLocation(CharcoalPit.MODID, "bloomery");
-	public static final IRecipeType<BloomeryRecipe> BLOOMERY_RECIPE=IRecipeType.register(BLOOMERY.toString());
+	public static final RecipeType<BloomeryRecipe> BLOOMERY_RECIPE=RecipeType.register(BLOOMERY.toString());
 	
 	public final ResourceLocation id;
 	public Ingredient input,output,fail,cool;
@@ -35,12 +35,12 @@ public class BloomeryRecipe implements IRecipe<IInventory>{
 	
 	public static final Serializer SERIALIZER=new Serializer();
 	
-	public static BloomeryRecipe getRecipe(ItemStack stack, World world) {
+	public static BloomeryRecipe getRecipe(ItemStack stack, Level world) {
 		if(stack.isEmpty())
 			return null;
-		List<BloomeryRecipe> recipes=world.getRecipeManager().getRecipesForType(BLOOMERY_RECIPE);
+		List<BloomeryRecipe> recipes=world.getRecipeManager().getAllRecipesFor(BLOOMERY_RECIPE);
 		for(BloomeryRecipe recipe:recipes) {
-			if(recipe.input.test(stack)&&!recipe.output.hasNoMatchingItems())
+			if(recipe.input.test(stack)&&!recipe.output.isEmpty())
 				return recipe;
 		}
 		return null;
@@ -48,22 +48,22 @@ public class BloomeryRecipe implements IRecipe<IInventory>{
 	
 	//junk
 	@Override
-	public boolean matches(IInventory inv, World worldIn) {
+	public boolean matches(Container inv, Level worldIn) {
 		return false;
 	}
 
 	@Override
-	public ItemStack getCraftingResult(IInventory inv) {
+	public ItemStack assemble(Container inv) {
 		return ItemStack.EMPTY;
 	}
 
 	@Override
-	public boolean canFit(int width, int height) {
+	public boolean canCraftInDimensions(int width, int height) {
 		return false;
 	}
 
 	@Override
-	public ItemStack getRecipeOutput() {
+	public ItemStack getResultItem() {
 		return ItemStack.EMPTY;
 	}
 
@@ -73,42 +73,42 @@ public class BloomeryRecipe implements IRecipe<IInventory>{
 	}
 
 	@Override
-	public IRecipeSerializer<?> getSerializer() {
+	public RecipeSerializer<?> getSerializer() {
 		// TODO Auto-generated method stub
 		return SERIALIZER;
 	}
 
 	@Override
-	public IRecipeType<?> getType() {
+	public RecipeType<?> getType() {
 		return BLOOMERY_RECIPE;
 	}
 	
-	public static class Serializer extends ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<BloomeryRecipe>{
+	public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<BloomeryRecipe>{
 
 		@Override
-		public BloomeryRecipe read(ResourceLocation recipeId, JsonObject json) {
-			Ingredient input=Ingredient.deserialize(JSONUtils.getJsonObject(json, "input"));
-			Ingredient output=Ingredient.deserialize(JSONUtils.getJsonObject(json, "output"));
-			Ingredient fail=Ingredient.deserialize(JSONUtils.getJsonObject(json, "fail"));
-			Ingredient cool=Ingredient.deserialize(JSONUtils.getJsonObject(json, "cool"));
+		public BloomeryRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
+			Ingredient input=Ingredient.fromJson(GsonHelper.getAsJsonObject(json, "input"));
+			Ingredient output=Ingredient.fromJson(GsonHelper.getAsJsonObject(json, "output"));
+			Ingredient fail=Ingredient.fromJson(GsonHelper.getAsJsonObject(json, "fail"));
+			Ingredient cool=Ingredient.fromJson(GsonHelper.getAsJsonObject(json, "cool"));
 			return new BloomeryRecipe(recipeId, input, output, fail, cool);
 		}
 
 		@Override
-		public BloomeryRecipe read(ResourceLocation recipeId, PacketBuffer buffer) {
-			Ingredient input=Ingredient.read(buffer);
-			Ingredient output=Ingredient.read(buffer);
-			Ingredient fail=Ingredient.read(buffer);
-			Ingredient cool=Ingredient.read(buffer);
+		public BloomeryRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
+			Ingredient input=Ingredient.fromNetwork(buffer);
+			Ingredient output=Ingredient.fromNetwork(buffer);
+			Ingredient fail=Ingredient.fromNetwork(buffer);
+			Ingredient cool=Ingredient.fromNetwork(buffer);
 			return new BloomeryRecipe(recipeId, input, output, fail, cool);
 		}
 
 		@Override
-		public void write(PacketBuffer buffer, BloomeryRecipe recipe) {
-			recipe.input.write(buffer);
-			recipe.output.write(buffer);
-			recipe.fail.write(buffer);
-			recipe.cool.write(buffer);
+		public void toNetwork(FriendlyByteBuf buffer, BloomeryRecipe recipe) {
+			recipe.input.toNetwork(buffer);
+			recipe.output.toNetwork(buffer);
+			recipe.fail.toNetwork(buffer);
+			recipe.cool.toNetwork(buffer);
 			
 		}
 		

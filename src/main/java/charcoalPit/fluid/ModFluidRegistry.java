@@ -3,8 +3,8 @@ package charcoalPit.fluid;
 import charcoalPit.CharcoalPit;
 import charcoalPit.core.ModBlockRegistry;
 import charcoalPit.core.ModItemRegistry;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -16,6 +16,8 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
 import java.util.function.BiFunction;
+
+import net.minecraftforge.fluids.FluidAttributes.Builder;
 
 @EventBusSubscriber(modid=CharcoalPit.MODID, bus=Bus.MOD)
 public class ModFluidRegistry {

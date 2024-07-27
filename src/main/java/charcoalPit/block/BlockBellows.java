@@ -3,123 +3,132 @@ package charcoalPit.block;
 import charcoalPit.CharcoalPit;
 import charcoalPit.core.ModBlockRegistry;
 import charcoalPit.tile.TileBloomery;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.DirectionProperty;
-import net.minecraft.state.StateContainer.Builder;
-import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.StateDefinition.Builder;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.common.ToolType;
 
 import java.util.Random;
+
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 
 public class BlockBellows extends Block{
 	
 	public static final DirectionProperty FACING= BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty PUSH=BooleanProperty.create("push");
 	
-	public static final VoxelShape NORTH=VoxelShapes.create(0D, 0D, 0D, 1D, 1D, 6D/16D);
-	public static final VoxelShape SOUTH=VoxelShapes.create(0D, 0D, 10D/16D, 1D, 1D, 1D);
-	public static final VoxelShape WEST=VoxelShapes.create(0D, 0D, 0D, 6D/16D, 1D, 1D);
-	public static final VoxelShape EAST=VoxelShapes.create(10D/16D, 0D, 0D, 1D, 1D, 1D);
+	public static final VoxelShape NORTH=Shapes.box(0D, 0D, 0D, 1D, 1D, 6D/16D);
+	public static final VoxelShape SOUTH=Shapes.box(0D, 0D, 10D/16D, 1D, 1D, 1D);
+	public static final VoxelShape WEST=Shapes.box(0D, 0D, 0D, 6D/16D, 1D, 1D);
+	public static final VoxelShape EAST=Shapes.box(10D/16D, 0D, 0D, 1D, 1D, 1D);
 
 	public BlockBellows() {
-		super(Properties.create(Material.WOOD).hardnessAndResistance(2, 3).harvestTool(ToolType.AXE));
-		setDefaultState(getDefaultState().with(PUSH, false));
+		super(Properties.of(Material.WOOD).strength(2, 3).harvestTool(ToolType.AXE));
+		registerDefaultState(defaultBlockState().setValue(PUSH, false));
 	}
 	
 	public BlockBellows(Material m){
-		super(Properties.create(m).hardnessAndResistance(2, 3).harvestTool(ToolType.AXE));
-		setDefaultState(getDefaultState().with(PUSH, false));
+		super(Properties.of(m).strength(2, 3).harvestTool(ToolType.AXE));
+		registerDefaultState(defaultBlockState().setValue(PUSH, false));
 	}
 	
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		if(!state.get(PUSH))
-			return VoxelShapes.fullCube();
-		switch(state.get(FACING)) {
+	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
+		if(!state.getValue(PUSH))
+			return Shapes.block();
+		switch(state.getValue(FACING)) {
 		case EAST:return EAST;
 		case NORTH:return NORTH;
 		case SOUTH:return SOUTH;
 		case WEST:return WEST;
-		default:return VoxelShapes.fullCube();
+		default:return Shapes.block();
 		
 		}
 	}
 	
 	@Override
-	public VoxelShape getRenderShape(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		return VoxelShapes.empty();
+	public VoxelShape getOcclusionShape(BlockState state, BlockGetter worldIn, BlockPos pos) {
+		return Shapes.empty();
 	}
 	
 	@Override
-	protected void fillStateContainer(Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
 		builder.add(FACING, PUSH);
 	}
 	
 	@Override
-	public boolean isTransparent(BlockState state) {
+	public boolean useShapeForLightOcclusion(BlockState state) {
 		return true;
 	}
 
-	public BlockState getStateForPlacement(BlockItemUseContext context) {
-	      return this.getDefaultState().with(FACING, context.getPlacementHorizontalFacing());
+	public BlockState getStateForPlacement(BlockPlaceContext context) {
+	      return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection());
 	   }
 	
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player,
-			Hand handIn, BlockRayTraceResult hit) {
-		if(!state.get(PUSH)) {
-			if(!worldIn.isRemote) {
-				worldIn.getPendingBlockTicks().scheduleTick(pos, this, 10);
+	public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player,
+			InteractionHand handIn, BlockHitResult hit) {
+		if(!state.getValue(PUSH)) {
+			if(!worldIn.isClientSide) {
+				worldIn.getBlockTicks().scheduleTick(pos, this, 10);
 			}
-			return ActionResultType.SUCCESS;
+			return InteractionResult.SUCCESS;
 		}
-		return ActionResultType.PASS;
+		return InteractionResult.PASS;
 	}
 	
 	@Override
-	public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
-		if(state.get(PUSH)) {
-			worldIn.setBlockState(pos, state.with(PUSH, false));
+	public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, Random rand) {
+		if(state.getValue(PUSH)) {
+			worldIn.setBlockAndUpdate(pos, state.setValue(PUSH, false));
 		}else {
-			worldIn.setBlockState(pos, state.with(PUSH, true));
+			worldIn.setBlockAndUpdate(pos, state.setValue(PUSH, true));
 			blow(worldIn, pos, state);
-			worldIn.getPendingBlockTicks().scheduleTick(pos, this, 20);
-			worldIn.playSound(null, pos, SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 1F, 1F);
+			worldIn.getBlockTicks().scheduleTick(pos, this, 20);
+			worldIn.playSound(null, pos, SoundEvents.LAVA_EXTINGUISH, SoundSource.BLOCKS, 1F, 1F);
 		}
 	}
 	
-	public void blow(World world, BlockPos pos, BlockState state) {
-		BlockPos pos2=pos.offset(state.get(FACING));
+	public void blow(Level world, BlockPos pos, BlockState state) {
+		BlockPos pos2=pos.relative(state.getValue(FACING));
 		BlockState front=world.getBlockState(pos2);
-		if(front.getBlock().isIn(BlockTags.getCollection().get(new ResourceLocation(CharcoalPit.MODID, "tuyere_blocks")))) {
+		if(front.getBlock().is(BlockTags.getAllTags().getTag(new ResourceLocation(CharcoalPit.MODID, "tuyere_blocks")))) {
 			int divs=0;
 			for(Direction dir:Direction.Plane.HORIZONTAL) {
-				BlockPos pos3=pos2.offset(dir);
+				BlockPos pos3=pos2.relative(dir);
 				if(world.getBlockState(pos3).getBlock()==ModBlockRegistry.Bloomery&&
-						!world.getBlockState(pos3).get(BlockBloomery.DUMMY))
+						!world.getBlockState(pos3).getValue(BlockBloomery.DUMMY))
 					divs++;
 			}
 			if(divs>0) {
 				for(Direction dir:Direction.Plane.HORIZONTAL) {
-					BlockPos pos3=pos2.offset(dir);
+					BlockPos pos3=pos2.relative(dir);
 					if(world.getBlockState(pos3).getBlock()==ModBlockRegistry.Bloomery&&
-							!world.getBlockState(pos3).get(BlockBloomery.DUMMY)) {
-						((TileBloomery) world.getTileEntity(pos3)).blow(140 / divs);
+							!world.getBlockState(pos3).getValue(BlockBloomery.DUMMY)) {
+						((TileBloomery) world.getBlockEntity(pos3)).blow(140 / divs);
 					}
 				}
 			}

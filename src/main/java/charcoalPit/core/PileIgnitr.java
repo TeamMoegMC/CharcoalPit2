@@ -8,18 +8,18 @@ import charcoalPit.recipe.BloomeryRecipe;
 import charcoalPit.recipe.PotteryKilnRecipe;
 import charcoalPit.tile.TileBloomery;
 import charcoalPit.tile.TilePotteryKiln;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.CauldronBlock;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.CauldronBlock;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.world.World;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.event.entity.player.PlayerEvent.ItemCraftedEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.Event.Result;
@@ -33,40 +33,40 @@ public class PileIgnitr {
 	@SubscribeEvent(priority=EventPriority.HIGH)
 	public static void placeKiln(PlayerInteractEvent.RightClickBlock event) {
 		//undye pots
-		World world = event.getWorld();
-		if (!world.isRemote) {
+		Level world = event.getWorld();
+		if (!world.isClientSide) {
 			if (world.getBlockState(event.getPos()).getBlock() == Blocks.CAULDRON &&
-					world.getBlockState(event.getPos()).get(CauldronBlock.LEVEL) > 0) {
-				Block block = Block.getBlockFromItem(event.getItemStack().getItem());
+					world.getBlockState(event.getPos()).getValue(CauldronBlock.LEVEL) > 0) {
+				Block block = Block.byItem(event.getItemStack().getItem());
 				if (block instanceof BlockCeramicPot && block != ModBlockRegistry.CeramicPot) {
 					ItemStack stack = new ItemStack(ModBlockRegistry.CeramicPot, 1);
 					stack.setTag(event.getItemStack().getTag());
-					event.getPlayer().setHeldItem(event.getHand(), stack);
-					world.setBlockState(event.getPos(), Blocks.CAULDRON.getDefaultState().with(CauldronBlock.LEVEL, world.getBlockState(event.getPos()).get(CauldronBlock.LEVEL) - 1));
+					event.getPlayer().setItemInHand(event.getHand(), stack);
+					world.setBlockAndUpdate(event.getPos(), Blocks.CAULDRON.defaultBlockState().setValue(CauldronBlock.LEVEL, world.getBlockState(event.getPos()).getValue(CauldronBlock.LEVEL) - 1));
 					event.setUseBlock(Result.DENY);
 					event.setUseItem(Result.DENY);
 				}
 			}
 			//place bloomery
-			if (event.getPlayer().isSneaking()) {
+			if (event.getPlayer().isShiftKeyDown()) {
 				if (PotteryKilnRecipe.isValidInput(event.getItemStack(), world) &&
-						event.getFace() == Direction.UP && world.getBlockState(event.getPos()).isSolidSide(world, event.getPos(), Direction.UP) &&
-						world.getBlockState(event.getPos().offset(Direction.UP)).getMaterial().isReplaceable()) {
-					world.setBlockState(event.getPos().offset(Direction.UP), ModBlockRegistry.Kiln.getDefaultState());
-					TilePotteryKiln tile = ((TilePotteryKiln) world.getTileEntity(event.getPos().offset(Direction.UP)));
-					event.getPlayer().setHeldItem(event.getHand(), tile.pottery.insertItem(0, event.getItemStack(), false));
-					world.playSound(null, event.getPos(), SoundEvents.BLOCK_GRAVEL_PLACE, SoundCategory.BLOCKS, 1F, 1F);
+						event.getFace() == Direction.UP && world.getBlockState(event.getPos()).isFaceSturdy(world, event.getPos(), Direction.UP) &&
+						world.getBlockState(event.getPos().relative(Direction.UP)).getMaterial().isReplaceable()) {
+					world.setBlockAndUpdate(event.getPos().relative(Direction.UP), ModBlockRegistry.Kiln.defaultBlockState());
+					TilePotteryKiln tile = ((TilePotteryKiln) world.getBlockEntity(event.getPos().relative(Direction.UP)));
+					event.getPlayer().setItemInHand(event.getHand(), tile.pottery.insertItem(0, event.getItemStack(), false));
+					world.playSound(null, event.getPos(), SoundEvents.GRAVEL_PLACE, SoundSource.BLOCKS, 1F, 1F);
 					event.setUseBlock(Result.DENY);
 					event.setUseItem(Result.DENY);
 				} else if (BloomeryRecipe.getRecipe(event.getItemStack(), world) != null &&
-						event.getFace() == Direction.UP && world.getBlockState(event.getPos()).getBlock().isIn(BlockTags.getCollection().get(new ResourceLocation(CharcoalPit.MODID, "bloomery_walls"))) &&
-						world.getBlockState(event.getPos().offset(Direction.UP)).getMaterial().isReplaceable() &&
-						MethodHelper.Bloomery2ValidPosition(world, event.getPos().offset(Direction.UP), false, false)) {
-					world.setBlockState(event.getPos().offset(Direction.UP), ModBlockRegistry.Bloomery.getDefaultState().with(BlockBloomery.STAGE, 1));
-					TileBloomery tile = ((TileBloomery) world.getTileEntity(event.getPos().offset(Direction.UP)));
+						event.getFace() == Direction.UP && world.getBlockState(event.getPos()).getBlock().is(BlockTags.getAllTags().getTag(new ResourceLocation(CharcoalPit.MODID, "bloomery_walls"))) &&
+						world.getBlockState(event.getPos().relative(Direction.UP)).getMaterial().isReplaceable() &&
+						MethodHelper.Bloomery2ValidPosition(world, event.getPos().relative(Direction.UP), false, false)) {
+					world.setBlockAndUpdate(event.getPos().relative(Direction.UP), ModBlockRegistry.Bloomery.defaultBlockState().setValue(BlockBloomery.STAGE, 1));
+					TileBloomery tile = ((TileBloomery) world.getBlockEntity(event.getPos().relative(Direction.UP)));
 					tile.recipe = BloomeryRecipe.getRecipe(event.getItemStack(), world);
-					event.getPlayer().setHeldItem(event.getHand(), tile.ore.insertItem(0, event.getItemStack(), false));
-					world.playSound(null, event.getPos(), SoundEvents.BLOCK_GRAVEL_PLACE, SoundCategory.BLOCKS, 1F, 1F);
+					event.getPlayer().setItemInHand(event.getHand(), tile.ore.insertItem(0, event.getItemStack(), false));
+					world.playSound(null, event.getPos(), SoundEvents.GRAVEL_PLACE, SoundSource.BLOCKS, 1F, 1F);
 					event.setUseBlock(Result.DENY);
 					event.setUseItem(Result.DENY);
 
@@ -95,10 +95,10 @@ public class PileIgnitr {
 	}
 	@SubscribeEvent
 	public static void savePotInventory(ItemCraftedEvent event) {
-		if(Block.getBlockFromItem(event.getCrafting().getItem()) instanceof BlockCeramicPot) {
-			for(int i=0;i<event.getInventory().getSizeInventory();i++) {
-				if(Block.getBlockFromItem(event.getInventory().getStackInSlot(i).getItem()) instanceof BlockCeramicPot) {
-					event.getCrafting().setTag(event.getInventory().getStackInSlot(i).getTag());
+		if(Block.byItem(event.getCrafting().getItem()) instanceof BlockCeramicPot) {
+			for(int i=0;i<event.getInventory().getContainerSize();i++) {
+				if(Block.byItem(event.getInventory().getItem(i).getItem()) instanceof BlockCeramicPot) {
+					event.getCrafting().setTag(event.getInventory().getItem(i).getTag());
 					return;
 				}
 			}

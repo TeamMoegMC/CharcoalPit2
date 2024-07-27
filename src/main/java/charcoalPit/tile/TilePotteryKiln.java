@@ -6,21 +6,21 @@ import charcoalPit.core.Config;
 import charcoalPit.core.ModBlockRegistry;
 import charcoalPit.core.ModTileRegistry;
 import charcoalPit.recipe.PotteryKilnRecipe;
-import net.minecraft.block.AbstractFireBlock;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.item.ExperienceOrbEntity;
-import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
+import net.minecraft.world.level.block.BaseFireBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.entity.ExperienceOrb;
+import net.minecraft.world.Containers;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.level.block.entity.TickableBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.Direction;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class TilePotteryKiln extends TileEntity implements ITickableTileEntity{
+public class TilePotteryKiln extends BlockEntity implements TickableBlockEntity{
 	
 	public int invalidTicks;
 	public int burnTime;
@@ -39,26 +39,26 @@ public class TilePotteryKiln extends TileEntity implements ITickableTileEntity{
 	
 	@Override
 	public void tick() {
-		if(!this.world.isRemote&&burnTime>-1){
+		if(!this.level.isClientSide&&burnTime>-1){
 			checkValid();
 			if(burnTime>0) {
 				burnTime--;
 				if(burnTime%500==0)
-					markDirty();
+					setChanged();
 			}else{
 				if(burnTime==0){
-					PotteryKilnRecipe result=PotteryKilnRecipe.getResult(pottery.getStackInSlot(0), this.world);
+					PotteryKilnRecipe result=PotteryKilnRecipe.getResult(pottery.getStackInSlot(0), this.level);
 					if(result!=null) {
-						ItemStack out=PotteryKilnRecipe.processClayPot(pottery.getStackInSlot(0), world);
+						ItemStack out=PotteryKilnRecipe.processClayPot(pottery.getStackInSlot(0), level);
 						if(out.isEmpty())
 							out=new ItemStack(result.output,pottery.getStackInSlot(0).getCount());
 						xp=result.xp*pottery.getStackInSlot(0).getCount();
 						pottery.setStackInSlot(0, out);
 					}
-					this.world.setBlockState(pos, ModBlockRegistry.Kiln.getDefaultState().with(BlockPotteryKiln.TYPE, EnumKilnTypes.COMPLETE));
-					this.world.removeBlock(pos.offset(Direction.UP), false);
+					this.level.setBlockAndUpdate(worldPosition, ModBlockRegistry.Kiln.defaultBlockState().setValue(BlockPotteryKiln.TYPE, EnumKilnTypes.COMPLETE));
+					this.level.removeBlock(worldPosition.relative(Direction.UP), false);
 					burnTime--;
-					markDirty();
+					setChanged();
 				}
 			}
 		}
@@ -71,17 +71,17 @@ public class TilePotteryKiln extends TileEntity implements ITickableTileEntity{
 		}
 	}
 	public void dropInventory(){
-		InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), pottery.getStackInSlot(0));
+		Containers.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), pottery.getStackInSlot(0));
 		int x=(int)xp+Math.random()<(xp-(int)xp)?1:0;
 		while(x>0){
-			int i=ExperienceOrbEntity.getXPSplit(x);
+			int i=ExperienceOrb.getExperienceValue(x);
 			x-=i;
-			world.addEntity(new ExperienceOrbEntity(world, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D, i));
+			level.addFreshEntity(new ExperienceOrb(level, (double)worldPosition.getX() + 0.5D, (double)worldPosition.getY() + 0.5D, (double)worldPosition.getZ() + 0.5D, i));
 		}
 	}
 	public void checkValid(){
 		boolean valid=true;
-		if(Config.RainyPottery.get()&&this.world.isRainingAt(this.pos.offset(Direction.UP))){
+		if(Config.RainyPottery.get()&&this.level.isRainingAt(this.worldPosition.relative(Direction.UP))){
 			valid=false;
 		}else{
 			if(isValid)
@@ -89,18 +89,18 @@ public class TilePotteryKiln extends TileEntity implements ITickableTileEntity{
 		}
 		//check structure
 		for(Direction facing:Direction.Plane.HORIZONTAL){
-			BlockState block=this.world.getBlockState(this.pos.offset(facing));
-			if(!block.isSolidSide(this.world, pos.offset(facing), facing.getOpposite())){
+			BlockState block=this.level.getBlockState(this.worldPosition.relative(facing));
+			if(!block.isFaceSturdy(this.level, worldPosition.relative(facing), facing.getOpposite())){
 				valid=false;
 				break;
 			}
 		}
-		BlockState block=this.world.getBlockState(this.pos.offset(Direction.UP));
+		BlockState block=this.level.getBlockState(this.worldPosition.relative(Direction.UP));
 		if(block.getBlock()!=Blocks.FIRE){
-			if(block.getBlock().isAir(block, this.world, this.pos.offset(Direction.UP))||
-					AbstractFireBlock.canLightBlock(this.world, this.pos.offset(Direction.UP),Direction.UP)){
-				BlockState blockstate1 = AbstractFireBlock.getFireForPlacement(this.world, this.pos.offset(Direction.UP));
-	            this.world.setBlockState(this.pos.offset(Direction.UP), blockstate1, 11);
+			if(block.getBlock().isAir(block, this.level, this.worldPosition.relative(Direction.UP))||
+					BaseFireBlock.canBePlacedAt(this.level, this.worldPosition.relative(Direction.UP),Direction.UP)){
+				BlockState blockstate1 = BaseFireBlock.getState(this.level, this.worldPosition.relative(Direction.UP));
+	            this.level.setBlock(this.worldPosition.relative(Direction.UP), blockstate1, 11);
 			}else{
 				valid=false;
 			}
@@ -113,16 +113,16 @@ public class TilePotteryKiln extends TileEntity implements ITickableTileEntity{
 				invalidTicks++;
 			}else{
 				setActive(false);
-				this.world.setBlockState(pos, ModBlockRegistry.Kiln.getDefaultState().with(BlockPotteryKiln.TYPE, EnumKilnTypes.WOOD), 2);
-				this.world.setBlockState(pos.offset(Direction.UP), Blocks.AIR.getDefaultState(), 2);
+				this.level.setBlock(worldPosition, ModBlockRegistry.Kiln.defaultBlockState().setValue(BlockPotteryKiln.TYPE, EnumKilnTypes.WOOD), 2);
+				this.level.setBlock(worldPosition.relative(Direction.UP), Blocks.AIR.defaultBlockState(), 2);
 				invalidTicks=0;
 			}
 		}
 	}
 	
 	@Override
-	public CompoundNBT write(CompoundNBT compound) {
-		super.write(compound);
+	public CompoundTag save(CompoundTag compound) {
+		super.save(compound);
 		compound.putInt("invalid", invalidTicks);
 		compound.putInt("time", burnTime);
 		compound.putFloat("xp", xp);
@@ -132,8 +132,8 @@ public class TilePotteryKiln extends TileEntity implements ITickableTileEntity{
 	}
 	
 	@Override
-	public void read(BlockState state, CompoundNBT nbt) {
-		super.read(state, nbt);
+	public void load(BlockState state, CompoundTag nbt) {
+		super.load(state, nbt);
 		invalidTicks=nbt.getInt("invalid");
 		burnTime=nbt.getInt("time");
 		xp=nbt.getFloat("xp");
@@ -142,26 +142,26 @@ public class TilePotteryKiln extends TileEntity implements ITickableTileEntity{
 	}
 	
 	@Override
-	public CompoundNBT getUpdateTag() {
-		CompoundNBT nbt=super.getUpdateTag();
+	public CompoundTag getUpdateTag() {
+		CompoundTag nbt=super.getUpdateTag();
 		nbt.put("pottery", pottery.serializeNBT());
 		return nbt;
 	}
 	
 	@Override
-	public SUpdateTileEntityPacket getUpdatePacket() {
-		return new SUpdateTileEntityPacket(getPos(), 1, pottery.serializeNBT());
+	public ClientboundBlockEntityDataPacket getUpdatePacket() {
+		return new ClientboundBlockEntityDataPacket(getBlockPos(), 1, pottery.serializeNBT());
 	}
 	
 	@Override
-	public void handleUpdateTag(BlockState state, CompoundNBT tag) {
+	public void handleUpdateTag(BlockState state, CompoundTag tag) {
 		super.handleUpdateTag(state, tag);
 		pottery.deserializeNBT(tag.getCompound("pottery"));
 	}
 	
 	@Override
-	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-		pottery.deserializeNBT(pkt.getNbtCompound());
+	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+		pottery.deserializeNBT(pkt.getTag());
 	}
 	
 	public class PotteryStackHandler extends ItemStackHandler{

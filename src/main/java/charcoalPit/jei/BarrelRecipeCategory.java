@@ -3,16 +3,16 @@ package charcoalPit.jei;
 import charcoalPit.CharcoalPit;
 import charcoalPit.core.ModBlockRegistry;
 import charcoalPit.recipe.BarrelRecipe;
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -29,7 +29,7 @@ public class BarrelRecipeCategory implements IRecipeCategory<BarrelRecipe> {
 	public final IDrawable overlay;
 	public final IDrawable tank_overlay;
 	public BarrelRecipeCategory(IGuiHelper helper){
-		loc_name= I18n.format("charcoal_pit.jei.barrel");
+		loc_name= I18n.get("charcoal_pit.jei.barrel");
 		backgroung=helper.createBlankDrawable(175,85);
 		icon=helper.createDrawableIngredient(new ItemStack(ModBlockRegistry.Barrel));
 		overlay=helper.createDrawable(new ResourceLocation(CharcoalPit.MODID,"textures/gui/container/barrel_recipe.png"),0,0,175,85);
@@ -70,13 +70,13 @@ public class BarrelRecipeCategory implements IRecipeCategory<BarrelRecipe> {
 		}
 		iIngredients.setInputs(VanillaTypes.ITEM, list);*/
 		ArrayList<List<ItemStack>> list2=new ArrayList<>();
-		ItemStack stack = recipe.item_in.getMatchingStacks()[0];
+		ItemStack stack = recipe.item_in.getItems()[0];
 		stack.setCount(recipe.in_amount);
 		list2.add(Arrays.asList(stack));
 		iIngredients.setInputLists(VanillaTypes.ITEM,list2);
 		iIngredients.setInput(VanillaTypes.FLUID,new FluidStack(recipe.fluid_in.getFluid(),recipe.fluid_in.amount,recipe.fluid_in.nbt));
 		if((recipe.flags&0b100)==0b100){
-			iIngredients.setOutput(VanillaTypes.ITEM,new ItemStack(recipe.item_out.getMatchingStacks()[0].getItem(),recipe.out_amount,recipe.nbt_out));
+			iIngredients.setOutput(VanillaTypes.ITEM,new ItemStack(recipe.item_out.getItems()[0].getItem(),recipe.out_amount,recipe.nbt_out));
 		}
 		if((recipe.flags&0b1000)==0b1000){
 			iIngredients.setOutput(VanillaTypes.FLUID,new FluidStack(recipe.fluid_out.getFluid(), recipe.fluid_out.amount,recipe.fluid_out.nbt));
@@ -100,7 +100,7 @@ public class BarrelRecipeCategory implements IRecipeCategory<BarrelRecipe> {
 	}
 	
 	@Override
-	public void draw(BarrelRecipe recipe, MatrixStack matrixStack, double mouseX, double mouseY) {
+	public void draw(BarrelRecipe recipe, PoseStack matrixStack, double mouseX, double mouseY) {
 		overlay.draw(matrixStack);
 	}
 }
