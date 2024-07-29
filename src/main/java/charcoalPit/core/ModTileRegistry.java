@@ -9,7 +9,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import org.jline.terminal.spi.Pty;
 
-@EventBusSubscriber(modid = CharcoalPit.MODID, bus = Bus.MOD)
+//@EventBusSubscriber(modid = CharcoalPit.MODID, bus = Bus.MOD)
 public class ModTileRegistry {
 
 
@@ -26,7 +26,7 @@ public class ModTileRegistry {
     public static BlockEntityType<TileBarrel> Barrel = BlockEntityType.Builder.of(TileBarrel::new, ModBlockRegistry.Barrel).build(null);
 	
 	
-	@SubscribeEvent
+//	@SubscribeEvent
 	public static void registerTileEntity(RegistryEvent.Register<BlockEntityType<?>> event) {
 		event.getRegistry().registerAll(ActivePile.setRegistryName("active_pile"),CreosoteCollector.setRegistryName("creosote_collector"),
 				PotteryKiln.setRegistryName("pottery_kiln"),CeramicPot.setRegistryName("ceramic_pot"),Bloomery2.setRegistryName("bloomery2"),

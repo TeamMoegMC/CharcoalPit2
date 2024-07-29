@@ -18,57 +18,95 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.WallBlock;
 
-@EventBusSubscriber(modid = CharcoalPit.MODID, bus = Bus.MOD)
+//@EventBusSubscriber(modid = CharcoalPit.MODID, bus = Bus.MOD)
 public class ModBlockRegistry {
 
-	public static BlockThatch Thatch = new BlockThatch();
-	public static RotatedPillarBlock LogPile = new BlockLogPile();
-	public static Block CoalPile = new BlockCoalPile();
-	public static Block WoodAsh = new BlockAsh(), CoalAsh = new BlockAsh(), SandyBrick = new Block(Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE).strength(2, 6).requiresCorrectToolForDrops()),
-			CokeBlock = new Block(Properties.of(Material.WOOD, MaterialColor.COLOR_BLACK).strength(5F, 6F).requiresCorrectToolForDrops()) {
-				public int getFireSpreadSpeed(net.minecraft.world.level.block.state.BlockState state, net.minecraft.world.level.BlockGetter world, net.minecraft.core.BlockPos pos, net.minecraft.core.Direction face) {
-					return 5;
-				}
+	public static BlockThatch Thatch;
+	public static RotatedPillarBlock LogPile;
+	public static Block CoalPile;
+	public static Block WoodAsh, CoalAsh, SandyBrick, CokeBlock;
+	public static FallingBlock Ash;
+	public static SlabBlock SandySlab;
+	public static StairBlock SandyStair;
+	public static WallBlock SandyWall;
 
-				;
-
-				public int getFlammability(net.minecraft.world.level.block.state.BlockState state, net.minecraft.world.level.BlockGetter world, net.minecraft.core.BlockPos pos, net.minecraft.core.Direction face) {
-					return 5;
-				}
-
-				;
-			};
-	public static FallingBlock Ash = new FallingBlock(Properties.of(Material.SAND, MaterialColor.COLOR_LIGHT_GRAY).strength(0.5F).sound(SoundType.SAND));
-	public static SlabBlock SandySlab=new SlabBlock(Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE).strength(2, 6).requiresCorrectToolForDrops());
-	public static StairBlock SandyStair=new StairBlock(()->SandyBrick.defaultBlockState(), Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE).strength(2, 6).requiresCorrectToolForDrops());
-	public static WallBlock SandyWall=new WallBlock(Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE).strength(2, 6).requiresCorrectToolForDrops());
-
-	public static BlockCreosoteCollector SandyCollector=new BlockCreosoteCollector(Properties.copy(SandyBrick));
-	public static BlockPotteryKiln Kiln=new BlockPotteryKiln();
-	public static BlockCeramicPot CeramicPot=new BlockCeramicPot(MaterialColor.COLOR_ORANGE),WhitePot=new BlockCeramicPot(MaterialColor.TERRACOTTA_WHITE),
-			OrangePot=new BlockCeramicPot(MaterialColor.TERRACOTTA_ORANGE),MagentaPot=new BlockCeramicPot(MaterialColor.TERRACOTTA_MAGENTA),
-			LightBluePot=new BlockCeramicPot(MaterialColor.TERRACOTTA_LIGHT_BLUE),YellowPot=new BlockCeramicPot(MaterialColor.TERRACOTTA_YELLOW),
-			LimePot=new BlockCeramicPot(MaterialColor.TERRACOTTA_LIGHT_GREEN),PinkPot=new BlockCeramicPot(MaterialColor.TERRACOTTA_PINK),
-			GrayPot = new BlockCeramicPot(MaterialColor.TERRACOTTA_GRAY), LightGrayPot = new BlockCeramicPot(MaterialColor.TERRACOTTA_LIGHT_GRAY),
-			CyanPot = new BlockCeramicPot(MaterialColor.TERRACOTTA_CYAN), PurplePot = new BlockCeramicPot(MaterialColor.TERRACOTTA_PURPLE),
-			BluePot = new BlockCeramicPot(MaterialColor.TERRACOTTA_BLUE), BrownPot = new BlockCeramicPot(MaterialColor.TERRACOTTA_BROWN),
-			GreenPot = new BlockCeramicPot(MaterialColor.TERRACOTTA_GREEN), RedPot = new BlockCeramicPot(MaterialColor.TERRACOTTA_RED),
-			BlackPot = new BlockCeramicPot(MaterialColor.TERRACOTTA_BLACK);
-	public static BlockBellows Bellows = new BlockBellows();
-	public static Block TuyereSandy = new Block(Properties.copy(SandyBrick));
+	public static BlockCreosoteCollector SandyCollector;
+	public static BlockPotteryKiln Kiln;
+	public static BlockCeramicPot CeramicPot,WhitePot,
+			OrangePot,MagentaPot,
+			LightBluePot,YellowPot,
+			LimePot,PinkPot,
+			GrayPot, LightGrayPot,
+			CyanPot, PurplePot,
+			BluePot, BrownPot,
+			GreenPot, RedPot,
+			BlackPot;
+	public static BlockBellows Bellows;
+	public static Block TuyereSandy;
 	//public static BlockClayPot ClayPot=new BlockClayPot();
-	public static BlockBloomery Bloomery = new BlockBloomery();
-	public static BlockMainBloomery MainBloomery = new BlockMainBloomery();
-	public static BlockBarrel Barrel = new BlockBarrel();
-	public static BlockMechanicalBellows MechanicalBellows = new BlockMechanicalBellows();
+	public static BlockBloomery Bloomery;
+	public static BlockMainBloomery MainBloomery;
+	public static BlockBarrel Barrel;
+	public static BlockMechanicalBellows MechanicalBellows;
+	static {
+		Thatch= new BlockThatch();
+		LogPile = new BlockLogPile();
+		CoalPile = new BlockCoalPile();
+		WoodAsh = new BlockAsh();
+		CoalAsh =new BlockAsh();
+//		Ash = new BlockAsh();
+		SandyBrick =new Block(Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE).strength(2, 6).requiresCorrectToolForDrops());
+		CokeBlock= new Block(Properties.of(Material.WOOD, MaterialColor.COLOR_BLACK).strength(5F, 6F).requiresCorrectToolForDrops()) {
+			public int getFireSpreadSpeed(net.minecraft.world.level.block.state.BlockState state, net.minecraft.world.level.BlockGetter world, net.minecraft.core.BlockPos pos, net.minecraft.core.Direction face) {
+				return 5;
+			}
+
+			;
+
+			public int getFlammability(net.minecraft.world.level.block.state.BlockState state, net.minecraft.world.level.BlockGetter world, net.minecraft.core.BlockPos pos, net.minecraft.core.Direction face) {
+				return 5;
+			}
+        };
+		Ash = new FallingBlock(Properties.of(Material.SAND, MaterialColor.COLOR_LIGHT_GRAY).strength(0.5F).sound(SoundType.SAND));
+		SandySlab=new SlabBlock(Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE).strength(2, 6).requiresCorrectToolForDrops());
+		SandyStair=new StairBlock(()->SandyBrick.defaultBlockState(), Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE).strength(2, 6).requiresCorrectToolForDrops());
+		SandyWall=new WallBlock(Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE).strength(2, 6).requiresCorrectToolForDrops());
+
+		SandyCollector=new BlockCreosoteCollector(Properties.copy(SandyBrick));
+		Kiln=new BlockPotteryKiln();
+		CeramicPot=new BlockCeramicPot(MaterialColor.COLOR_ORANGE);
+		WhitePot=new BlockCeramicPot(MaterialColor.TERRACOTTA_WHITE);
+		OrangePot=new BlockCeramicPot(MaterialColor.TERRACOTTA_ORANGE);
+		MagentaPot=new BlockCeramicPot(MaterialColor.TERRACOTTA_MAGENTA);
+		LightBluePot=new BlockCeramicPot(MaterialColor.TERRACOTTA_LIGHT_BLUE);
+		YellowPot=new BlockCeramicPot(MaterialColor.TERRACOTTA_YELLOW);
+		LimePot=new BlockCeramicPot(MaterialColor.TERRACOTTA_LIGHT_GREEN);
+		PinkPot=new BlockCeramicPot(MaterialColor.TERRACOTTA_PINK);
+		GrayPot = new BlockCeramicPot(MaterialColor.TERRACOTTA_GRAY);
+		LightGrayPot = new BlockCeramicPot(MaterialColor.TERRACOTTA_LIGHT_GRAY);
+		CyanPot = new BlockCeramicPot(MaterialColor.TERRACOTTA_CYAN);
+		PurplePot = new BlockCeramicPot(MaterialColor.TERRACOTTA_PURPLE);
+		BluePot = new BlockCeramicPot(MaterialColor.TERRACOTTA_BLUE);
+		BrownPot = new BlockCeramicPot(MaterialColor.TERRACOTTA_BROWN);
+		GreenPot = new BlockCeramicPot(MaterialColor.TERRACOTTA_GREEN);
+		RedPot = new BlockCeramicPot(MaterialColor.TERRACOTTA_RED);
+		BlackPot = new BlockCeramicPot(MaterialColor.TERRACOTTA_BLACK);
+		Bellows = new BlockBellows();
+		TuyereSandy = new Block(Properties.copy(SandyBrick));
+
+		Bloomery = new BlockBloomery();
+		MainBloomery = new BlockMainBloomery();
+		Barrel = new BlockBarrel();
+		MechanicalBellows = new BlockMechanicalBellows();
+	}
 
 	/*public static DoorBlock BrickDoor=new DoorBlock(AbstractBlock.Properties.from(Blocks.IRON_DOOR)),
 			SandyDoor=new DoorBlock(Properties.from(Blocks.IRON_DOOR)),
 			NetherDoor=new DoorBlock(Properties.from(Blocks.IRON_DOOR)),
 			EndDoor=new DoorBlock(Properties.from(Blocks.IRON_DOOR));*/
-	
 
-	@SubscribeEvent
+
+//	@SubscribeEvent
 	public static void registerBlocks(RegistryEvent.Register<Block> event) {
 		event.getRegistry().registerAll(Thatch.setRegistryName("thatch"), LogPile.setRegistryName("log_pile"), CoalPile.setRegistryName("coal_pile"),
 				WoodAsh.setRegistryName("wood_ash"), CoalAsh.setRegistryName("coal_ash"),
@@ -86,5 +124,5 @@ public class ModBlockRegistry {
 				LightBluePot.setRegistryName("light_blue_pot"), GreenPot.setRegistryName("green_pot"), GrayPot.setRegistryName("gray_pot"), CyanPot.setRegistryName("cyan_pot"),
 				BrownPot.setRegistryName("brown_pot"), BluePot.setRegistryName("blue_pot"), BlackPot.setRegistryName("black_pot"));
 	}
-	
+
 }

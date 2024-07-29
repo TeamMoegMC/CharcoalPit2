@@ -14,6 +14,7 @@ import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -40,6 +41,7 @@ public class ClientSetup {
 			}
 		}, ModItemRegistry.AlcoholBottle);
 	}
+
 	@SubscribeEvent
 	public static void RegisterEntityRender(EntityRenderersEvent.RegisterRenderers event){
 		event.registerBlockEntityRenderer(ModTileRegistry.PotteryKiln, TESRPotteryKiln::new);

@@ -18,10 +18,12 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 
-@EventBusSubscriber(modid=CharcoalPit.MODID, bus=Bus.MOD)
+//@EventBusSubscriber(modid=CharcoalPit.MODID, bus=Bus.MOD)
 public class ModItemRegistry {
-	
+
 	public static CreativeModeTab CHARCOAL_PIT=new CreativeModeTab("charcoal_pit") {
 		@Override
 		public ItemStack makeIcon() {
@@ -35,48 +37,99 @@ public class ModItemRegistry {
 		}
 	};
 
-	public static BlockItemFuel Thatch = buildBlockItem(ModBlockRegistry.Thatch, 200), LogPile = buildBlockItem(ModBlockRegistry.LogPile, 3000), CoalPile = buildBlockItem(ModBlockRegistry.CoalPile, 12000), CokeBlock = buildBlockItem(ModBlockRegistry.CokeBlock, 32000);
-	public static BlockItem WoodAsh = buildBlockItem(ModBlockRegistry.WoodAsh), CoalAsh = buildBlockItem(ModBlockRegistry.CoalAsh), AshBlock = buildBlockItem(ModBlockRegistry.Ash),
-			SandyBrick = buildBlockItem(ModBlockRegistry.SandyBrick), SandySlab = buildBlockItem(ModBlockRegistry.SandySlab), SandyStair = buildBlockItem(ModBlockRegistry.SandyStair), SandyWall = buildBlockItem(ModBlockRegistry.SandyWall), MainBloomery = buildBlockItem(ModBlockRegistry.MainBloomery);
+	public static BlockItemFuel Thatch, LogPile, CoalPile, CokeBlock;
+	public static BlockItem WoodAsh, CoalAsh, AshBlock,
+			SandyBrick, SandySlab, SandyStair, SandyWall, MainBloomery;
 
-	public static ItemFuel Straw = buildItem(CHARCOAL_PIT, 50), Coke = buildItem(CHARCOAL_PIT, 3200);
-	public static Item Ash = buildItem(CHARCOAL_PIT);
-	public static BoneMealItem Fertilizer = new BoneMealItem(new Item.Properties().tab(CHARCOAL_PIT));
-	public static ItemFireStarter FireStarter = new ItemFireStarter();
-	public static Item BloomCool = buildItem(CHARCOAL_PIT), BloomFail = buildItem(CHARCOAL_PIT), BloomNiCool = buildItem(CHARCOAL_PIT), BloomNiFail = buildItem(CHARCOAL_PIT);
-	public static Item SandyBrickItem = buildItem(CHARCOAL_PIT), UnfireSandyBrick = buildItem(CHARCOAL_PIT), UnfiredBrick = buildItem(CHARCOAL_PIT);
+	public static ItemFuel Straw, Coke;
+	public static Item Ash;
+	public static BoneMealItem Fertilizer;
+	public static ItemFireStarter FireStarter;
+	public static Item BloomCool, BloomFail, BloomNiCool, BloomNiFail;
+	public static Item SandyBrickItem, UnfireSandyBrick, UnfiredBrick;
 
-	public static BlockItem SandyCollector = buildBlockItem(ModBlockRegistry.SandyCollector, CHARCOAL_PIT);
-	public static BlockItem CeramicPot = buildBlockItemP(ModBlockRegistry.CeramicPot), WhitePot = buildBlockItemP(ModBlockRegistry.WhitePot),
-			OrangePot = buildBlockItemP(ModBlockRegistry.OrangePot), MagentaPot = buildBlockItemP(ModBlockRegistry.MagentaPot),
-			LightBluePot = buildBlockItemP(ModBlockRegistry.LightBluePot), YellowPot = buildBlockItemP(ModBlockRegistry.YellowPot),
-			LimePot = buildBlockItemP(ModBlockRegistry.LimePot), PinkPot = buildBlockItemP(ModBlockRegistry.PinkPot),
-			GrayPot = buildBlockItemP(ModBlockRegistry.GrayPot), LightGrayPot = buildBlockItemP(ModBlockRegistry.LightGrayPot),
-			CyanPot = buildBlockItemP(ModBlockRegistry.CyanPot), PurplePot = buildBlockItemP(ModBlockRegistry.PurplePot),
-			BluePot = buildBlockItemP(ModBlockRegistry.BluePot), BrownPot = buildBlockItemP(ModBlockRegistry.BrownPot),
-			GreenPot = buildBlockItemP(ModBlockRegistry.GreenPot), RedPot = buildBlockItemP(ModBlockRegistry.RedPot),
-			BlackPot = buildBlockItemP(ModBlockRegistry.BlackPot);
-	public static BlockItem Bellows = buildBlockItem(ModBlockRegistry.Bellows), TuyereSandy = buildBlockItem(ModBlockRegistry.TuyereSandy);
-	public static ItemClayPot ClayPot = new ItemClayPot();
-	public static ItemCrackedPot CrackedPot = new ItemCrackedPot();
+	public static BlockItem SandyCollector;
+	public static BlockItem CeramicPot, WhitePot,
+			OrangePot, MagentaPot,
+			LightBluePot, YellowPot,
+			LimePot, PinkPot,
+			GrayPot, LightGrayPot,
+			CyanPot, PurplePot,
+			BluePot, BrownPot,
+			GreenPot, RedPot,
+			BlackPot;
+	public static BlockItem Bellows, TuyereSandy;
+	public static ItemClayPot ClayPot;
+	public static ItemCrackedPot CrackedPot;
 
-	public static ItemBarrel Barrel = new ItemBarrel(ModBlockRegistry.Barrel, new Item.Properties().tab(CHARCOAL_PIT));
+	public static ItemBarrel Barrel;
 
 	//public static BucketItem AlcoholBucket=new BucketItem(()->ModFluidRegistry.AlcoholStill, new Item.Properties().group(ItemGroup.MISC).maxStackSize(1).containerItem(Items.BUCKET));
-	public static ItemAlcoholBottle AlcoholBottle = new ItemAlcoholBottle();
-	public static BucketItem VinegarBucket = new BucketItem(() -> ModFluidRegistry.VinegarStill, new Item.Properties().tab(CHARCOAL_PIT).stacksTo(1).craftRemainder(Items.BUCKET));
-	public static Item VinegarBottle = new Item(new Item.Properties().tab(CHARCOAL_PIT).stacksTo(16).craftRemainder(Items.GLASS_BOTTLE));
-	public static Item Cheese = new Item(new Item.Properties().tab(CHARCOAL_PIT_FOODS).food(new FoodProperties.Builder().nutrition(5).saturationMod(1.2F).build()));
-	public static Item TinyCoke = buildItem(CHARCOAL_PIT, 1600);
-	public static BlockItem MechanicalBeellows = buildBlockItem(ModBlockRegistry.MechanicalBellows);
+	public static ItemAlcoholBottle AlcoholBottle;
+	public static BucketItem VinegarBucket;
+	public static Item VinegarBottle;
+	public static Item Cheese;
+	public static Item TinyCoke;
+	public static BlockItem MechanicalBeellows;
+	static {
+		Thatch = buildBlockItem(ModBlockRegistry.Thatch, 200);
+		LogPile = buildBlockItem(ModBlockRegistry.LogPile, 3000);
+		CoalPile = buildBlockItem(ModBlockRegistry.CoalPile, 12000);
+		CokeBlock = buildBlockItem(ModBlockRegistry.CokeBlock, 32000);
+		WoodAsh = buildBlockItem(ModBlockRegistry.WoodAsh);
+		CoalAsh = buildBlockItem(ModBlockRegistry.CoalAsh);
+		AshBlock = buildBlockItem(ModBlockRegistry.Ash);
+		SandyBrick = buildBlockItem(ModBlockRegistry.SandyBrick);
+		SandySlab = buildBlockItem(ModBlockRegistry.SandySlab);
+		SandyStair = buildBlockItem(ModBlockRegistry.SandyStair);
+		SandyWall = buildBlockItem(ModBlockRegistry.SandyWall);
+		MainBloomery = buildBlockItem(ModBlockRegistry.MainBloomery);
 
+		Straw = buildItem(CHARCOAL_PIT, 50);
+		Coke = buildItem(CHARCOAL_PIT, 3200);
+		Ash = buildItem(CHARCOAL_PIT);
+		Fertilizer = new BoneMealItem(new Item.Properties().tab(CHARCOAL_PIT));
+		FireStarter = new ItemFireStarter();
+		BloomCool = buildItem(CHARCOAL_PIT);
+		BloomFail = buildItem(CHARCOAL_PIT);
+		BloomNiCool = buildItem(CHARCOAL_PIT);
+		BloomNiFail = buildItem(CHARCOAL_PIT);
+		SandyBrickItem = buildItem(CHARCOAL_PIT);
+		UnfireSandyBrick = buildItem(CHARCOAL_PIT);
+		UnfiredBrick = buildItem(CHARCOAL_PIT);
+
+		SandyCollector = buildBlockItem(ModBlockRegistry.SandyCollector, CHARCOAL_PIT);
+		CeramicPot = buildBlockItemP(ModBlockRegistry.CeramicPot); WhitePot = buildBlockItemP(ModBlockRegistry.WhitePot);
+				OrangePot = buildBlockItemP(ModBlockRegistry.OrangePot); MagentaPot = buildBlockItemP(ModBlockRegistry.MagentaPot);
+				LightBluePot = buildBlockItemP(ModBlockRegistry.LightBluePot); YellowPot = buildBlockItemP(ModBlockRegistry.YellowPot);
+				LimePot = buildBlockItemP(ModBlockRegistry.LimePot); PinkPot = buildBlockItemP(ModBlockRegistry.PinkPot);
+				GrayPot = buildBlockItemP(ModBlockRegistry.GrayPot); LightGrayPot = buildBlockItemP(ModBlockRegistry.LightGrayPot);
+				CyanPot = buildBlockItemP(ModBlockRegistry.CyanPot); PurplePot = buildBlockItemP(ModBlockRegistry.PurplePot);
+				BluePot = buildBlockItemP(ModBlockRegistry.BluePot); BrownPot = buildBlockItemP(ModBlockRegistry.BrownPot);
+				GreenPot = buildBlockItemP(ModBlockRegistry.GreenPot); RedPot = buildBlockItemP(ModBlockRegistry.RedPot);
+				BlackPot = buildBlockItemP(ModBlockRegistry.BlackPot);
+		Bellows = buildBlockItem(ModBlockRegistry.Bellows);
+		TuyereSandy = buildBlockItem(ModBlockRegistry.TuyereSandy);
+		ClayPot = new ItemClayPot();
+		CrackedPot = new ItemCrackedPot();
+
+		Barrel = new ItemBarrel(ModBlockRegistry.Barrel, new Item.Properties().tab(CHARCOAL_PIT));
+
+		//public static BucketItem AlcoholBucket=new BucketItem(()->ModFluidRegistry.AlcoholStill, new Item.Properties().group(ItemGroup.MISC).maxStackSize(1).containerItem(Items.BUCKET));
+		AlcoholBottle = new ItemAlcoholBottle();
+		VinegarBucket = new BucketItem(() -> ModFluidRegistry.VinegarStill, new Item.Properties().tab(CHARCOAL_PIT).stacksTo(1).craftRemainder(Items.BUCKET));
+		VinegarBottle = new Item(new Item.Properties().tab(CHARCOAL_PIT).stacksTo(16).craftRemainder(Items.GLASS_BOTTLE));
+		Cheese = new Item(new Item.Properties().tab(CHARCOAL_PIT_FOODS).food(new FoodProperties.Builder().nutrition(5).saturationMod(1.2F).build()));
+		TinyCoke = buildItem(CHARCOAL_PIT, 1600);
+		MechanicalBeellows = buildBlockItem(ModBlockRegistry.MechanicalBellows);
+	}
 	/*public static TallBlockItem BrickDoor=new TallBlockItem(ModBlockRegistry.BrickDoor,new Item.Properties().group(CHARCOAL_PIT)),
 			SandyDoor=new TallBlockItem(ModBlockRegistry.SandyDoor,new Item.Properties().group(CHARCOAL_PIT)),
 			NetherDoor=new TallBlockItem(ModBlockRegistry.NetherDoor,new Item.Properties().group(CHARCOAL_PIT)),
 			EndDoor=new TallBlockItem(ModBlockRegistry.EndDoor,new Item.Properties().group(CHARCOAL_PIT));*/
 
 
-	@SubscribeEvent
+//	@SubscribeEvent
 	public static void registerItems(RegistryEvent.Register<Item> event) {
 		event.getRegistry().registerAll(Thatch.setRegistryName("thatch"), LogPile.setRegistryName("log_pile"), CoalPile.setRegistryName("coal_pile"), WoodAsh.setRegistryName("wood_ash"),
 				CoalAsh.setRegistryName("coal_ash"), CokeBlock.setRegistryName("coke_block"), AshBlock.setRegistryName("ash_block"),
@@ -98,6 +151,7 @@ public class ModItemRegistry {
 				LightBluePot.setRegistryName("light_blue_pot"), GreenPot.setRegistryName("green_pot"), GrayPot.setRegistryName("gray_pot"), CyanPot.setRegistryName("cyan_pot"),
 				BrownPot.setRegistryName("brown_pot"), BluePot.setRegistryName("blue_pot"), BlackPot.setRegistryName("black_pot"));
 
+
 		DispenserBlock.registerBehavior(ModItemRegistry.CeramicPot, new DispenserPlacePot());
 		DispenserBlock.registerBehavior(ModItemRegistry.BlackPot, new DispenserPlacePot());
 		DispenserBlock.registerBehavior(ModItemRegistry.BluePot, new DispenserPlacePot());
@@ -115,6 +169,7 @@ public class ModItemRegistry {
 		DispenserBlock.registerBehavior(ModItemRegistry.RedPot, new DispenserPlacePot());
 		DispenserBlock.registerBehavior(ModItemRegistry.WhitePot, new DispenserPlacePot());
 		DispenserBlock.registerBehavior(ModItemRegistry.YellowPot, new DispenserPlacePot());
+
 	}
 	
 	public static BlockItemFuel buildBlockItem(Block block, int time) {
