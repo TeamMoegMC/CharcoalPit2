@@ -1,6 +1,5 @@
 package charcoalPit;
 
-import charcoalPit.core.ModBlockRegistry;
 import charcoalPit.core.ModContainerRegistry;
 import charcoalPit.core.ModItemRegistry;
 import charcoalPit.core.ModTileRegistry;
@@ -9,15 +8,13 @@ import charcoalPit.gui.CeramicPotScreen;
 import charcoalPit.gui.ClayPotScreen;
 import charcoalPit.tile.TESRPotteryKiln;
 import net.minecraft.client.gui.screens.MenuScreens;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ColorHandlerEvent;
+import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -30,7 +27,6 @@ public class ClientSetup {
 		MenuScreens.register(ModContainerRegistry.CeramicPot, CeramicPotScreen::new);
 		MenuScreens.register(ModContainerRegistry.ClayPot, ClayPotScreen::new);
 		MenuScreens.register(ModContainerRegistry.Barrel, BarrelScreen::new);
-		ClientRegistry.bindTileEntityRenderer(ModTileRegistry.PotteryKiln, TESRPotteryKiln::new);
 	}
 	@SubscribeEvent
 	public static void registerColors(ColorHandlerEvent.Item event){
@@ -43,5 +39,10 @@ public class ClientSetup {
 				return 0xFFFFFF;
 			}
 		}, ModItemRegistry.AlcoholBottle);
+	}
+	@SubscribeEvent
+	public static void En(EntityRenderersEvent.RegisterRenderers event){
+		event.registerBlockEntityRenderer(ModTileRegistry.PotteryKiln, TESRPotteryKiln::new);
+
 	}
 }

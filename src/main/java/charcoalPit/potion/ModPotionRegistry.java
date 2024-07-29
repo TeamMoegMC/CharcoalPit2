@@ -4,7 +4,6 @@ import charcoalPit.CharcoalPit;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
-import net.minecraft.potion.*;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -65,7 +64,7 @@ public class ModPotionRegistry {
         @Override
         public void applyInstantenousEffect(@Nullable Entity source, @Nullable Entity indirectSource, LivingEntity entityLivingBaseIn, int amplifier, double health) {
             Random random=new Random();
-            Potion potion=ForgeRegistries.POTION_TYPES.getValues().toArray(new Potion[]{})[random.nextInt(ForgeRegistries.POTION_TYPES.getValues().size())];
+            Potion potion=ForgeRegistries.POI_TYPES.getValues().toArray(new Potion[]{})[random.nextInt(ForgeRegistries.POI_TYPES.getValues().size())];
             for(MobEffectInstance effect:potion.getEffects()){
                 if(effect.getEffect().isInstantenous()){
                     effect.getEffect().applyInstantenousEffect(source, indirectSource ,entityLivingBaseIn, effect.getAmplifier(), health);

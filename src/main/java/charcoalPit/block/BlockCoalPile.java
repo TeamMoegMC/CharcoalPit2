@@ -1,8 +1,13 @@
 package charcoalPit.block;
 
 import charcoalPit.core.ModBlockRegistry;
+import charcoalPit.core.ModTileRegistry;
 import charcoalPit.tile.TileActivePile;
+import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -18,7 +23,7 @@ import net.minecraft.world.level.Level;
 
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
-public class BlockCoalPile extends Block {
+public class BlockCoalPile extends BaseEntityBlock {
 	public static final BooleanProperty LIT = BlockStateProperties.LIT;
 
 	public BlockCoalPile() {
@@ -31,13 +36,13 @@ public class BlockCoalPile extends Block {
 	}
 
 	@Override
-	public boolean hasTileEntity(BlockState state) {
-		return true;
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+		return new TileActivePile(true,pos,state);
 	}
 
 	@Override
-	public BlockEntity createTileEntity(BlockState state, BlockGetter world) {
-		return new TileActivePile(true);
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
+		return createTickerHelper(type,ModTileRegistry.ActivePile,TileActivePile::tick);
 	}
 
 	@Override

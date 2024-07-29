@@ -13,7 +13,6 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -22,11 +21,8 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraftforge.common.ToolType;
 
 import java.util.Random;
-
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -46,12 +42,12 @@ public class BlockBellows extends Block{
 	public static final VoxelShape EAST=Shapes.box(10D/16D, 0D, 0D, 1D, 1D, 1D);
 
 	public BlockBellows() {
-		super(Properties.of(Material.WOOD).strength(2, 3).harvestTool(ToolType.AXE));
+		super(Properties.of(Material.WOOD).strength(2, 3));
 		registerDefaultState(defaultBlockState().setValue(PUSH, false));
 	}
 	
 	public BlockBellows(Material m){
-		super(Properties.of(m).strength(2, 3).harvestTool(ToolType.AXE));
+		super(Properties.of(m).strength(2, 3));
 		registerDefaultState(defaultBlockState().setValue(PUSH, false));
 	}
 	
@@ -93,7 +89,7 @@ public class BlockBellows extends Block{
 			InteractionHand handIn, BlockHitResult hit) {
 		if(!state.getValue(PUSH)) {
 			if(!worldIn.isClientSide) {
-				worldIn.getBlockTicks().scheduleTick(pos, this, 10);
+				worldIn.scheduleTick(pos, this, 10);
 			}
 			return InteractionResult.SUCCESS;
 		}
@@ -107,7 +103,7 @@ public class BlockBellows extends Block{
 		}else {
 			worldIn.setBlockAndUpdate(pos, state.setValue(PUSH, true));
 			blow(worldIn, pos, state);
-			worldIn.getBlockTicks().scheduleTick(pos, this, 20);
+			worldIn.scheduleTick(pos, this, 20);
 			worldIn.playSound(null, pos, SoundEvents.LAVA_EXTINGUISH, SoundSource.BLOCKS, 1F, 1F);
 		}
 	}
@@ -115,7 +111,7 @@ public class BlockBellows extends Block{
 	public void blow(Level world, BlockPos pos, BlockState state) {
 		BlockPos pos2=pos.relative(state.getValue(FACING));
 		BlockState front=world.getBlockState(pos2);
-		if(front.getBlock().is(BlockTags.getAllTags().getTag(new ResourceLocation(CharcoalPit.MODID, "tuyere_blocks")))) {
+		if(front.is(BlockTags.create((new ResourceLocation(CharcoalPit.MODID, "tuyere_blocks"))))) {
 			int divs=0;
 			for(Direction dir:Direction.Plane.HORIZONTAL) {
 				BlockPos pos3=pos2.relative(dir);

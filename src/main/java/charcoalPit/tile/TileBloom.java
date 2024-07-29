@@ -2,44 +2,42 @@ package charcoalPit.tile;
 
 import charcoalPit.block.BlockBloom;
 import charcoalPit.core.Config;
-import charcoalPit.core.ModTileRegistry;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.level.block.entity.TickableBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
-public class TileBloom extends BlockEntity implements TickableBlockEntity{
+public class TileBloom extends BlockEntity{
 
 	public int cooldown;
 	
-	public TileBloom() {
-		super(null);
+	public TileBloom(BlockPos blockPos, BlockState state) {
+		super(null,blockPos,state);
 		cooldown=Config.BloomCooldown.get();
 	}
 
-	@Override
-	public void tick() {
+	public static void tick(Level level, BlockPos blockPos, BlockState state, TileBloom tile) {
 		if(!level.isClientSide) {
-			cooldown--;
-			if(cooldown==0)
-				level.setBlockAndUpdate(worldPosition, level.getBlockState(worldPosition).setValue(BlockBloom.HOT, false));
-			if(cooldown%200==0)
-				setChanged();
+			tile.cooldown--;
+			if(tile.cooldown==0)
+				level.setBlockAndUpdate(tile.worldPosition, level.getBlockState(tile.worldPosition).setValue(BlockBloom.HOT, false));
+			if(tile.cooldown%200==0)
+				tile.setChanged();
 		}
 		
 	}
 	
 	@Override
-	public void load(BlockState state, CompoundTag nbt) {
-		super.load(state, nbt);
+	public void load( CompoundTag nbt) {
+		super.load(nbt);
 		cooldown=nbt.getInt("cooldown");
 	}
 	
 	@Override
-	public CompoundTag save(CompoundTag compound) {
-		super.save(compound);
+	public void saveAdditional(CompoundTag compound) {
+		super.saveAdditional(compound);
 		compound.putInt("cooldown", cooldown);
-		return compound;
 	}
 	
 	

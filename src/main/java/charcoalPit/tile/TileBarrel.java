@@ -9,21 +9,20 @@ import charcoalPit.core.ModItemRegistry;
 import charcoalPit.core.ModTileRegistry;
 import charcoalPit.fluid.ModFluidRegistry;
 import charcoalPit.recipe.BarrelRecipe;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.Containers;
-import net.minecraft.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.level.block.entity.TickableBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidActionResult;
 import net.minecraftforge.fluids.FluidStack;
@@ -36,7 +35,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class TileBarrel extends BlockEntity implements TickableBlockEntity{
+public class TileBarrel extends BlockEntity {
 
 	public FluidTank tank;
 	public ItemStackHandler input, output;
@@ -44,8 +43,8 @@ public class TileBarrel extends BlockEntity implements TickableBlockEntity{
 	public boolean valid;
 	public String recipeId;
 	
-	public TileBarrel() {
-		super(ModTileRegistry.Barrel);
+	public TileBarrel(BlockPos blockPos, BlockState state) {
+		super(ModTileRegistry.Barrel,blockPos,state);
 		tank=new FluidTank(16000, f->f.getFluid().getAttributes().getTemperature()<450 && !f.getFluid().getAttributes().isGaseous()) {
 			@Override
 			protected void onContentsChanged() {
@@ -72,81 +71,81 @@ public class TileBarrel extends BlockEntity implements TickableBlockEntity{
 		recipeId="null";
 		total=0;
 	}
-	
-	@Override
-	public void tick() {
+
+
+	public static void tick(Level level, BlockPos blockPos, BlockState state, TileBarrel tile) {
 		if(!level.isClientSide) {
-				if(!valid) {
-					valid=true;
-					BarrelRecipe recipe=BarrelRecipe.getRecipe(input.getStackInSlot(0), tank.getFluid(), level);
-					if(validateRecipe(recipe)>0) {
-						process=recipe.time;
-						total=process;
-						recipeId=recipe.id.toString();
-						this.setChanged();
+				if(!tile.valid) {
+					tile.valid=true;
+					BarrelRecipe recipe=BarrelRecipe.getRecipe(tile.input.getStackInSlot(0), tile.tank.getFluid(), level);
+					if(tile.validateRecipe(recipe)>0) {
+						tile.process=recipe.time;
+						tile.total=tile.process;
+						tile.recipeId=recipe.id.toString();
+						tile.setChanged();
 					}else {
-						process=-1;
-						total=0;
-						recipeId="null";
-						this.setChanged();
+						tile.process=-1;
+						tile.total=0;
+						tile.recipeId="null";
+						tile.setChanged();
 					}
 				}
-				if(process>0) {
-					process--;
-					if(process%200==0)
-						setChanged();
+				if(tile.process>0) {
+					tile.process--;
+					if(tile.process%200==0)
+						tile.setChanged();
 				}
-				else if(process==0) {
-					process--;
-					total=0;
+				else if(tile.process==0) {
+					tile.process--;
+					tile.total=0;
 					BarrelRecipe recipe;
 					try {
-						recipe=(BarrelRecipe)level.getRecipeManager().byKey(new ResourceLocation(recipeId)).get();
+						recipe=(BarrelRecipe)level.getRecipeManager().byKey(new ResourceLocation(tile.recipeId)).get();
 					}catch(NoSuchElementException e) {
-						recipeId="null";
+						tile.recipeId="null";
 						e.printStackTrace();
 						return;
 					}
-					int rounds=validateRecipe(recipe);
+					int rounds=tile.validateRecipe(recipe);
 					boolean has_output_item=(recipe.flags&0b100)==0b100;
 					boolean has_output_fluid=(recipe.flags&0b1000)==0b1000;
-					tank.drain(rounds*recipe.fluid_in.amount, FluidAction.EXECUTE);
+					tile.tank.drain(rounds*recipe.fluid_in.amount, FluidAction.EXECUTE);
 					if(has_output_fluid) {
-						tank.setFluid(FluidStack.EMPTY);
-						tank.fill(new FluidStack(recipe.fluid_out.getFluid(), rounds*recipe.fluid_out.amount, recipe.fluid_out.nbt), FluidAction.EXECUTE);
+						tile.tank.setFluid(FluidStack.EMPTY);
+						tile.tank.fill(new FluidStack(recipe.fluid_out.getFluid(), rounds*recipe.fluid_out.amount, recipe.fluid_out.nbt), FluidAction.EXECUTE);
 					}
-					ItemStack container=input.getStackInSlot(0).getContainerItem().copy();
+					ItemStack container=tile.input.getStackInSlot(0).getContainerItem().copy();
 					container.setCount(rounds*recipe.in_amount);
-					input.extractItem(0, rounds*recipe.in_amount, false);
-					container=input.insertItem(0,container,false);
+					tile.input.extractItem(0, rounds*recipe.in_amount, false);
+					container=tile.input.insertItem(0,container,false);
 					if(!container.isEmpty()){
-						Containers.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), container);
+						Containers.dropItemStack(level, tile.worldPosition.getX(), tile.worldPosition.getY(), tile.worldPosition.getZ(), container);
 					}
 					if(has_output_item) {
-						output.insertItem(0, new ItemStack(recipe.item_out.getItems()[0].getItem(), rounds*recipe.out_amount, recipe.nbt_out), false);
+						tile.output.insertItem(0, new ItemStack(recipe.item_out.getItems()[0].getItem(), rounds*recipe.out_amount, recipe.nbt_out), false);
 					}
 				}else
-					if(!input.getStackInSlot(0).isEmpty()) {
-						if(input.getStackInSlot(0).getItem()==Items.GLASS_BOTTLE){
-							if(tank.getFluid().getFluid()==ModFluidRegistry.AlcoholStill&&tank.getFluidAmount()>=250){
+					if(!tile.input.getStackInSlot(0).isEmpty()) {
+						if(tile.input.getStackInSlot(0).getItem()==Items.GLASS_BOTTLE){
+							if(tile.tank.getFluid().getFluid()==ModFluidRegistry.AlcoholStill&&tile.tank.getFluidAmount()>=250){
 								ItemStack stack=new ItemStack(ModItemRegistry.AlcoholBottle);
-								stack.setTag(tank.getFluid().getTag().copy());
-								if(output.insertItem(0,stack,true)==ItemStack.EMPTY){
-									output.insertItem(0,stack,false);
-									tank.drain(250,FluidAction.EXECUTE);
-									input.extractItem(0,1,false);
+								stack.setTag(tile.tank.getFluid().getTag().copy());
+								if(tile.output.insertItem(0,stack,true)==ItemStack.EMPTY){
+									tile.output.insertItem(0,stack,false);
+									tile.tank.drain(250,FluidAction.EXECUTE);
+									tile.input.extractItem(0,1,false);
 								}
 							}
-							if(tank.getFluid().getFluid()==ModFluidRegistry.VinegarStill&&tank.getFluidAmount()>=250){
+							if(tile.tank.getFluid().getFluid()==ModFluidRegistry.VinegarStill&&tile.tank.getFluidAmount()>=250){
 								ItemStack stack=new ItemStack(ModItemRegistry.VinegarBottle);
-								if(output.insertItem(0,stack,true)==ItemStack.EMPTY){
-									output.insertItem(0,stack,false);
-									tank.drain(250,FluidAction.EXECUTE);
-									input.extractItem(0,1,false);
+								if(tile.output.insertItem(0,stack,true)==ItemStack.EMPTY){
+									tile.output.insertItem(0,stack,false);
+									tile.tank.drain(250,FluidAction.EXECUTE);
+									tile.input.extractItem(0,1,false);
 								}
 							}
 						}
-						transferFluid();
+						tile.transferFluid();
 					}
 			
 		}else {
@@ -305,11 +304,11 @@ public class TileBarrel extends BlockEntity implements TickableBlockEntity{
 		Containers.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), output.getStackInSlot(0));
 	}
 	
-	@CapabilityInject(IFluidHandler.class)
+
 	public static Capability<IFluidHandler> FLUID=null;
 	public LazyOptional<IFluidHandler> fluid_out=LazyOptional.of(()->tank);
 	
-	@CapabilityInject(IItemHandler.class)
+
 	public static Capability<IItemHandler> ITEM=null;
 	public LazyOptional<IItemHandler> item_out=LazyOptional.of(()->new IItemHandler() {
 		
@@ -364,8 +363,8 @@ public class TileBarrel extends BlockEntity implements TickableBlockEntity{
 	
 	
 	@Override
-	public CompoundTag save(CompoundTag compound) {
-		super.save(compound);
+	public void saveAdditional(CompoundTag compound) {
+		super.saveAdditional(compound);
 		compound.put("Fluid", tank.writeToNBT(new CompoundTag()));
 		compound.put("input", input.serializeNBT());
 		compound.put("output", output.serializeNBT());
@@ -373,12 +372,11 @@ public class TileBarrel extends BlockEntity implements TickableBlockEntity{
 		compound.putInt("total", total);
 		compound.putBoolean("valid", valid);
 		compound.putString("recipeId", recipeId);
-		return compound;
 	}
 	
 	@Override
-	public void load(BlockState state, CompoundTag nbt) {
-		super.load(state, nbt);
+	public void load(CompoundTag nbt) {
+		super.load( nbt);
 		tank.readFromNBT(nbt.getCompound("Fluid"));
 		input.deserializeNBT(nbt.getCompound("input"));
 		output.deserializeNBT(nbt.getCompound("output"));

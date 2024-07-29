@@ -6,6 +6,7 @@ import charcoalPit.core.MethodHelper;
 import charcoalPit.core.ModBlockRegistry;
 import charcoalPit.tile.TileBloomery;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Material;
@@ -20,7 +21,6 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.util.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -32,11 +32,8 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.ToolType;
 
 import java.util.Random;
-
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -46,7 +43,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 
-public class BlockBloomery extends Block {
+public class BlockBloomery extends Block implements EntityBlock {
 
 	public static final IntegerProperty STAGE = IntegerProperty.create("stage", 1, 12);
 	public static final BooleanProperty DUMMY = BooleanProperty.create("dummy");
@@ -63,7 +60,13 @@ public class BlockBloomery extends Block {
 			Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D)};
 
 	public BlockBloomery() {
-		super(Properties.of(Material.STONE).strength(4F, 6F).harvestTool(ToolType.PICKAXE).harvestLevel(1));
+		super(Properties.of(Material.STONE).strength(4F, 6F).lightLevel((state)->{
+			int i=state.getValue(STAGE);
+			if(i==9)
+				return 15;
+			if(i==10||i==11)
+				return 9;
+			return 0;}));
 		this.registerDefaultState(this.defaultBlockState().setValue(DUMMY,false));
 	}
 	
@@ -71,7 +74,7 @@ public class BlockBloomery extends Block {
 	public boolean canHarvestBlock(BlockState state, BlockGetter world, BlockPos pos, Player player) {
 		if(Config.EnableBloomeryPickRequirement.get()&&
 				state.getValue(STAGE)>9&&
-				player.getMainHandItem().getItem().is(ItemTags.getAllTags().getTag(new ResourceLocation(CharcoalPit.MODID, "blacklist_pickaxes"))))
+				player.getMainHandItem().is(ItemTags.create((new ResourceLocation(CharcoalPit.MODID, "blacklist_pickaxes")))))
 			return false;
 		return super.canHarvestBlock(state, world, pos, player);
 	}
@@ -90,16 +93,7 @@ public class BlockBloomery extends Block {
 	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
 		builder.add(STAGE,DUMMY);
 	}
-	
-	@Override
-	public int getLightValue(BlockState state, BlockGetter world, BlockPos pos) {
-		int i=state.getValue(STAGE);
-		if(i==9)
-			return 15;
-		if(i==10||i==11)
-			return 9;
-		return 0;
-	}
+
 	
 	@Override
 	public boolean isFireSource(BlockState state, LevelReader world, BlockPos pos, Direction side) {
@@ -119,7 +113,7 @@ public class BlockBloomery extends Block {
 	
 	@Override
 	public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (state.hasTileEntity() && (!state.is(newState.getBlock()) || !newState.hasTileEntity())) {
+		if (state.hasBlockEntity() && (!state.is(newState.getBlock()) || !newState.hasBlockEntity())) {
 			 ((TileBloomery)worldIn.getBlockEntity(pos)).dropInventory();
 	         worldIn.removeBlockEntity(pos);
 			if(!state.getValue(BlockBloomery.DUMMY)) {
@@ -130,17 +124,17 @@ public class BlockBloomery extends Block {
 	}
 	
 	@Override
-	public boolean removedByPlayer(BlockState state, Level world, BlockPos pos, Player player,
+	public boolean onDestroyedByPlayer(BlockState state, Level world, BlockPos pos, Player player,
 			boolean willHarvest, FluidState fluid) {
 		if(state.getValue(STAGE)==10) {
-			getBlock().playerWillDestroy(world, pos, state, player);
+			state.getBlock().playerWillDestroy(world, pos, state, player);
 			player.causeFoodExhaustion(0.01F);
 			world.playSound(player, pos, SoundEvents.ANVIL_USE, SoundSource.BLOCKS, 1F, 1F);
 			TileBloomery tile=((TileBloomery)world.getBlockEntity(pos));
 			tile.work();
 			return false;
 		}else
-			return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
+			return super.onDestroyedByPlayer(state, world, pos, player, willHarvest, fluid);
 	}
 	
 	public void stepOn(Level worldIn, BlockPos pos, Entity entityIn) {
@@ -149,7 +143,7 @@ public class BlockBloomery extends Block {
 	         entityIn.hurt(DamageSource.HOT_FLOOR, 1.0F);
 	      }
 
-	      super.stepOn(worldIn, pos, entityIn);
+	      super.stepOn(worldIn, pos, worldIn.getBlockState(pos),entityIn);
 	}
 	
 	@Override
@@ -169,13 +163,8 @@ public class BlockBloomery extends Block {
 	}
 	
 	@Override
-	public boolean hasTileEntity(BlockState state) {
-		return true;
-	}
-	
-	@Override
-	public BlockEntity createTileEntity(BlockState state, BlockGetter world) {
-		return new TileBloomery();
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+		return new TileBloomery(pos,state);
 	}
 	
 	@Override
@@ -206,7 +195,7 @@ public class BlockBloomery extends Block {
 					}
 				}
 			}else {
-				if(player.getItemInHand(handIn).getItem().is(ItemTags.getAllTags().getTag(new ResourceLocation(CharcoalPit.MODID, "basic_fuels")))) {
+				if(player.getItemInHand(handIn).is(ItemTags.create((new ResourceLocation(CharcoalPit.MODID, "basic_fuels"))))) {
 					if(size<8) {
 						for(int i=0;i<tile.fuel.getSlots();i++) {
 							if(tile.fuel.getStackInSlot(i).isEmpty()) {

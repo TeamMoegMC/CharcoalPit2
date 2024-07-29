@@ -132,7 +132,7 @@ public class PotteryKilnRecipe implements Recipe<Container>{
 		    //Forge: Check if primitive string to keep vanilla or a object which can contain a count field.
 		    if (!json.has("result")) throw new com.google.gson.JsonSyntaxException("Missing result, expected to find a string or object");
 		    ItemStack itemstack;
-		    if (json.get("result").isJsonObject()) itemstack = ShapedRecipe.itemFromJson(GsonHelper.getAsJsonObject(json, "result"));
+		    if (json.get("result").isJsonObject()) itemstack = ShapedRecipe.itemFromJson(GsonHelper.getAsJsonObject(json, "result")).getDefaultInstance();
 		    else {
 		    String s1 = GsonHelper.getAsString(json, "result");
 		    ResourceLocation resourcelocation = new ResourceLocation(s1);

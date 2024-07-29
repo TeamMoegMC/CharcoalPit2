@@ -31,7 +31,7 @@ public class BlockMechanicalBellows extends BlockBellows {
 		if(!worldIn.isClientSide){
 			boolean flag=worldIn.hasNeighborSignal(pos);
 			if(flag&&!state.getValue(PUSH)){
-				worldIn.getBlockTicks().scheduleTick(pos, this, 10);
+				worldIn.scheduleTick(pos, this, 10);
 			}
 		}
 	}

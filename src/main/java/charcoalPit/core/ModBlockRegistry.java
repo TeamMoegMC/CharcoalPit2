@@ -3,10 +3,8 @@ package charcoalPit.core;
 import charcoalPit.CharcoalPit;
 import charcoalPit.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-import net.minecraft.block.*;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
-import net.minecraftforge.common.ToolType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -26,8 +24,8 @@ public class ModBlockRegistry {
 	public static BlockThatch Thatch = new BlockThatch();
 	public static RotatedPillarBlock LogPile = new BlockLogPile();
 	public static Block CoalPile = new BlockCoalPile();
-	public static Block WoodAsh = new BlockAsh(), CoalAsh = new BlockAsh(), SandyBrick = new Block(Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE).strength(2, 6).requiresCorrectToolForDrops().harvestLevel(0).harvestTool(ToolType.PICKAXE)),
-			CokeBlock = new Block(Properties.of(Material.WOOD, MaterialColor.COLOR_BLACK).strength(5F, 6F).harvestLevel(0).harvestTool(ToolType.PICKAXE).requiresCorrectToolForDrops()) {
+	public static Block WoodAsh = new BlockAsh(), CoalAsh = new BlockAsh(), SandyBrick = new Block(Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE).strength(2, 6).requiresCorrectToolForDrops()),
+			CokeBlock = new Block(Properties.of(Material.WOOD, MaterialColor.COLOR_BLACK).strength(5F, 6F).requiresCorrectToolForDrops()) {
 				public int getFireSpreadSpeed(net.minecraft.world.level.block.state.BlockState state, net.minecraft.world.level.BlockGetter world, net.minecraft.core.BlockPos pos, net.minecraft.core.Direction face) {
 					return 5;
 				}
@@ -40,10 +38,10 @@ public class ModBlockRegistry {
 
 				;
 			};
-	public static FallingBlock Ash = new FallingBlock(Properties.of(Material.SAND, MaterialColor.COLOR_LIGHT_GRAY).strength(0.5F).harvestTool(ToolType.SHOVEL).sound(SoundType.SAND));
-	public static SlabBlock SandySlab=new SlabBlock(Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE).strength(2, 6).requiresCorrectToolForDrops().harvestLevel(0).harvestTool(ToolType.PICKAXE));
-	public static StairBlock SandyStair=new StairBlock(()->SandyBrick.defaultBlockState(), Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE).strength(2, 6).requiresCorrectToolForDrops().harvestLevel(0).harvestTool(ToolType.PICKAXE));
-	public static WallBlock SandyWall=new WallBlock(Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE).strength(2, 6).requiresCorrectToolForDrops().harvestLevel(0).harvestTool(ToolType.PICKAXE));
+	public static FallingBlock Ash = new FallingBlock(Properties.of(Material.SAND, MaterialColor.COLOR_LIGHT_GRAY).strength(0.5F).sound(SoundType.SAND));
+	public static SlabBlock SandySlab=new SlabBlock(Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE).strength(2, 6).requiresCorrectToolForDrops());
+	public static StairBlock SandyStair=new StairBlock(()->SandyBrick.defaultBlockState(), Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE).strength(2, 6).requiresCorrectToolForDrops());
+	public static WallBlock SandyWall=new WallBlock(Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE).strength(2, 6).requiresCorrectToolForDrops());
 
 	public static BlockCreosoteCollector SandyCollector=new BlockCreosoteCollector(Properties.copy(SandyBrick));
 	public static BlockPotteryKiln Kiln=new BlockPotteryKiln();

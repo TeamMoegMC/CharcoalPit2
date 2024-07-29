@@ -1,12 +1,10 @@
 package charcoalPit.recipe;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import charcoalPit.core.MethodHelper;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 

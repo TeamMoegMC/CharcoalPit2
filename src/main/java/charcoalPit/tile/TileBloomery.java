@@ -7,6 +7,7 @@ import charcoalPit.core.MethodHelper;
 import charcoalPit.core.ModBlockRegistry;
 import charcoalPit.core.ModTileRegistry;
 import charcoalPit.recipe.BloomeryRecipe;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
@@ -14,7 +15,6 @@ import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.Containers;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.level.block.entity.TickableBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundSource;
@@ -22,7 +22,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class TileBloomery extends BlockEntity implements TickableBlockEntity {
+public class TileBloomery extends BlockEntity{
 
 	public boolean isValid;
 	public int changetime;
@@ -37,8 +37,8 @@ public class TileBloomery extends BlockEntity implements TickableBlockEntity {
 	public int ingots;
 	public BloomeryRecipe recipe;
 	
-	public TileBloomery() {
-		super(ModTileRegistry.Bloomery2);
+	public TileBloomery(BlockPos blockPos, BlockState state) {
+		super(ModTileRegistry.Bloomery2,blockPos,state);
 		isValid = false;
 		changetime = 0;
 		invalidTicks = 0;
@@ -52,71 +52,70 @@ public class TileBloomery extends BlockEntity implements TickableBlockEntity {
 		ingots = 0;
 	}
 
-	@Override
-	public void tick() {
+	public static void tick(Level level, BlockPos blockPos, BlockState state, TileBloomery tile) {
 		if(!level.isClientSide) {
-			if(!done) {
-				checkValid();
-				if(!getBlockState().getValue(BlockBloomery.DUMMY)) {
-					if (burnTime > 0 && airTicks > 0) {
-						burnTime--;
-						changetime++;
-						if (burnTime % 200 == 0)
-							setChanged();
-						if (airBuffer > 0) {
-							airBuffer--;
-							airTicks--;
+			if(!tile.done) {
+				tile.checkValid();
+				if(!tile.getBlockState().getValue(BlockBloomery.DUMMY)) {
+					if (tile.burnTime > 0 && tile.airTicks > 0) {
+						tile.burnTime--;
+						tile.changetime++;
+						if (tile.burnTime % 200 == 0)
+							tile.setChanged();
+						if (tile.airBuffer > 0) {
+							tile.airBuffer--;
+							tile.airTicks--;
 						}
-						if (changetime > 40) {
-							BlockPos down = worldPosition.relative(Direction.DOWN);
+						if (tile.changetime > 40) {
+							BlockPos down = tile.worldPosition.relative(Direction.DOWN);
 							if (level.getBlockState(down).getBlock() == ModBlockRegistry.MainBloomery) {
-								if (airBuffer < 1) {
+								if (tile.airBuffer < 1) {
 									level.setBlockAndUpdate(down, ModBlockRegistry.MainBloomery.defaultBlockState().setValue(BlockMainBloomery.STAGE, 1));
 								} else {
 									level.setBlockAndUpdate(down, ModBlockRegistry.MainBloomery.defaultBlockState().setValue(BlockMainBloomery.STAGE, 2));
 								}
 							}
-							changetime = 0;
+							tile.changetime = 0;
 						}
 
 					} else {
-						if (burnTime != -1) {
+						if (tile.burnTime != -1) {
 							//done
-							done = true;
-							level.setBlockAndUpdate(worldPosition.relative(Direction.DOWN), ModBlockRegistry.MainBloomery.defaultBlockState().setValue(BlockMainBloomery.STAGE, 0));
-							ingots = 4;
-							ore = new OneItemHandler(4);
-							fuel = new OneItemHandler(4);
-							burnTime = Config.BloomCooldown.get();
-							if (level.getBlockState(worldPosition.relative(Direction.UP)).getBlock() == ModBlockRegistry.Bloomery) {
-								TileBloomery dummy = ((TileBloomery) level.getBlockEntity(worldPosition.relative(Direction.UP)));
-								ingots += 4;
+							tile.done = true;
+							level.setBlockAndUpdate(tile.worldPosition.relative(Direction.DOWN), ModBlockRegistry.MainBloomery.defaultBlockState().setValue(BlockMainBloomery.STAGE, 0));
+							tile.ingots = 4;
+							tile.ore = new OneItemHandler(4);
+							tile.fuel = new OneItemHandler(4);
+							tile.burnTime = Config.BloomCooldown.get();
+							if (level.getBlockState(tile.worldPosition.relative(Direction.UP)).getBlock() == ModBlockRegistry.Bloomery) {
+								TileBloomery dummy = ((TileBloomery) level.getBlockEntity(tile.worldPosition.relative(Direction.UP)));
+								tile.ingots += 4;
 								dummy.ore = new OneItemHandler(4);
 								dummy.fuel = new OneItemHandler(4);
-								level.playSound(null, worldPosition, SoundEvents.LAVA_AMBIENT, SoundSource.BLOCKS, 0.5F, 1F);
-								level.removeBlock(worldPosition.relative(Direction.UP), false);
+								level.playSound(null, tile.worldPosition, SoundEvents.LAVA_AMBIENT, SoundSource.BLOCKS, 0.5F, 1F);
+								level.removeBlock(tile.worldPosition.relative(Direction.UP), false);
 							}else {
-								if(level.getBlockState(worldPosition.relative(Direction.UP)).getBlock()==Blocks.FIRE)
-									level.removeBlock(worldPosition.relative(Direction.UP), false);
+								if(level.getBlockState(tile.worldPosition.relative(Direction.UP)).getBlock()==Blocks.FIRE)
+									level.removeBlock(tile.worldPosition.relative(Direction.UP), false);
 							}
-							if(airTicks<=0) {
-								workCount=0;
-								level.setBlockAndUpdate(worldPosition, ModBlockRegistry.Bloomery.defaultBlockState().setValue(BlockBloomery.STAGE, 10));
+							if(tile.airTicks<=0) {
+								tile.workCount=0;
+								level.setBlockAndUpdate(tile.worldPosition, ModBlockRegistry.Bloomery.defaultBlockState().setValue(BlockBloomery.STAGE, 10));
 							}else {
-								level.setBlockAndUpdate(worldPosition, ModBlockRegistry.Bloomery.defaultBlockState().setValue(BlockBloomery.STAGE, 11));
+								level.setBlockAndUpdate(tile.worldPosition, ModBlockRegistry.Bloomery.defaultBlockState().setValue(BlockBloomery.STAGE, 11));
 							}
-							setChanged();
+							tile.setChanged();
 						}
 					}
 				}
 			}else {
-				burnTime--;
-				if(burnTime%200==0)
-					setChanged();
-				if(burnTime==0) {
+				tile.burnTime--;
+				if(tile.burnTime%200==0)
+					tile.setChanged();
+				if(tile.burnTime==0) {
 					//set cool
-					level.setBlockAndUpdate(worldPosition, ModBlockRegistry.Bloomery.defaultBlockState().setValue(BlockBloomery.STAGE, 12));
-					setChanged();
+					level.setBlockAndUpdate(tile.worldPosition, ModBlockRegistry.Bloomery.defaultBlockState().setValue(BlockBloomery.STAGE, 12));
+					tile.setChanged();
 				}
 			}
 		}
@@ -198,7 +197,7 @@ public class TileBloomery extends BlockEntity implements TickableBlockEntity {
 					//set fire
 					BlockPos up=worldPosition.relative(Direction.UP);
 					BlockState block=this.level.getBlockState(up);
-					if(block.getBlock().isAir(block, this.level, up)||
+					if(block.isAir()||
 							BaseFireBlock.canBePlacedAt(this.level, up,Direction.UP)){
 						BlockState blockstate1 = BaseFireBlock.getState(this.level, up);
 			            this.level.setBlock(up, blockstate1, 11);
@@ -247,8 +246,8 @@ public class TileBloomery extends BlockEntity implements TickableBlockEntity {
 	}
 	
 	@Override
-	public CompoundTag save(CompoundTag compound) {
-		super.save(compound);
+	public void saveAdditional(CompoundTag compound) {
+		super.saveAdditional(compound);
 		compound.putBoolean("valid", isValid);
 		compound.putInt("burn", burnTime);
 		compound.putInt("air", airTicks);
@@ -259,12 +258,11 @@ public class TileBloomery extends BlockEntity implements TickableBlockEntity {
 		compound.put("ore", ore.serializeNBT());
 		compound.put("fuel", fuel.serializeNBT());
 		compound.putInt("ingots", ingots);
-		return compound;
 	}
 	
 	@Override
-	public void load(BlockState state, CompoundTag nbt) {
-		super.load(state, nbt);
+	public void load(CompoundTag nbt) {
+		super.load( nbt);
 		isValid=nbt.getBoolean("valid");
 		burnTime=nbt.getInt("burn");
 		airTicks=nbt.getInt("air");

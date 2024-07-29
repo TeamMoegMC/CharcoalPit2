@@ -41,7 +41,7 @@ public class ClayPotContainer2 extends AbstractContainerMenu {
 	        	 this.addSlot(new SlotItemHandler(pot, getIndex(j+i*3), 62 + j * 18, 17 + i * 18){
 					 @Override
 					 public void setChanged() {
-                         if (pot.isItemValid(getSlotIndex(), inv.getCarried()) || inv.getCarried().isEmpty()) {
+                         if (pot.isItemValid(getSlotIndex(), inv.getSelected()) || inv.getSelected().isEmpty()) {
                              inv.getItem(slot).addTagElement("inventory", pot.serializeNBT());
                              super.setChanged();
                          }
@@ -119,7 +119,7 @@ public class ClayPotContainer2 extends AbstractContainerMenu {
 		@Override
 		public boolean isItemValid(int slot, ItemStack stack) {
 			if (slot == 0) {
-				return stack.getItem().is(ItemTags.getAllTags().getTag(new ResourceLocation(CharcoalPit.MODID, "orekiln_fuels")));
+				return stack.is(ItemTags.create((new ResourceLocation(CharcoalPit.MODID, "orekiln_fuels"))));
 			} else {
 				return OreKilnRecipe.isValidInput(stack, world);
 			}

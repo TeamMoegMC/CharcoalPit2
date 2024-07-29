@@ -11,6 +11,7 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.resources.language.I18n;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -19,7 +20,6 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraftforge.common.brewing.VanillaBrewingRecipe;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -52,8 +52,8 @@ public class OreKilnRecipeCategory implements IRecipeCategory<OreKilnRecipe> {
 	}
 	
 	@Override
-	public String getTitle() {
-		return loc_name;
+	public Component getTitle() {
+		return new TextComponent(loc_name);
 	}
 	
 	@Override
@@ -91,9 +91,9 @@ public class OreKilnRecipeCategory implements IRecipeCategory<OreKilnRecipe> {
 		iRecipeLayout.getItemStacks().set(index,iIngredients.getOutputs(VanillaTypes.ITEM).get(0));
 		index++;
 		ArrayList<ItemStack> logs=new ArrayList();
-		for(Item i: ItemTags.LOGS_THAT_BURN.getValues()){
-			logs.add(new ItemStack(i,3));
-		}
+//		for(Item i: ItemTags.LOGS_THAT_BURN.getValues()){
+//			logs.add(new ItemStack(i,3));
+//		}
 		iRecipeLayout.getItemStacks().init(index,true,79,16);
 		iRecipeLayout.getItemStacks().set(index,logs);
 		index++;
@@ -104,9 +104,9 @@ public class OreKilnRecipeCategory implements IRecipeCategory<OreKilnRecipe> {
 		iRecipeLayout.getItemStacks().set(index,new ItemStack(ModItemRegistry.ClayPot));
 		index++;
 		ArrayList<ItemStack> coal=new ArrayList();
-		for(Item i: ItemTags.getAllTags().getTag(new ResourceLocation(CharcoalPit.MODID,"orekiln_fuels")).getValues()){
-			coal.add(new ItemStack(i));
-		}
+//		for(Item i: ItemTags.getAllTags().getTag(new ResourceLocation(CharcoalPit.MODID,"orekiln_fuels")).getValues()){
+//			coal.add(new ItemStack(i));
+//		}
 		iRecipeLayout.getItemStacks().init(index,true,25,34);
 		iRecipeLayout.getItemStacks().set(index,coal);
 		index++;

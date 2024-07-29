@@ -11,6 +11,7 @@ import charcoalPit.recipe.PotteryKilnRecipe;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.VanillaTypes;
+import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.registration.*;
 import mezz.jei.api.runtime.IJeiRuntime;
 import net.minecraft.client.Minecraft;
@@ -18,9 +19,11 @@ import net.minecraft.client.resources.language.I18n;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.crafting.RecipeManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @JeiPlugin
@@ -56,14 +59,22 @@ public class Jei implements IModPlugin {
 	
 	@Override
 	public void registerRecipes(IRecipeRegistration registration) {
-		registration.addRecipes(Minecraft.getInstance().level.getRecipeManager().getAllRecipesFor(PotteryKilnRecipe.POTTERY_RECIPE), PotteryRecipeCategory.ID);
-		registration.addRecipes(Minecraft.getInstance().level.getRecipeManager().getAllRecipesFor(OreKilnRecipe.ORE_KILN_RECIPE).stream().filter((r) -> !r.output.test(new ItemStack(Items.BARRIER))).collect(Collectors.toList()),
-				OreKilnRecipeCategory.ID);
-		registration.addRecipes(Minecraft.getInstance().level.getRecipeManager().getAllRecipesFor(BloomeryRecipe.BLOOMERY_RECIPE), BloomeryRecipeCategory.ID);
+		RecipeManager recipeManager = Objects.requireNonNull(Minecraft.getInstance().level).getRecipeManager();
 
-		registration.addIngredientInfo(Arrays.asList(new ItemStack(Items.CHARCOAL), new ItemStack(ModItemRegistry.Coke), new ItemStack(ModBlockRegistry.LogPile), new ItemStack(ModBlockRegistry.CoalPile)),
-				VanillaTypes.ITEM, I18n.get("charcoal_pit.instruction.build_pit"));
-		registration.addRecipes(Minecraft.getInstance().level.getRecipeManager().getAllRecipesFor(BarrelRecipe.BARREL_RECIPE), BarrelRecipeCategory.ID);
+		registration.addRecipes(new RecipeType<>(PotteryRecipeCategory.ID,PotteryKilnRecipe.class),recipeManager.getAllRecipesFor(PotteryKilnRecipe.POTTERY_RECIPE));
+
+		registration.addRecipes(new RecipeType<>(OreKilnRecipeCategory.ID,OreKilnRecipe.class),recipeManager.getAllRecipesFor(OreKilnRecipe.ORE_KILN_RECIPE).stream().filter((r) -> !r.output.test(new ItemStack(Items.BARRIER))).collect(Collectors.toList()));
+
+		registration.addRecipes(new RecipeType<>(BloomeryRecipeCategory.ID,BloomeryRecipe.class),recipeManager.getAllRecipesFor(BloomeryRecipe.BLOOMERY_RECIPE));
+
+		registration.addRecipes(new RecipeType<>(BarrelRecipeCategory.ID,BarrelRecipe.class),recipeManager.getAllRecipesFor(BarrelRecipe.BARREL_RECIPE));
+
+
+
+
+//		registration.addIngredientInfo(Arrays.asList(new ItemStack(Items.CHARCOAL), new ItemStack(ModItemRegistry.Coke), new ItemStack(ModBlockRegistry.LogPile), new ItemStack(ModBlockRegistry.CoalPile)),
+//				VanillaTypes.ITEM, I18n.get("charcoal_pit.instruction.build_pit"));
+
 	}
 	
 	@Override

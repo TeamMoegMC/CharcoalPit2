@@ -19,8 +19,8 @@ public class CeramicPotScreen extends AbstractContainerScreen<CeramicPotContaine
 	
 	@Override
 	protected void renderBg(PoseStack matrixStack, float partialTicks, int x, int y) {
-		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-	      this.minecraft.getTextureManager().bind(DISPENSER_GUI_TEXTURES);
+		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+	      this.minecraft.getTextureManager().bindForSetup(DISPENSER_GUI_TEXTURES);
 	      int i = (this.width - this.imageWidth) / 2;
 	      int j = (this.height - this.imageHeight) / 2;
 	      this.blit(matrixStack, i, j, 0, 0, this.imageWidth, this.imageHeight);

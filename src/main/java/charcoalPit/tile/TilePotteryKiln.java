@@ -6,6 +6,8 @@ import charcoalPit.core.Config;
 import charcoalPit.core.ModBlockRegistry;
 import charcoalPit.core.ModTileRegistry;
 import charcoalPit.recipe.PotteryKilnRecipe;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
@@ -15,12 +17,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.world.level.block.entity.TickableBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.core.Direction;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class TilePotteryKiln extends BlockEntity implements TickableBlockEntity{
+public class TilePotteryKiln extends BlockEntity {
 	
 	public int invalidTicks;
 	public int burnTime;
@@ -28,37 +29,36 @@ public class TilePotteryKiln extends BlockEntity implements TickableBlockEntity{
 	public boolean isValid;
 	public PotteryStackHandler pottery;
 	
-	public TilePotteryKiln() {
-		super(ModTileRegistry.PotteryKiln);
+	public TilePotteryKiln(BlockPos blockPos, BlockState state) {
+		super(ModTileRegistry.PotteryKiln,blockPos,state);
 		invalidTicks=0;
 		burnTime=-1;
 		xp=0;
 		isValid=false;
 		pottery=new PotteryStackHandler();
 	}
-	
-	@Override
-	public void tick() {
-		if(!this.level.isClientSide&&burnTime>-1){
-			checkValid();
-			if(burnTime>0) {
-				burnTime--;
-				if(burnTime%500==0)
-					setChanged();
+
+	public static void tick(Level level, BlockPos blockPos, BlockState state, TilePotteryKiln tile) {
+		if(!tile.level.isClientSide&&tile.burnTime>-1){
+			tile.checkValid();
+			if(tile.burnTime>0) {
+				tile.burnTime--;
+				if(tile.burnTime%500==0)
+					tile.setChanged();
 			}else{
-				if(burnTime==0){
-					PotteryKilnRecipe result=PotteryKilnRecipe.getResult(pottery.getStackInSlot(0), this.level);
+				if(tile.burnTime==0){
+					PotteryKilnRecipe result=PotteryKilnRecipe.getResult(tile.pottery.getStackInSlot(0), tile.level);
 					if(result!=null) {
-						ItemStack out=PotteryKilnRecipe.processClayPot(pottery.getStackInSlot(0), level);
+						ItemStack out=PotteryKilnRecipe.processClayPot(tile.pottery.getStackInSlot(0), level);
 						if(out.isEmpty())
-							out=new ItemStack(result.output,pottery.getStackInSlot(0).getCount());
-						xp=result.xp*pottery.getStackInSlot(0).getCount();
-						pottery.setStackInSlot(0, out);
+							out=new ItemStack(result.output,tile.pottery.getStackInSlot(0).getCount());
+						tile.xp=result.xp*tile.pottery.getStackInSlot(0).getCount();
+						tile.pottery.setStackInSlot(0, out);
 					}
-					this.level.setBlockAndUpdate(worldPosition, ModBlockRegistry.Kiln.defaultBlockState().setValue(BlockPotteryKiln.TYPE, EnumKilnTypes.COMPLETE));
-					this.level.removeBlock(worldPosition.relative(Direction.UP), false);
-					burnTime--;
-					setChanged();
+					tile.level.setBlockAndUpdate(tile.worldPosition, ModBlockRegistry.Kiln.defaultBlockState().setValue(BlockPotteryKiln.TYPE, EnumKilnTypes.COMPLETE));
+					tile.level.removeBlock(tile.worldPosition.relative(Direction.UP), false);
+					tile.burnTime--;
+					tile.setChanged();
 				}
 			}
 		}
@@ -97,7 +97,7 @@ public class TilePotteryKiln extends BlockEntity implements TickableBlockEntity{
 		}
 		BlockState block=this.level.getBlockState(this.worldPosition.relative(Direction.UP));
 		if(block.getBlock()!=Blocks.FIRE){
-			if(block.getBlock().isAir(block, this.level, this.worldPosition.relative(Direction.UP))||
+			if(block.isAir()||
 					BaseFireBlock.canBePlacedAt(this.level, this.worldPosition.relative(Direction.UP),Direction.UP)){
 				BlockState blockstate1 = BaseFireBlock.getState(this.level, this.worldPosition.relative(Direction.UP));
 	            this.level.setBlock(this.worldPosition.relative(Direction.UP), blockstate1, 11);
@@ -121,19 +121,18 @@ public class TilePotteryKiln extends BlockEntity implements TickableBlockEntity{
 	}
 	
 	@Override
-	public CompoundTag save(CompoundTag compound) {
-		super.save(compound);
+	public void saveAdditional(CompoundTag compound) {
+		super.saveAdditional(compound);
 		compound.putInt("invalid", invalidTicks);
 		compound.putInt("time", burnTime);
 		compound.putFloat("xp", xp);
 		compound.putBoolean("valid", isValid);
 		compound.put("pottery", pottery.serializeNBT());
-		return compound;
 	}
 	
 	@Override
-	public void load(BlockState state, CompoundTag nbt) {
-		super.load(state, nbt);
+	public void load(CompoundTag nbt) {
+		super.load(nbt);
 		invalidTicks=nbt.getInt("invalid");
 		burnTime=nbt.getInt("time");
 		xp=nbt.getFloat("xp");
@@ -148,7 +147,7 @@ public class TilePotteryKiln extends BlockEntity implements TickableBlockEntity{
 		return nbt;
 	}
 	
-	@Override
+/*	@Override
 	public ClientboundBlockEntityDataPacket getUpdatePacket() {
 		return new ClientboundBlockEntityDataPacket(getBlockPos(), 1, pottery.serializeNBT());
 	}
@@ -157,7 +156,7 @@ public class TilePotteryKiln extends BlockEntity implements TickableBlockEntity{
 	public void handleUpdateTag(BlockState state, CompoundTag tag) {
 		super.handleUpdateTag(state, tag);
 		pottery.deserializeNBT(tag.getCompound("pottery"));
-	}
+	}*/
 	
 	@Override
 	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {

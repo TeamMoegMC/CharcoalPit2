@@ -8,15 +8,12 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraftforge.common.ToolType;
-
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public class BlockMainBloomery extends Block {
     public static final IntegerProperty STAGE = IntegerProperty.create("stage", 0, 2);
 
     public BlockMainBloomery() {
-        super(Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE).strength(4, 8).requiresCorrectToolForDrops().harvestLevel(0).harvestTool(ToolType.PICKAXE));
+        super(Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE).strength(4, 8).requiresCorrectToolForDrops());
     }
 
     @Override

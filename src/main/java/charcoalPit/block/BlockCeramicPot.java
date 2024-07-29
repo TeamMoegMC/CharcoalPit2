@@ -7,6 +7,7 @@ import charcoalPit.core.MethodHelper;
 import charcoalPit.gui.CeramicPotContainer;
 import charcoalPit.tile.TileCeramicPot;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.Material;
@@ -38,18 +39,15 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.ToolType;
-import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.network.NetworkHooks;
 
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-
-public class BlockCeramicPot extends Block{
+public class BlockCeramicPot extends Block implements EntityBlock {
 	
 	public static final VoxelShape POT=Shapes.box(2D/16D, 0D, 2D/16D, 14D/16D, 1D, 14D/16D);
 
 	public BlockCeramicPot(MaterialColor color) {
-		super(Properties.of(Material.SHULKER_SHELL, color).strength(1.25F,4.2F).sound(SoundType.STONE).harvestTool(ToolType.PICKAXE));
+		super(Properties.of(Material.SHULKER_SHELL, color).strength(1.25F,4.2F).sound(SoundType.STONE));
 	}
 	
 	@Override
@@ -153,15 +151,10 @@ public class BlockCeramicPot extends Block{
 		stack.addTagElement("inventory", tile.inventory.serializeNBT());
 		return stack;
 	}
-	
+
 	@Override
-	public boolean hasTileEntity(BlockState state) {
-		return true;
-	}
-	
-	@Override
-	public BlockEntity createTileEntity(BlockState state, BlockGetter world) {
-		return new TileCeramicPot();
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+		return new TileCeramicPot(pos,state);
 	}
 
 }

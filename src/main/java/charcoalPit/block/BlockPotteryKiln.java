@@ -6,6 +6,7 @@ import charcoalPit.core.ModBlockRegistry;
 import charcoalPit.recipe.PotteryKilnRecipe;
 import charcoalPit.tile.TilePotteryKiln;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
@@ -30,8 +31,6 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.Level;
 
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
@@ -39,7 +38,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 
-public class BlockPotteryKiln extends Block{
+public class BlockPotteryKiln extends Block implements EntityBlock {
 	
 	public static final EnumProperty<EnumKilnTypes> TYPE=EnumProperty.create("kiln_type", EnumKilnTypes.class);
 	
@@ -81,7 +80,7 @@ public class BlockPotteryKiln extends Block{
 	      if (f == -1.0F) {
 	         return 0.0F;
 	      } else {
-	         int i = net.minecraftforge.common.ForgeHooks.canHarvestBlock(state, player, worldIn, pos) ? 30 : 100;
+	         int i = net.minecraftforge.common.ForgeHooks.isCorrectToolForDrops(state, player) ? 30 : 100;
 	         return player.getDigSpeed(state, pos) / f / (float)i;
 	      }
 	}
@@ -147,20 +146,15 @@ public class BlockPotteryKiln extends Block{
 	
 	@Override
 	public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (state.hasTileEntity() && (state.getBlock() != newState.getBlock() || !newState.hasTileEntity())) {
+		if (state.hasBlockEntity() && (state.getBlock() != newState.getBlock() || !newState.hasBlockEntity())) {
 			((TilePotteryKiln)worldIn.getBlockEntity(pos)).dropInventory();
 			worldIn.removeBlockEntity(pos);
 	    }
 	}
-	
+
 	@Override
-	public boolean hasTileEntity(BlockState state) {
-		return true;
-	}
-	
-	@Override
-	public BlockEntity createTileEntity(BlockState state, BlockGetter world) {
-		return new TilePotteryKiln();
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+		return new TilePotteryKiln(pos,state);
 	}
 	
 	@Override
@@ -187,7 +181,7 @@ public class BlockPotteryKiln extends Block{
 						worldIn.sendBlockUpdated(pos, state, state, 2);
 						return InteractionResult.SUCCESS;
 					} else {
-						if (itemStack.getItem().is(ItemTags.getAllTags().getTag(new ResourceLocation(CharcoalPit.MODID, "kiln_straw")))) {
+						if (itemStack.is(ItemTags.create((new ResourceLocation(CharcoalPit.MODID, "kiln_straw"))))) {
 							if (!worldIn.isClientSide) {
 								if (itemStack.getCount() >= Config.StrawAmount.get()) {
 									itemStack.setCount(itemStack.getCount() - Config.StrawAmount.get());
@@ -203,7 +197,7 @@ public class BlockPotteryKiln extends Block{
 			}
 		}
 		case THATCH: {
-			if (itemStack.getItem().is(ItemTags.LOGS_THAT_BURN)) {
+			if (itemStack.is(ItemTags.LOGS_THAT_BURN)) {
 				if (!worldIn.isClientSide) {
 					if (itemStack.getCount() >= Config.WoodAmount.get()) {
 						itemStack.setCount(itemStack.getCount() - Config.WoodAmount.get());

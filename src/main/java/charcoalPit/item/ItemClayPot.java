@@ -22,8 +22,8 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.network.NetworkHooks;
 
 import java.util.List;
 
@@ -80,7 +80,7 @@ public class ItemClayPot extends Item{
 			if (!playerIn.isShiftKeyDown()) {
 				int slot;
 				if (handIn == InteractionHand.MAIN_HAND)
-					slot = playerIn.inventory.selected;
+					slot = playerIn.getInventory().selected;
 				else slot = 40;
 
 				NetworkHooks.openGui((ServerPlayer) playerIn, new MenuProvider() {

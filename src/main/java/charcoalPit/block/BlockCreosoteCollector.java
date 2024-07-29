@@ -2,6 +2,7 @@ package charcoalPit.block;
 
 import java.util.List;
 
+import net.minecraft.world.level.block.EntityBlock;
 import org.lwjgl.glfw.GLFW;
 
 import charcoalPit.tile.TileCreosoteCollector;
@@ -28,7 +29,7 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
-public class BlockCreosoteCollector extends Block{
+public class BlockCreosoteCollector extends Block implements EntityBlock {
 
 	public BlockCreosoteCollector(Properties properties) {
 		super(properties);
@@ -52,15 +53,10 @@ public class BlockCreosoteCollector extends Block{
 			tooltip.add(new TextComponent("\u00A77"+"<Hold Shift>"+"\u00A77"));
 		}
 	}
-	
+
 	@Override
-	public boolean hasTileEntity(BlockState state) {
-		return true;
-	}
-	
-	@Override
-	public BlockEntity createTileEntity(BlockState state, BlockGetter world) {
-		return new TileCreosoteCollector();
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+		return new TileCreosoteCollector(pos,state);
 	}
 	
 	@Override

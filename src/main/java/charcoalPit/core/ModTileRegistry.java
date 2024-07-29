@@ -7,9 +7,11 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
+import org.jline.terminal.spi.Pty;
 
 @EventBusSubscriber(modid = CharcoalPit.MODID, bus = Bus.MOD)
 public class ModTileRegistry {
+
 
 
     public static BlockEntityType<TileActivePile> ActivePile = BlockEntityType.Builder.of(TileActivePile::new, ModBlockRegistry.LogPile, ModBlockRegistry.CoalPile).build(null);

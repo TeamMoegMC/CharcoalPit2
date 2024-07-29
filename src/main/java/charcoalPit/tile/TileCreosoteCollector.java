@@ -1,68 +1,65 @@
 package charcoalPit.tile;
 
 import charcoalPit.core.ModTileRegistry;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.level.block.entity.TickableBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
-public class TileCreosoteCollector extends BlockEntity implements TickableBlockEntity{
+public class TileCreosoteCollector extends BlockEntity{
 	
 	public FluidTank creosote;
 	int tick;
-	@CapabilityInject(IFluidHandler.class)
 	public static Capability<IFluidHandler> FLUID=null;
 	boolean flag;
 	
-	public TileCreosoteCollector() {
-		super(ModTileRegistry.CreosoteCollector);
+	public TileCreosoteCollector(BlockPos blockPos, BlockState state) {
+		super(ModTileRegistry.CreosoteCollector,blockPos,state);
 		tick=0;
 		creosote=new FluidTank(8000);
 	}
-	
-	@Override
-	public void tick() {
-		if(tick<20){
-			tick++;
+
+	public static void tick(Level level, BlockPos blockPos, BlockState state, TileCreosoteCollector tile) {
+		if(tile.tick<20){
+			tile.tick++;
 		}else{
-			tick=0;
-			flag=false;
+			tile.tick=0;
+			tile.flag=false;
 			//collect creosote
-			if(creosote.getFluidAmount()<creosote.getCapacity()&&this.level.getBlockEntity(this.worldPosition.relative(Direction.UP))instanceof TileActivePile){
-				TileActivePile up=(TileActivePile)this.level.getBlockEntity(this.worldPosition.relative(Direction.UP));
-				flag=flag||up.creosote.drain(creosote.fill(up.creosote.getFluid(), FluidAction.EXECUTE), FluidAction.EXECUTE).getAmount()>0;
+			if(tile.creosote.getFluidAmount()<tile.creosote.getCapacity()&&tile.level.getBlockEntity(tile.worldPosition.relative(Direction.UP))instanceof TileActivePile){
+				TileActivePile up=(TileActivePile)tile.level.getBlockEntity(tile.worldPosition.relative(Direction.UP));
+				tile.flag=tile.flag||up.creosote.drain(tile.creosote.fill(up.creosote.getFluid(), FluidAction.EXECUTE), FluidAction.EXECUTE).getAmount()>0;
 				for(Direction facing:Direction.Plane.HORIZONTAL){
-					if(creosote.getFluidAmount()<creosote.getCapacity())
-						flag=flag||collectCreosote(this.worldPosition.relative(Direction.UP).relative(facing), facing, 3);
+					if(tile.creosote.getFluidAmount()<tile.creosote.getCapacity())
+						tile.flag=tile.flag||tile.collectCreosote(tile.worldPosition.relative(Direction.UP).relative(facing), facing, 3);
 				}
 			}
 			//chanel creosote
-			if(this.level.hasNeighborSignal(this.worldPosition)){
+			if(tile.level.hasNeighborSignal(tile.worldPosition)){
 				for(Direction facing:Direction.Plane.HORIZONTAL){
-					if(creosote.getFluidAmount()<creosote.getCapacity())
-						flag=flag||chanelCreosote(this.worldPosition.relative(facing), facing, 3);
+					if(tile.creosote.getFluidAmount()<tile.creosote.getCapacity())
+						tile.flag=tile.flag||tile.chanelCreosote(tile.worldPosition.relative(facing), facing, 3);
 				}
 			}
 			//output creosote
-			if(creosote.getFluidAmount()>0&&this.level.hasNeighborSignal(this.worldPosition)){
-				BlockEntity tile=this.level.getBlockEntity(this.worldPosition.relative(Direction.DOWN));
-				if(tile!=null){
+			if(tile.creosote.getFluidAmount()>0&&tile.level.hasNeighborSignal(tile.worldPosition)){
+				BlockEntity tiledown=tile.level.getBlockEntity(tile.worldPosition.relative(Direction.DOWN));
+				if(tiledown!=null){
 					tile.getCapability(FLUID, Direction.UP).ifPresent((handler)->{
-						flag=flag||creosote.drain(handler.fill(creosote.getFluid(), FluidAction.EXECUTE), FluidAction.EXECUTE).getAmount()>0;
+						tile.flag=tile.flag||tile.creosote.drain(handler.fill(tile.creosote.getFluid(), FluidAction.EXECUTE), FluidAction.EXECUTE).getAmount()>0;
 					});
 				}
 			}
-			if(flag)
-				setChanged();
+			if(tile.flag)
+				tile.setChanged();
 		}
 		
 	}
@@ -141,15 +138,14 @@ public class TileCreosoteCollector extends BlockEntity implements TickableBlockE
 	}
 	
 	@Override
-	public CompoundTag save(CompoundTag compound) {
-		super.save(compound);
+	public void saveAdditional(CompoundTag compound) {
+		super.saveAdditional(compound);
 		compound.put("creosote", creosote.writeToNBT(new CompoundTag()));
-		return compound;
 	}
 	
 	@Override
-	public void load(BlockState state, CompoundTag nbt) {
-		super.load(state, nbt);
+	public void load(CompoundTag nbt) {
+		super.load(nbt);
 		creosote.readFromNBT(nbt.getCompound("creosote"));
 	}
 

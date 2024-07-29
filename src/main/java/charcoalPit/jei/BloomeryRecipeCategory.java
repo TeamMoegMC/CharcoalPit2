@@ -2,6 +2,7 @@ package charcoalPit.jei;
 
 import charcoalPit.CharcoalPit;
 import charcoalPit.core.ModBlockRegistry;
+import charcoalPit.core.ModItemRegistry;
 import charcoalPit.recipe.BloomeryRecipe;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.constants.VanillaTypes;
@@ -10,6 +11,8 @@ import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.category.IRecipeCategory;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.world.item.Item;
@@ -19,6 +22,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.block.ChainBlock;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -51,8 +55,8 @@ public class BloomeryRecipeCategory implements IRecipeCategory<BloomeryRecipe> {
 	}
 	
 	@Override
-	public String getTitle() {
-		return loc_name;
+	public Component getTitle() {
+		return new TextComponent(loc_name);
 	}
 	
 	@Override
@@ -81,15 +85,19 @@ public class BloomeryRecipeCategory implements IRecipeCategory<BloomeryRecipe> {
 		iRecipeLayout.getItemStacks().init(1,false, 133,34);
 		iRecipeLayout.getItemStacks().set(1,iIngredients.getOutputs(VanillaTypes.ITEM).get(0));
 		ArrayList<ItemStack> coal=new ArrayList();
-		for(Item i: ItemTags.getAllTags().getTag(new ResourceLocation(CharcoalPit.MODID,"basic_fuels")).getValues()){
-			coal.add(new ItemStack(i));
-		}
+//		for(Item i: ItemTags.getAllTags().getTag(new ResourceLocation(CharcoalPit.MODID,"basic_fuels")).getValues()){
+//			coal.add(new ItemStack(i));
+//		}
+		coal.add(new ItemStack(Items.COAL));
+		coal.add(new ItemStack(Items.CHARCOAL));
+		coal.add(new ItemStack(ModItemRegistry.TinyCoke));
 		iRecipeLayout.getItemStacks().init(2,true,25,16);
 		iRecipeLayout.getItemStacks().set(2, coal);
-		ArrayList<ItemStack> brick = new ArrayList();
-		for (Block i : BlockTags.getAllTags().getTag(new ResourceLocation(CharcoalPit.MODID, "bloomery_walls")).getValues()) {
-			brick.add(new ItemStack(i));
-		}
+//		ArrayList<ItemStack> brick = new ArrayList();
+//		for (Block i : BlockTags.create(new ResourceLocation(CharcoalPit.MODID, "bloomery_walls"))) {
+//			brick.add(new ItemStack(i));
+//		}
+		ItemStack brick = ModItemRegistry.SandyBrick.getDefaultInstance();
 		iRecipeLayout.getItemStacks().init(3, true, 61, 34);
 		iRecipeLayout.getItemStacks().init(4, true, 97, 34);
 		iRecipeLayout.getItemStacks().init(5, true, 79, 70);
@@ -102,10 +110,11 @@ public class BloomeryRecipeCategory implements IRecipeCategory<BloomeryRecipe> {
 		iRecipeLayout.getItemStacks().set(7, new ItemStack(ModBlockRegistry.Bellows));
 		iRecipeLayout.getItemStacks().init(8, true, 61, 52);
 		iRecipeLayout.getItemStacks().init(9, true, 97, 52);
-		ArrayList<ItemStack> tuyere = new ArrayList();
-		for (Block i : BlockTags.getAllTags().getTag(new ResourceLocation(CharcoalPit.MODID, "tuyere_blocks")).getValues()) {
-			tuyere.add(new ItemStack(i));
-		}
+//		ArrayList<ItemStack> tuyere = new ArrayList();
+//		for (Block i : BlockTags.getAllTags().getTag(new ResourceLocation(CharcoalPit.MODID, "tuyere_blocks")).getValues()) {
+//			tuyere.add(new ItemStack(i));
+//		}
+		ItemStack tuyere = ModItemRegistry.TuyereSandy.getDefaultInstance();
 		iRecipeLayout.getItemStacks().set(8,tuyere);
 		iRecipeLayout.getItemStacks().set(9,tuyere);
 	}

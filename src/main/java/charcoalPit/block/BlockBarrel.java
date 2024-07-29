@@ -8,6 +8,7 @@ import charcoalPit.fluid.ModFluidRegistry;
 import charcoalPit.gui.BarrelContainer;
 import charcoalPit.tile.TileBarrel;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.material.Material;
@@ -21,7 +22,6 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.storage.loot.LootContext.Builder;
@@ -47,27 +47,23 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.ToolType;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
-import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.ItemHandlerHelper;
+import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-
-public class BlockBarrel extends Block implements SimpleWaterloggedBlock {
+public class BlockBarrel extends Block implements SimpleWaterloggedBlock, EntityBlock {
 	
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	
 	public static final VoxelShape BARREL=Shapes.box(2D/16D, 0D, 2D/16D, 14D/16D, 1D, 14D/16D);
 
 	public BlockBarrel() {
-		super(Properties.of(Material.WOOD).strength(2, 3).harvestTool(ToolType.AXE));
+		super(Properties.of(Material.WOOD).strength(2, 3));
 		registerDefaultState(this.defaultBlockState().setValue(WATERLOGGED,false));
 	}
 	
@@ -92,7 +88,7 @@ public class BlockBarrel extends Block implements SimpleWaterloggedBlock {
 	@Override
 	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos) {
 		if (stateIn.getValue(WATERLOGGED)) {
-			worldIn.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
+			worldIn.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
 		}
 		return stateIn;
 	}
@@ -107,19 +103,16 @@ public class BlockBarrel extends Block implements SimpleWaterloggedBlock {
 		return BARREL;
 	}
 	
-	@Override
-	public boolean hasTileEntity(BlockState state) {
-		return true;
-	}
+
 	
 	@Override
-	public BlockEntity createTileEntity(BlockState state, BlockGetter world) {
-		return new TileBarrel();
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+		return new TileBarrel(pos,state);
 	}
 	
 	@Override
 	public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (state.hasTileEntity() && (state.getBlock() != newState.getBlock() || !newState.hasTileEntity())) {
+		if (state.hasBlockEntity() && (state.getBlock() != newState.getBlock() || !newState.hasBlockEntity())) {
 			((TileBarrel)worldIn.getBlockEntity(pos)).dropInventory();
 			worldIn.removeBlockEntity(pos);
 	    }

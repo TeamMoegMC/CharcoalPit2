@@ -1,5 +1,7 @@
 package charcoalPit.item;
 
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
@@ -20,7 +22,7 @@ public class BlockItemFuel extends BlockItem{
 	}
 	
 	@Override
-	public int getBurnTime(ItemStack itemStack) {
+	public int getBurnTime(ItemStack itemStack, RecipeType<?> recipeType) {
 		return burnTime;
 	}
 

@@ -35,18 +35,18 @@ public class PileIgnitr {
 		//undye pots
 		Level world = event.getWorld();
 		if (!world.isClientSide) {
-			if (world.getBlockState(event.getPos()).getBlock() == Blocks.CAULDRON &&
-					world.getBlockState(event.getPos()).getValue(CauldronBlock.LEVEL) > 0) {
-				Block block = Block.byItem(event.getItemStack().getItem());
-				if (block instanceof BlockCeramicPot && block != ModBlockRegistry.CeramicPot) {
-					ItemStack stack = new ItemStack(ModBlockRegistry.CeramicPot, 1);
-					stack.setTag(event.getItemStack().getTag());
-					event.getPlayer().setItemInHand(event.getHand(), stack);
-					world.setBlockAndUpdate(event.getPos(), Blocks.CAULDRON.defaultBlockState().setValue(CauldronBlock.LEVEL, world.getBlockState(event.getPos()).getValue(CauldronBlock.LEVEL) - 1));
-					event.setUseBlock(Result.DENY);
-					event.setUseItem(Result.DENY);
-				}
-			}
+//			if (world.getBlockState(event.getPos()).getBlock() == Blocks.CAULDRON &&
+//					world.getBlockState(event.getPos()).getValue(CauldronBlock.LEVEL) > 0) {
+//				Block block = Block.byItem(event.getItemStack().getItem());
+//				if (block instanceof BlockCeramicPot && block != ModBlockRegistry.CeramicPot) {
+//					ItemStack stack = new ItemStack(ModBlockRegistry.CeramicPot, 1);
+//					stack.setTag(event.getItemStack().getTag());
+//					event.getPlayer().setItemInHand(event.getHand(), stack);
+//					world.setBlockAndUpdate(event.getPos(), Blocks.CAULDRON.defaultBlockState().setValue(CauldronBlock.LEVEL, world.getBlockState(event.getPos()).getValue(CauldronBlock.LEVEL) - 1));
+//					event.setUseBlock(Result.DENY);
+//					event.setUseItem(Result.DENY);
+//				}
+//			}
 			//place bloomery
 			if (event.getPlayer().isShiftKeyDown()) {
 				if (PotteryKilnRecipe.isValidInput(event.getItemStack(), world) &&
@@ -59,7 +59,7 @@ public class PileIgnitr {
 					event.setUseBlock(Result.DENY);
 					event.setUseItem(Result.DENY);
 				} else if (BloomeryRecipe.getRecipe(event.getItemStack(), world) != null &&
-						event.getFace() == Direction.UP && world.getBlockState(event.getPos()).getBlock().is(BlockTags.getAllTags().getTag(new ResourceLocation(CharcoalPit.MODID, "bloomery_walls"))) &&
+						event.getFace() == Direction.UP && world.getBlockState(event.getPos()).is(BlockTags.create(new ResourceLocation(CharcoalPit.MODID, "bloomery_walls"))) &&
 						world.getBlockState(event.getPos().relative(Direction.UP)).getMaterial().isReplaceable() &&
 						MethodHelper.Bloomery2ValidPosition(world, event.getPos().relative(Direction.UP), false, false)) {
 					world.setBlockAndUpdate(event.getPos().relative(Direction.UP), ModBlockRegistry.Bloomery.defaultBlockState().setValue(BlockBloomery.STAGE, 1));

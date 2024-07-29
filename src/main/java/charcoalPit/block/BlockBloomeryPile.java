@@ -3,33 +3,20 @@ package charcoalPit.block;
 import java.util.ArrayList;
 import java.util.List;
 
-import charcoalPit.core.MethodHelper;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.storage.loot.LootContext.Builder;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.World;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.common.ToolType;
-
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public class BlockBloomeryPile extends Block{
 	
@@ -46,7 +33,7 @@ public class BlockBloomeryPile extends Block{
 			Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D)};
 
 	public BlockBloomeryPile() {
-		super(Properties.of(Material.STONE).strength(5F, 6F).harvestTool(ToolType.PICKAXE));
+		super(Properties.of(Material.STONE).strength(5F, 6F));
 	}
 	
 	@Override

@@ -5,17 +5,15 @@ import java.util.List;
 import charcoalPit.core.ModItemRegistry;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.Item;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.ChatFormatting;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-
-import net.minecraft.world.item.Item.Properties;
 
 public class ItemAeternalis extends Item{
 
@@ -29,7 +27,7 @@ public class ItemAeternalis extends Item{
 	}
 	
 	@Override
-	public int getBurnTime(ItemStack itemStack) {
+	public int getBurnTime(ItemStack itemStack, RecipeType<?> recipeType) {
 		return 200;
 	}
 	

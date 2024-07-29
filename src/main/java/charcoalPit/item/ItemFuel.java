@@ -4,6 +4,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 import net.minecraft.world.item.Item.Properties;
+import net.minecraft.world.item.crafting.RecipeType;
 
 public class ItemFuel extends Item{
 
@@ -18,7 +19,7 @@ public class ItemFuel extends Item{
 	}
 	
 	@Override
-	public int getBurnTime(ItemStack itemStack) {
+	public int getBurnTime(ItemStack itemStack, RecipeType<?> recipeType) {
 		return burnTime;
 	}
 

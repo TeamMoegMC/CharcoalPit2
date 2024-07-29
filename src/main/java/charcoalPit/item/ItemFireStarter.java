@@ -11,7 +11,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.core.particles.ParticleTypes;
@@ -33,8 +32,6 @@ import net.minecraft.world.phys.HitResult.Type;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeMod;
-
-import net.minecraft.world.item.Item.Properties;
 
 public class ItemFireStarter extends Item{
 
@@ -84,13 +81,13 @@ public class ItemFireStarter extends Item{
 				if(count==1) {
 					BlockPos hit=new BlockPos(trace.getBlockPos().relative(trace.getDirection()));
 					if(CampfireBlock.canLight(player.level.getBlockState(trace.getBlockPos()))){
-						player.level.playSound(null, trace.getBlockPos(), SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1F, Item.random.nextFloat()*0.4F+0.8F);
+						player.level.playSound(null, trace.getBlockPos(), SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1F, player.getRandom().nextFloat()*0.4F+0.8F);
 						player.level.setBlock(trace.getBlockPos(), player.level.getBlockState(trace.getBlockPos()).setValue(BlockStateProperties.LIT, Boolean.valueOf(true)), 11);
 						stack.shrink(1);
 					}else if(BaseFireBlock.canBePlacedAt(player.level, hit, Direction.UP)) {
 						BlockState blockstate1 = BaseFireBlock.getState(player.level, hit);
 						player.level.setBlockAndUpdate(hit, blockstate1);
-						player.level.playSound(null, hit, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1F, Item.random.nextFloat()*0.4F+0.8F);
+						player.level.playSound(null, hit, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1F, player.getRandom().nextFloat()*0.4F+0.8F);
 						stack.shrink(1);
 					}else {
 						player.releaseUsingItem();

@@ -2,11 +2,7 @@ package charcoalPit.item;
 
 import charcoalPit.core.ModBlockRegistry;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.FlowingFluidBlock;
 import net.minecraft.world.level.block.BucketPickup;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.item.BlockItem;
@@ -15,14 +11,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.stats.Stats;
-import net.minecraft.tags.FluidTags;
-import net.minecraft.util.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack;
@@ -96,7 +88,7 @@ public class ItemBarrel extends BlockItem {
                             ItemHandlerHelper.giveItemToPlayer(context.getPlayer(),stack2);
                             context.getPlayer().getItemInHand(context.getHand()).shrink(1);
                             if(context.getLevel().getBlockState(pos).getBlock() instanceof BucketPickup){
-                                ((BucketPickup)context.getLevel().getBlockState(pos).getBlock()).takeLiquid(context.getLevel(),pos,context.getLevel().getBlockState(pos));
+                                ((BucketPickup)context.getLevel().getBlockState(pos)).pickupBlock(context.getLevel(),pos,context.getLevel().getBlockState(pos));
                             }
                             return InteractionResult.SUCCESS;
                         }

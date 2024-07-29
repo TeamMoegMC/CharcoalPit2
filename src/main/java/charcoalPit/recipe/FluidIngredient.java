@@ -4,29 +4,28 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.TagParser;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.tags.FluidTags;
-import net.minecraft.tags.Tag;
-import net.minecraft.tags.SerializationTags;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.tags.ITag;
 
 public class FluidIngredient {
 	
 	public Fluid fluid;
-	public Tag<Fluid> tag;
+	public ITag<Fluid> tag;
 	public int amount;
 	public CompoundTag nbt;
 	
 	public boolean test(Fluid in) {
 		if(fluid!=null&&fluid==in)
 			return true;
-		if(tag!=null&&tag.contains(in))
+		if(tag!=null&&tag.equals(in))
 			return true;
 		return false;
 	}
@@ -34,8 +33,8 @@ public class FluidIngredient {
 	public Fluid getFluid() {
 		if(fluid!=null&&fluid!=Fluids.EMPTY)
 			return fluid;
-		if(tag!=null&&!tag.getValues().isEmpty())
-			return tag.getValues().get(0);
+		if(tag!=null&&!tag.isEmpty())
+			return tag.stream().findFirst().get();
 		return Fluids.EMPTY;
 	}
 	
@@ -53,8 +52,9 @@ public class FluidIngredient {
 		}
 		if(json.has("tag")) {
 			ResourceLocation t=new ResourceLocation(GsonHelper.getAsString(json, "tag"));
-			Tag<Fluid> tag=SerializationTags.getInstance().getFluids().getTag(t);
-			if(tag!=null&&!tag.getValues().isEmpty())
+			TagKey tagkey = ForgeRegistries.FLUIDS.tags().createTagKey(t);
+			ITag tag= ForgeRegistries.FLUIDS.tags().getTag(tagkey);
+			if(tag!=null&&!tag.isEmpty())
 				ingredient.tag=tag;
 		}
 		if(ingredient.isEmpty())
@@ -83,7 +83,7 @@ public class FluidIngredient {
 			buffer.writeResourceLocation(fluid.getRegistryName());
 		}
 		if((mode&2)==2) {
-			buffer.writeResourceLocation(SerializationTags.getInstance().getFluids().getIdOrThrow(tag));
+			buffer.writeResourceLocation(this.getFluid().getRegistryName());
 		}
 		buffer.writeInt(amount);
 		if(nbt!=null) {
@@ -101,7 +101,8 @@ public class FluidIngredient {
 			ingredient.fluid=ForgeRegistries.FLUIDS.getValue(buffer.readResourceLocation());
 		}
 		if((mode&2)==2) {
-			ingredient.tag=SerializationTags.getInstance().getFluids().getTag(buffer.readResourceLocation());
+			TagKey tagkey =ForgeRegistries.FLUIDS.tags().createTagKey(buffer.readResourceLocation());
+			ingredient.tag= ForgeRegistries.FLUIDS.tags().getTag(tagkey);
 		}
 		ingredient.amount=buffer.readInt();
 		if(buffer.readBoolean()) {

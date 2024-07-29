@@ -1,8 +1,6 @@
 package charcoalPit.recipe;
 
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -19,12 +17,10 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.tileentity.AbstractFurnaceTileEntity;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.registries.ForgeRegistryEntry;
@@ -86,8 +82,8 @@ public class OreKilnRecipe implements Recipe<Container>{
 	}
 	
 	public static int oreKilnGetFuelAvailable(IItemHandler inventory) {
-		if (inventory.getStackInSlot(0).getItem()
-				.is(ItemTags.getAllTags().getTag(new ResourceLocation("forge:coal_coke")))) {
+		if (inventory.getStackInSlot(0)
+				.is(ItemTags.create((new ResourceLocation("forge:coal_coke"))))) {
 			return inventory.getStackInSlot(0).getCount() * 16;
 		}
 		return inventory.getStackInSlot(0).getCount() * 8;

@@ -1,8 +1,11 @@
 package charcoalPit.block;
 
 import charcoalPit.core.ModBlockRegistry;
+import charcoalPit.core.ModTileRegistry;
 import charcoalPit.tile.TileActivePile;
-import net.minecraft.block.*;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -11,25 +14,17 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.ToolType;
 
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.RotatedPillarBlock;
-import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class BlockLogPile extends RotatedPillarBlock {
+public class BlockLogPile extends RotatedPillarBlock implements EntityBlock {
 	public static final BooleanProperty LIT = BlockStateProperties.LIT;
 
 	public BlockLogPile() {
-		super(Properties.of(Material.WOOD, MaterialColor.WOOD).strength(2F).harvestTool(ToolType.AXE).sound(SoundType.WOOD));
+		super(Properties.of(Material.WOOD, MaterialColor.WOOD).strength(2F).sound(SoundType.WOOD));
 		this.registerDefaultState(this.stateDefinition.any().setValue(LIT, Boolean.valueOf(false)));
 	}
 
@@ -43,13 +38,16 @@ public class BlockLogPile extends RotatedPillarBlock {
 	}
 
 	@Override
-	public boolean hasTileEntity(BlockState state) {
-		return true;
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+		return new TileActivePile(false,pos,state);
 	}
 
 	@Override
-	public BlockEntity createTileEntity(BlockState state, BlockGetter world) {
-		return new TileActivePile(false);
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
+		return createTickerHelper(type,ModTileRegistry.ActivePile,TileActivePile::tick);
+	}
+	protected static <E extends BlockEntity, A extends BlockEntity> BlockEntityTicker<A> createTickerHelper(BlockEntityType<A> type, BlockEntityType<E> entitytype, BlockEntityTicker<? super E> ticker) {
+		return type == entitytype ? (BlockEntityTicker<A>) ticker : null;
 	}
 
 	@Override

@@ -3,7 +3,6 @@ package charcoalPit.jei;
 import charcoalPit.CharcoalPit;
 import charcoalPit.core.ModItemRegistry;
 import charcoalPit.recipe.PotteryKilnRecipe;
-import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
@@ -12,6 +11,7 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.resources.language.I18n;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -51,8 +51,8 @@ public class PotteryRecipeCategory implements IRecipeCategory<PotteryKilnRecipe>
 	}
 	
 	@Override
-	public String getTitle() {
-		return loc_name;
+	public Component getTitle() {
+		return new TextComponent(loc_name);
 	}
 	
 	@Override
@@ -84,9 +84,9 @@ public class PotteryRecipeCategory implements IRecipeCategory<PotteryKilnRecipe>
 		iRecipeLayout.getItemStacks().set(2, new ItemStack(ModItemRegistry.Straw,6));
 		iRecipeLayout.getItemStacks().init(3,true,25,16);
 		ArrayList<ItemStack> logs=new ArrayList();
-		for(Item i:ItemTags.LOGS_THAT_BURN.getValues()){
-			logs.add(new ItemStack(i,3));
-		}
+//		for(Item i:ItemTags.LOGS_THAT_BURN.getValues()){
+//			logs.add(new ItemStack(i,3));
+//		}
 		iRecipeLayout.getItemStacks().set(3,logs);
 		iRecipeLayout.getItemStacks().init(4,true,61,34);
 		iRecipeLayout.getItemStacks().init(5,true,97,34);

@@ -8,8 +8,6 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-
 public class BlockAlcohol extends LiquidBlock{
 	
 	public BlockAlcohol() {
@@ -18,12 +16,12 @@ public class BlockAlcohol extends LiquidBlock{
 	
 	@Override
 	public void onPlace(BlockState state, Level worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
-		worldIn.getLiquidTicks().scheduleTick(pos, state.getFluidState().getType(), this.getFluid().getTickDelay(worldIn));
+		worldIn.scheduleTick(pos, state.getFluidState().getType(), this.getFluid().getTickDelay(worldIn));
 	}
 	
 	@Override
 	public void neighborChanged(BlockState state, Level worldIn, BlockPos pos, Block blockIn, BlockPos fromPos,
 			boolean isMoving) {
-		worldIn.getLiquidTicks().scheduleTick(pos, state.getFluidState().getType(), this.getFluid().getTickDelay(worldIn));
+		worldIn.scheduleTick(pos, state.getFluidState().getType(), this.getFluid().getTickDelay(worldIn));
 	}
 }
