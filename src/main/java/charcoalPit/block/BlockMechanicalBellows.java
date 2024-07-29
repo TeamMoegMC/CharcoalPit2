@@ -42,13 +42,13 @@ public class BlockMechanicalBellows extends BlockBellows {
 			if(!worldIn.hasNeighborSignal(pos)) {
 				worldIn.setBlockAndUpdate(pos, state.setValue(PUSH, false));
 			}else{
-				worldIn.getBlockTicks().scheduleTick(pos, this, 1);
+				worldIn.scheduleTick(pos, this, 1);
 			}
 		}else {
 			if(worldIn.hasNeighborSignal(pos)){
 				worldIn.setBlockAndUpdate(pos, state.setValue(PUSH, true));
 				blow(worldIn, pos, state);
-				worldIn.getBlockTicks().scheduleTick(pos, this, 20);
+				worldIn.scheduleTick(pos, this, 20);
 				worldIn.playSound(null, pos, SoundEvents.LAVA_EXTINGUISH, SoundSource.BLOCKS, 1F, 1F);
 			}
 		}

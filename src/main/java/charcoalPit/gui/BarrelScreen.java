@@ -1,23 +1,16 @@
 package charcoalPit.gui;
 
 import charcoalPit.CharcoalPit;
-import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.*;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.Tesselator;
-import com.mojang.blaze3d.vertex.BufferUploader;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.resources.ResourceLocation;
 import com.mojang.math.Matrix4f;
-import net.minecraft.util.text.*;
-import net.minecraftforge.client.gui.GuiUtils;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.client.gui.GuiUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,7 +69,7 @@ public class BarrelScreen extends AbstractContainerScreen<BarrelContainer> {
 
 	private static void innerBlit(Matrix4f matrix, int x1, int x2, int y1, int y2, int blitOffset, float minU, float maxU, float minV, float maxV) {
 	      BufferBuilder bufferbuilder = Tesselator.getInstance().getBuilder();
-	      bufferbuilder.begin(7, DefaultVertexFormat.POSITION_TEX);
+	      bufferbuilder.begin(VertexFormat.Mode.LINES, DefaultVertexFormat.POSITION_TEX);
 	      bufferbuilder.vertex(matrix, (float)x1, (float)y2, (float)blitOffset).uv(minU, maxV).endVertex();
 	      bufferbuilder.vertex(matrix, (float)x2, (float)y2, (float)blitOffset).uv(maxU, maxV).endVertex();
 	      bufferbuilder.vertex(matrix, (float)x2, (float)y1, (float)blitOffset).uv(maxU, minV).endVertex();

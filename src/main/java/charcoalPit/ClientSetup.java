@@ -41,7 +41,7 @@ public class ClientSetup {
 		}, ModItemRegistry.AlcoholBottle);
 	}
 	@SubscribeEvent
-	public static void En(EntityRenderersEvent.RegisterRenderers event){
+	public static void RegisterEntityRender(EntityRenderersEvent.RegisterRenderers event){
 		event.registerBlockEntityRenderer(ModTileRegistry.PotteryKiln, TESRPotteryKiln::new);
 
 	}

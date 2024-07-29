@@ -32,7 +32,7 @@ public class MethodHelper {
 	
 	public static boolean CokeOvenIsValidBlock(BlockState state) {
         Block block = state.getBlock();
-        return block == ModBlockRegistry.CoalPile || block.getTags().contains(cow);
+        return block == ModBlockRegistry.CoalPile || ForgeRegistries.BLOCKS.tags().getTag(BlockTags.create(cow)).contains(block);
     }
 	//for placement
 	/*public static boolean BloomeryIsValidPosition(World world, BlockPos pos, boolean init) {
@@ -61,7 +61,7 @@ public class MethodHelper {
 	
 	public static boolean Bloomery2ValidPosition(Level world, BlockPos pos, boolean dummy, boolean active) {
 		for(Direction dir:Direction.Plane.HORIZONTAL) {
-			if(!(world.getBlockState(pos.relative(dir)).getBlock().is(BlockTags.getAllTags().getTag(new ResourceLocation(CharcoalPit.MODID, "bloomery_walls")))))
+			if(!(world.getBlockState(pos.relative(dir)).is(BlockTags.create((new ResourceLocation(CharcoalPit.MODID, "bloomery_walls"))))))
 				return false;
 		}
 		Block block=world.getBlockState(pos.relative(Direction.DOWN)).getBlock();
@@ -108,72 +108,72 @@ public class MethodHelper {
 			return key.substring(5).equals(item.getRegistryName().toString());
 		}
 		if(key.startsWith("tag:")) {
-			Tag<Item> tag=ItemTags.getAllTags().getTag(new ResourceLocation(key.substring(4)));
-			return tag!=null&&tag.contains(item);
+			Tag<Item> tag= (Tag<Item>) ForgeRegistries.ITEMS.tags().getTag(ItemTags.create(new ResourceLocation(key.substring(4))));
+			return tag!=null&&tag.getValues().contains(item);
 		}
 		if(key.startsWith("ore:")) {
 			Tag<Item> tag;
 			String ore="forge:ores/".concat(key.substring(4));
-			tag=ItemTags.getAllTags().getTag(new ResourceLocation(ore));
-			if(tag!=null&&tag.contains(item))
+			tag=(Tag<Item>) ForgeRegistries.ITEMS.tags().getTag(ItemTags.create(new ResourceLocation(ore)));
+			if(tag!=null&&tag.getValues().contains(item))
 				return true;
 			String ingot="forge:ingots/".concat(key.substring(4));
-			tag=ItemTags.getAllTags().getTag(new ResourceLocation(ingot));
-			if(tag!=null&&tag.contains(item))
+			tag=(Tag<Item>) ForgeRegistries.ITEMS.tags().getTag(ItemTags.create(new ResourceLocation(ingot)));
+			if(tag!=null&&tag.getValues().contains(item))
 				return true;
 			String dust="forge:dusts/".concat(key.substring(4));
-			tag=ItemTags.getAllTags().getTag(new ResourceLocation(dust));
-			if(tag!=null&&tag.contains(item))
+			tag=(Tag<Item>) ForgeRegistries.ITEMS.tags().getTag(ItemTags.create(new ResourceLocation(dust)));
+			if(tag!=null&&tag.getValues().contains(item))
 				return true;
 		}
 		return false;
 	}
-	
+
 	public static boolean doesStringHaveItem(String key) {
 		if(key.startsWith("item:")) {
 			return ForgeRegistries.ITEMS.getValue(new ResourceLocation(key.substring(5)))!=null;
 		}
 		if(key.startsWith("tag:")) {
-			return ItemTags.getAllTags().getTag(new ResourceLocation(key.substring(4)))!=null;
+			return (Tag<Item>) ForgeRegistries.ITEMS.tags().getTag(ItemTags.create((new ResourceLocation(key.substring(4)))))!=null;
 		}
 		if(key.startsWith("ore:")) {
 			Tag<Item> tag;
 			String ore="forge:ores/".concat(key.substring(4));
-			tag=ItemTags.getAllTags().getTag(new ResourceLocation(ore));
+			tag=(Tag<Item>) ForgeRegistries.ITEMS.tags().getTag(ItemTags.create((new ResourceLocation(ore))));
 			if(tag!=null)
 				return true;
 			String ingot="forge:ingots/".concat(key.substring(4));
-			tag=ItemTags.getAllTags().getTag(new ResourceLocation(ingot));
+			tag=(Tag<Item>) ForgeRegistries.ITEMS.tags().getTag(ItemTags.create((new ResourceLocation(ingot))));
 			if(tag!=null)
 				return true;
 			String dust="forge:dusts/".concat(key.substring(4));
-			tag=ItemTags.getAllTags().getTag(new ResourceLocation(dust));
+			tag=(Tag<Item>) ForgeRegistries.ITEMS.tags().getTag(ItemTags.create((new ResourceLocation(dust))));
 			if(tag!=null)
 				return true;
 		}
 		return false;
 	}
-	
+
 	public static Item getItemForString(String key) {
 		if(key.startsWith("item:")) {
 			return ForgeRegistries.ITEMS.getValue(new ResourceLocation(key.substring(5)));
 		}
 		if(key.startsWith("tag:")) {
-			Tag<Item> tag=ItemTags.getAllTags().getTag(new ResourceLocation(key.substring(4)));
+			Tag<Item> tag=(Tag<Item>) ForgeRegistries.ITEMS.tags().getTag(ItemTags.create((new ResourceLocation(key.substring(4)))));
 			return tag==null?null:tag.getValues().get(0);
 		}
 		if(key.contains("ore:")) {
 			Tag<Item> tag;
 			String ore="forge:ores/".concat(key.substring(4));
-			tag=ItemTags.getAllTags().getTag(new ResourceLocation(ore));
+			tag=(Tag<Item>) ForgeRegistries.ITEMS.tags().getTag(ItemTags.create(new ResourceLocation(ore)));
 			if(tag!=null)
 				return tag.getValues().get(0);
 			String ingot="forge:ingots/".concat(key.substring(4));
-			tag=ItemTags.getAllTags().getTag(new ResourceLocation(ingot));
+			tag=(Tag<Item>) ForgeRegistries.ITEMS.tags().getTag(ItemTags.create(new ResourceLocation(ingot)));
 			if(tag!=null)
 				return tag.getValues().get(0);
 			String dust="forge:dusts/".concat(key.substring(4));
-			tag=ItemTags.getAllTags().getTag(new ResourceLocation(dust));
+			tag=(Tag<Item>) ForgeRegistries.ITEMS.tags().getTag(ItemTags.create(new ResourceLocation(dust)));
 			if(tag!=null)
 				return tag.getValues().get(0);
 		}
