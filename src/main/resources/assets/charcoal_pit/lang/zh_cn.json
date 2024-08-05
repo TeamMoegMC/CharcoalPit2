@@ -248,5 +248,14 @@
   "charcoal_pit.instruction.straw": "用锄头割高草可以获得干草",
   "charcoal_pit.instruction.build_pit": "在地上放置原料，用有效的方块覆盖，在裸露的一面点火，然后迅速覆盖它，直到烟不再出现",
   "message.charcoal_pit.nofuel": "燃料不足或无法放置",
-  "message.charcoal_pit.pottery_kiln": "没有足够的干草或者木头"
+  "message.charcoal_pit.creosotecollector_0": "§7<Hold Shift>§7",
+  "message.charcoal_pit.creosotecollector_1": "§7没有足够的干草或者木头",
+  "message.charcoal_pit.creosotecollector_2": "§7没有足够的干草或者木头",
+  "message.charcoal_pit.creosotecollector_3": "§7没有足够的干草或者木头",
+  "message.charcoal_pit.creosotecollector_4": "§7没有足够的干草或者木头",
+  "message.charcoal_pit.creosotecollector_5": "没有足够的干草或者木头",
+  "message.charcoal_pit.creosotecollector_6": "没有足够的干草或者木头",
+  "message.charcoal_pit.creosotecollector_7": "没有足够的干草或者木头",
+  "message.charcoal_pit.creosotecollector_8": "没有足够的干草或者木头",
+  "message.charcoal_pit.creosotecollector_9": "没有足够的干草或者木头"
 }

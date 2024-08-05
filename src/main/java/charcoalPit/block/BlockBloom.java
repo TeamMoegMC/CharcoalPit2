@@ -9,7 +9,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -17,7 +17,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.storage.loot.LootContext.Builder;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -29,6 +28,8 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 
+import net.minecraft.world.level.storage.loot.LootParams;
+
 public class BlockBloom extends Block implements EntityBlock {
 
 	public static final IntegerProperty LAYER=BlockStateProperties.LAYERS;
@@ -37,13 +38,13 @@ public class BlockBloom extends Block implements EntityBlock {
 	public static final BooleanProperty DOUBLE=BooleanProperty.create("double");
 	
 	public BlockBloom() {
-		super(Properties.of(Material.STONE).strength(5, 6).requiresCorrectToolForDrops().sound(SoundType.ANVIL).lightLevel((state)->state.getValue(HOT)?15:0));
+		super(Properties.of().mapColor(MapColor.STONE).strength(5, 6).requiresCorrectToolForDrops().sound(SoundType.ANVIL).lightLevel((state)->state.getValue(HOT)?15:0));
 	}
 
 	
 	public void stepOn(Level worldIn, BlockPos pos, Entity entityIn) {
 	      if (!entityIn.fireImmune() && entityIn instanceof LivingEntity && !EnchantmentHelper.hasFrostWalker((LivingEntity)entityIn) && worldIn.getBlockState(pos).getValue(HOT)) {
-	         entityIn.hurt(DamageSource.HOT_FLOOR, 1.0F);
+	         entityIn.hurt(worldIn.damageSources().hotFloor(), 1.0F);
 	      }
 
 	      super.stepOn(worldIn, pos,worldIn.getBlockState(pos), entityIn);
@@ -76,7 +77,7 @@ public class BlockBloom extends Block implements EntityBlock {
 	}
 	
 	@Override
-	public List<ItemStack> getDrops(BlockState state, Builder builder) {
+	public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
 		if(state.getValue(FAIL)) {
 			ArrayList<ItemStack> drops=new ArrayList<>();
 			drops.add(new ItemStack(ModItemRegistry.BloomFail, state.getValue(DOUBLE)?8:4));

@@ -33,7 +33,7 @@ public class PileIgnitr {
 	@SubscribeEvent(priority=EventPriority.HIGH)
 	public static void placeKiln(PlayerInteractEvent.RightClickBlock event) {
 		//undye pots
-		Level world = event.getWorld();
+		Level world = event.getLevel();
 		if (!world.isClientSide) {
 //			if (world.getBlockState(event.getPos()).getBlock() == Blocks.CAULDRON &&
 //					world.getBlockState(event.getPos()).getValue(CauldronBlock.LEVEL) > 0) {
@@ -48,24 +48,24 @@ public class PileIgnitr {
 //				}
 //			}
 			//place bloomery
-			if (event.getPlayer().isShiftKeyDown()) {
+			if (event.getEntity().isShiftKeyDown()) {
 				if (PotteryKilnRecipe.isValidInput(event.getItemStack(), world) &&
 						event.getFace() == Direction.UP && world.getBlockState(event.getPos()).isFaceSturdy(world, event.getPos(), Direction.UP) &&
-						world.getBlockState(event.getPos().relative(Direction.UP)).getMaterial().isReplaceable()) {
+						world.getBlockState(event.getPos().relative(Direction.UP)).canBeReplaced()) {
 					world.setBlockAndUpdate(event.getPos().relative(Direction.UP), ModBlockRegistry.Kiln.defaultBlockState());
 					TilePotteryKiln tile = ((TilePotteryKiln) world.getBlockEntity(event.getPos().relative(Direction.UP)));
-					event.getPlayer().setItemInHand(event.getHand(), tile.pottery.insertItem(0, event.getItemStack(), false));
+					event.getEntity().setItemInHand(event.getHand(), tile.pottery.insertItem(0, event.getItemStack(), false));
 					world.playSound(null, event.getPos(), SoundEvents.GRAVEL_PLACE, SoundSource.BLOCKS, 1F, 1F);
 					event.setUseBlock(Result.DENY);
 					event.setUseItem(Result.DENY);
 				} else if (BloomeryRecipe.getRecipe(event.getItemStack(), world) != null &&
 						event.getFace() == Direction.UP && world.getBlockState(event.getPos()).is(BlockTags.create(new ResourceLocation(CharcoalPit.MODID, "bloomery_walls"))) &&
-						world.getBlockState(event.getPos().relative(Direction.UP)).getMaterial().isReplaceable() &&
+						world.getBlockState(event.getPos().relative(Direction.UP)).canBeReplaced() &&
 						MethodHelper.Bloomery2ValidPosition(world, event.getPos().relative(Direction.UP), false, false)) {
 					world.setBlockAndUpdate(event.getPos().relative(Direction.UP), ModBlockRegistry.Bloomery.defaultBlockState().setValue(BlockBloomery.STAGE, 1));
 					TileBloomery tile = ((TileBloomery) world.getBlockEntity(event.getPos().relative(Direction.UP)));
 					tile.recipe = BloomeryRecipe.getRecipe(event.getItemStack(), world);
-					event.getPlayer().setItemInHand(event.getHand(), tile.ore.insertItem(0, event.getItemStack(), false));
+					event.getEntity().setItemInHand(event.getHand(), tile.ore.insertItem(0, event.getItemStack(), false));
 					world.playSound(null, event.getPos(), SoundEvents.GRAVEL_PLACE, SoundSource.BLOCKS, 1F, 1F);
 					event.setUseBlock(Result.DENY);
 					event.setUseItem(Result.DENY);

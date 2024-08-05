@@ -2,14 +2,11 @@ package charcoalPit.core;
 
 import charcoalPit.CharcoalPit;
 import charcoalPit.tile.*;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
-import org.jline.terminal.spi.Pty;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegisterEvent;
 
-//@EventBusSubscriber(modid = CharcoalPit.MODID, bus = Bus.MOD)
 public class ModTileRegistry {
 
 
@@ -25,12 +22,18 @@ public class ModTileRegistry {
     public static BlockEntityType<TileBloomery> Bloomery2 = BlockEntityType.Builder.of(TileBloomery::new, ModBlockRegistry.Bloomery).build(null);
     public static BlockEntityType<TileBarrel> Barrel = BlockEntityType.Builder.of(TileBarrel::new, ModBlockRegistry.Barrel).build(null);
 	
-	
-//	@SubscribeEvent
-	public static void registerTileEntity(RegistryEvent.Register<BlockEntityType<?>> event) {
-		event.getRegistry().registerAll(ActivePile.setRegistryName("active_pile"),CreosoteCollector.setRegistryName("creosote_collector"),
-				PotteryKiln.setRegistryName("pottery_kiln"),CeramicPot.setRegistryName("ceramic_pot"),Bloomery2.setRegistryName("bloomery2"),
-				Barrel.setRegistryName("barrel"));
+
+	public static void registerTileEntity(RegisterEvent event) {
+        event.register(ForgeRegistries.Keys.BLOCK_ENTITY_TYPES,
+                helper -> {
+                    helper.register(new ResourceLocation(CharcoalPit.MODID, "active_pile"), ActivePile);
+                    helper.register(new ResourceLocation(CharcoalPit.MODID, "creosote_collector"), CreosoteCollector);
+                    helper.register(new ResourceLocation(CharcoalPit.MODID, "pottery_kiln"), PotteryKiln);
+                    helper.register(new ResourceLocation(CharcoalPit.MODID, "ceramic_pot"), CeramicPot);
+                    helper.register(new ResourceLocation(CharcoalPit.MODID, "bloomery2"), Bloomery2);
+                    helper.register(new ResourceLocation(CharcoalPit.MODID, "barrel"), Barrel);
+                }
+        );
 	}
 	
 }

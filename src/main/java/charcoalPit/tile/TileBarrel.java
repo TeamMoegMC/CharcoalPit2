@@ -114,7 +114,7 @@ public class TileBarrel extends BlockEntity {
 						tile.tank.setFluid(FluidStack.EMPTY);
 						tile.tank.fill(new FluidStack(recipe.fluid_out.getFluid(), rounds*recipe.fluid_out.amount, recipe.fluid_out.nbt), FluidAction.EXECUTE);
 					}
-					ItemStack container=tile.input.getStackInSlot(0).getContainerItem().copy();
+					ItemStack container=tile.input.getStackInSlot(0).getCraftingRemainingItem().copy();
 					container.setCount(rounds*recipe.in_amount);
 					tile.input.extractItem(0, rounds*recipe.in_amount, false);
 					container=tile.input.insertItem(0,container,false);

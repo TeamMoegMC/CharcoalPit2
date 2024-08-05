@@ -6,8 +6,7 @@ import charcoalPit.tile.TileActivePile;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -24,7 +23,7 @@ public class BlockLogPile extends RotatedPillarBlock implements EntityBlock {
 	public static final BooleanProperty LIT = BlockStateProperties.LIT;
 
 	public BlockLogPile() {
-		super(Properties.of(Material.WOOD, MaterialColor.WOOD).strength(2F).sound(SoundType.WOOD));
+		super(Properties.of().mapColor(MapColor.WOOD).strength(2F).sound(SoundType.WOOD));
 		this.registerDefaultState(this.stateDefinition.any().setValue(LIT, Boolean.valueOf(false)));
 	}
 

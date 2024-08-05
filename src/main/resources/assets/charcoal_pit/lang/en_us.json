@@ -248,5 +248,15 @@
   "charcoal_pit.instruction.straw": "Straw is obtained by cutting tall grass with a Hoe",
   "charcoal_pit.instruction.build_pit": "Place ingredients in world, cover in valid blocks, light an exposed side on fire and quickly cover it then wait until smoke stops",
   "message.charcoal_pit.nofuel": "Not enough fuel or Can not place",
-  "message.charcoal_pit.pottery_kiln": "Not enough straw or logs"
+  "message.charcoal_pit.pottery_kiln": "Not enough straw or logs",
+  "message.charcoal_pit.creosotecollector_0": "§7Collects creosote oil produced by log/coal piles above",
+  "message.charcoal_pit.creosotecollector_1": "§7Collects creosote oil produced by log/coal piles above",
+  "message.charcoal_pit.creosotecollector_1": "§7Collection area is a 9x9 '+' shape",
+  "message.charcoal_pit.creosotecollector_1": "§7Piles need to be connected to funnel",
+  "message.charcoal_pit.creosotecollector_1": "§7Creosote oil only flows down between piles",
+  "message.charcoal_pit.creosotecollector_1": "§7If redstone signal is applied:",
+  "message.charcoal_pit.creosotecollector_1": "§7-Funnel will also collect from neighboring funnels",
+  "message.charcoal_pit.creosotecollector_1": "§7-Funnel will auto output creosote oil",
+  "message.charcoal_pit.creosotecollector_1": "§7Creosote oil can only be extracted from the bottom",
+  "message.charcoal_pit.creosotecollector_1": "§7A line of funnels works best"
 }

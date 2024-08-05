@@ -17,7 +17,7 @@ public class CeramicPotContainer extends AbstractContainerMenu{
 	public CeramicPotContainer(int id, BlockPos pos, Inventory inv) {
 		super(ModContainerRegistry.CeramicPot, id);
 		this.pos=pos;
-		TileCeramicPot tile=((TileCeramicPot)inv.player.level.getBlockEntity(pos));
+		TileCeramicPot tile=((TileCeramicPot)inv.player.level().getBlockEntity(pos));
 		
 		for(int i = 0; i < 3; ++i) {
 	         for(int j = 0; j < 3; ++j) {
@@ -38,7 +38,7 @@ public class CeramicPotContainer extends AbstractContainerMenu{
 
 	@Override
 	public boolean stillValid(Player playerIn) {
-		return playerIn.level.getBlockState(pos).getBlock() instanceof BlockCeramicPot&&
+		return playerIn.level().getBlockState(pos).getBlock() instanceof BlockCeramicPot&&
 				playerIn.distanceToSqr((double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D) <= 64.0D;
 	}
 	

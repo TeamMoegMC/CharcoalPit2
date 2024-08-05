@@ -17,7 +17,7 @@ public class DispenserPlacePot extends DefaultDispenseItemBehavior{
 	protected ItemStack execute(BlockSource source, ItemStack stack) {
 		Direction facing = (Direction)source.getBlockState().getValue(DispenserBlock.FACING);
         BlockPos pos=source.getPos().relative(facing);
-        if(source.getLevel().getBlockState(pos).getMaterial().isReplaceable()){
+        if(source.getLevel().getBlockState(pos).canBeReplaced()){
         	source.getLevel().setBlockAndUpdate(pos, Block.byItem(stack.getItem()).defaultBlockState());
         	if(stack.hasTag()&&stack.getTag().contains("inventory")){
     			((TileCeramicPot)source.getLevel().getBlockEntity(pos)).inventory.deserializeNBT(stack.getTag().getCompound("inventory"));

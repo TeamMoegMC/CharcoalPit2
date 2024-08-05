@@ -31,7 +31,7 @@ public class ClayPotContainer2 extends AbstractContainerMenu {
         this.slot = slot;
         pot = new ClayPotHandler(9, () -> {
             this.inv.getItem(this.slot).addTagElement("inventory", pot.serializeNBT());
-        }, inv.player.level);
+        }, inv.player.level());
         if (this.inv.getItem(this.slot).hasTag() &&
                 this.inv.getItem(this.slot).getTag().contains("inventory"))
             pot.deserializeNBT(this.inv.getItem(this.slot).getTag().getCompound("inventory"));

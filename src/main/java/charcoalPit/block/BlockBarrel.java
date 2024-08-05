@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -24,7 +24,7 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.storage.loot.LootContext.Builder;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -40,16 +40,14 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.network.NetworkHooks;
@@ -63,7 +61,7 @@ public class BlockBarrel extends Block implements SimpleWaterloggedBlock, Entity
 	public static final VoxelShape BARREL=Shapes.box(2D/16D, 0D, 2D/16D, 14D/16D, 1D, 14D/16D);
 
 	public BlockBarrel() {
-		super(Properties.of(Material.WOOD).strength(2, 3));
+		super(Properties.of().mapColor(MapColor.WOOD).strength(2, 3));
 		registerDefaultState(this.defaultBlockState().setValue(WATERLOGGED,false));
 	}
 	
@@ -123,7 +121,7 @@ public class BlockBarrel extends Block implements SimpleWaterloggedBlock, Entity
 			InteractionHand handIn, BlockHitResult hit) {
 		if(worldIn.isClientSide)
 			return InteractionResult.SUCCESS;
-		if(player.getItemInHand(handIn).getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).isPresent()) {
+		if(player.getItemInHand(handIn).getCapability(ForgeCapabilities.FLUID_HANDLER).isPresent()) {
 			if(FluidUtil.interactWithFluidHandler(player, handIn, worldIn, pos, null))
 					return InteractionResult.SUCCESS;
 		}else if(player.getItemInHand(handIn).getItem()==Items.GLASS_BOTTLE){
@@ -144,7 +142,7 @@ public class BlockBarrel extends Block implements SimpleWaterloggedBlock, Entity
 				return InteractionResult.SUCCESS;
 			}
 		}
-		NetworkHooks.openGui((ServerPlayer)player, new MenuProvider() {
+		NetworkHooks.openScreen((ServerPlayer)player, new MenuProvider() {
 			
 			@Override
 			public AbstractContainerMenu createMenu(int arg0, Inventory arg1, Player arg2) {
@@ -153,14 +151,14 @@ public class BlockBarrel extends Block implements SimpleWaterloggedBlock, Entity
 			
 			@Override
 			public Component getDisplayName() {
-				return new TranslatableComponent("screen.charcoal_pit.barrel");
+				return Component.translatable("screen.charcoal_pit.barrel");
 			}
 		}, pos);
 		return InteractionResult.SUCCESS;
 	}
 	
 	@Override
-	public List<ItemStack> getDrops(BlockState state, Builder builder) {
+	public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
 		TileBarrel tile=((TileBarrel)builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY));
 		ItemStack stack=new ItemStack(this);
 		if(tile.tank.getFluidAmount()>0)
@@ -182,7 +180,7 @@ public class BlockBarrel extends Block implements SimpleWaterloggedBlock, Entity
 			TooltipFlag flagIn) {
 		if(stack.hasTag()&&stack.getTag().contains("Fluid")){
 			FluidStack fluid=FluidStack.loadFluidStackFromNBT(stack.getTag().getCompound("Fluid"));
-			tooltip.add(fluid.getDisplayName().plainCopy().append(new TextComponent(":"+fluid.getAmount())));
+			tooltip.add(fluid.getDisplayName().plainCopy().append(Component.literal(":"+fluid.getAmount())));
 		}
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
 	}

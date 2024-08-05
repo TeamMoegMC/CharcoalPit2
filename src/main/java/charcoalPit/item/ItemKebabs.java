@@ -16,10 +16,10 @@ public class ItemKebabs extends Item{
 	public ItemStack finishUsingItem(ItemStack stack, Level worldIn, LivingEntity entityLiving) {
 		if(stack.getCount()>1) {
 			if (entityLiving instanceof Player)
-				ItemHandlerHelper.giveItemToPlayer((Player) entityLiving, this.getContainerItem(stack).copy());
+				ItemHandlerHelper.giveItemToPlayer((Player) entityLiving, this.getCraftingRemainingItem(stack).copy());
 			return super.finishUsingItem(stack, worldIn, entityLiving);
 		}
 		entityLiving.eat(worldIn,stack);
-		return this.getContainerItem(stack).copy();
+		return this.getCraftingRemainingItem(stack).copy();
 	}
 }

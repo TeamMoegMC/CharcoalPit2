@@ -83,7 +83,7 @@ public class ItemClayPot extends Item{
 					slot = playerIn.getInventory().selected;
 				else slot = 40;
 
-				NetworkHooks.openGui((ServerPlayer) playerIn, new MenuProvider() {
+				NetworkHooks.openScreen((ServerPlayer) playerIn, new MenuProvider() {
 
 					@Override
 					public AbstractContainerMenu createMenu(int arg0, Inventory arg1, Player arg2) {

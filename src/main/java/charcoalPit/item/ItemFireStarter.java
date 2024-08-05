@@ -33,6 +33,8 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeMod;
 
+import net.minecraft.world.item.Item.Properties;
+
 public class ItemFireStarter extends Item{
 
 	public ItemFireStarter() {

@@ -5,13 +5,13 @@ import charcoalPit.core.Config;
 import charcoalPit.core.ModBlockRegistry;
 import charcoalPit.recipe.PotteryKilnRecipe;
 import charcoalPit.tile.TilePotteryKiln;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -25,7 +25,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
@@ -47,7 +46,7 @@ public class BlockPotteryKiln extends Block implements EntityBlock {
 	public static final VoxelShape COMPLETE=Shapes.box(0.0D, 0.0D, 0.0D, 1.0D, 0.1875D, 1.0D);
 
 	public BlockPotteryKiln() {
-		super(Properties.of(Material.DECORATION, MaterialColor.COLOR_RED));
+		super(Properties.of().mapColor(MapColor.COLOR_RED));
 	}
 	
 	@Override
@@ -188,7 +187,7 @@ public class BlockPotteryKiln extends Block implements EntityBlock {
 									worldIn.setBlockAndUpdate(pos, this.defaultBlockState().setValue(TYPE, EnumKilnTypes.THATCH));
 									worldIn.playSound(null, pos, SoundEvents.GRASS_PLACE, SoundSource.BLOCKS, 1F, 1F);
 								} else
-									player.displayClientMessage(new TranslatableComponent("message.charcoal_pit.pottery_kiln"), true);
+									player.displayClientMessage(Component.translatable("message.charcoal_pit.pottery_kiln"), true);
 							}
 							return InteractionResult.SUCCESS;
 						}
@@ -204,7 +203,7 @@ public class BlockPotteryKiln extends Block implements EntityBlock {
 						worldIn.setBlockAndUpdate(pos, this.defaultBlockState().setValue(TYPE, EnumKilnTypes.WOOD));
 						worldIn.playSound(null, pos, SoundEvents.WOOD_PLACE, SoundSource.BLOCKS, 1F, 1F);
 					} else
-						player.displayClientMessage(new TranslatableComponent("message.charcoal_pit.pottery_kiln"), true);
+						player.displayClientMessage(Component.translatable("message.charcoal_pit.pottery_kiln"), true);
 				}
 				return InteractionResult.SUCCESS;
 			}else

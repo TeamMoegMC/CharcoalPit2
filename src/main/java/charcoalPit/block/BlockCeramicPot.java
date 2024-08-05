@@ -10,8 +10,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.entity.LivingEntity;
@@ -21,8 +20,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
-import net.minecraft.world.level.storage.loot.LootContext.Builder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.InteractionResult;
@@ -34,7 +33,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
@@ -46,15 +44,15 @@ public class BlockCeramicPot extends Block implements EntityBlock {
 	
 	public static final VoxelShape POT=Shapes.box(2D/16D, 0D, 2D/16D, 14D/16D, 1D, 14D/16D);
 
-	public BlockCeramicPot(MaterialColor color) {
-		super(Properties.of(Material.SHULKER_SHELL, color).strength(1.25F,4.2F).sound(SoundType.STONE));
+	public BlockCeramicPot(MapColor color) {
+		super(Properties.of().mapColor(color).strength(1.25F,4.2F).sound(SoundType.STONE));
 	}
 	
 	@Override
 	public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player,
 			InteractionHand handIn, BlockHitResult hit) {
 		if(!worldIn.isClientSide) {
-			NetworkHooks.openGui((ServerPlayer)player, new MenuProvider() {
+			NetworkHooks.openScreen((ServerPlayer)player, new MenuProvider() {
 				
 				@Override
 				public AbstractContainerMenu createMenu(int p_createMenu_1_, Inventory p_createMenu_2_, Player p_createMenu_3_) {
@@ -63,7 +61,7 @@ public class BlockCeramicPot extends Block implements EntityBlock {
 				
 				@Override
 				public Component getDisplayName() {
-					return new TranslatableComponent("screen.charcoal_pit.ceramic_pot");
+					return Component.translatable("screen.charcoal_pit.ceramic_pot");
 				}
 			}, pos);;
 		}
@@ -82,7 +80,7 @@ public class BlockCeramicPot extends Block implements EntityBlock {
 	}*/
 	
 	@Override
-	public List<ItemStack> getDrops(BlockState state, Builder builder) {
+	public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
 		TileCeramicPot tile=((TileCeramicPot)builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY));
 		ItemStack stack=new ItemStack(this);
 		stack.addTagElement("inventory", tile.inventory.serializeNBT());

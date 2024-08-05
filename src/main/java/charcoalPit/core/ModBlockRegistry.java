@@ -2,13 +2,8 @@ package charcoalPit.core;
 
 import charcoalPit.CharcoalPit;
 import charcoalPit.block.*;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FallingBlock;
@@ -17,8 +12,10 @@ import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.WallBlock;
+import net.minecraft.world.level.material.MapColor;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegisterEvent;
 
-//@EventBusSubscriber(modid = CharcoalPit.MODID, bus = Bus.MOD)
 public class ModBlockRegistry {
 
 	public static BlockThatch Thatch;
@@ -55,8 +52,8 @@ public class ModBlockRegistry {
 		WoodAsh = new BlockAsh();
 		CoalAsh =new BlockAsh();
 //		Ash = new BlockAsh();
-		SandyBrick =new Block(Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE).strength(2, 6).requiresCorrectToolForDrops());
-		CokeBlock= new Block(Properties.of(Material.WOOD, MaterialColor.COLOR_BLACK).strength(5F, 6F).requiresCorrectToolForDrops()) {
+		SandyBrick =new Block(Properties.of().mapColor(MapColor.STONE).strength(2, 6).requiresCorrectToolForDrops());
+		CokeBlock= new Block(Properties.of().mapColor(MapColor.WOOD).strength(5F, 6F).requiresCorrectToolForDrops()) {
 			public int getFireSpreadSpeed(net.minecraft.world.level.block.state.BlockState state, net.minecraft.world.level.BlockGetter world, net.minecraft.core.BlockPos pos, net.minecraft.core.Direction face) {
 				return 5;
 			}
@@ -67,30 +64,30 @@ public class ModBlockRegistry {
 				return 5;
 			}
         };
-		Ash = new FallingBlock(Properties.of(Material.SAND, MaterialColor.COLOR_LIGHT_GRAY).strength(0.5F).sound(SoundType.SAND));
-		SandySlab=new SlabBlock(Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE).strength(2, 6).requiresCorrectToolForDrops());
-		SandyStair=new StairBlock(()->SandyBrick.defaultBlockState(), Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE).strength(2, 6).requiresCorrectToolForDrops());
-		SandyWall=new WallBlock(Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE).strength(2, 6).requiresCorrectToolForDrops());
+		Ash = new FallingBlock(Properties.of().mapColor(MapColor.SAND).strength(0.5F).sound(SoundType.SAND));
+		SandySlab=new SlabBlock(Properties.of().mapColor(MapColor.STONE).strength(2, 6).requiresCorrectToolForDrops());
+		SandyStair=new StairBlock(()->SandyBrick.defaultBlockState(), Properties.of().mapColor(MapColor.STONE).strength(2, 6).requiresCorrectToolForDrops());
+		SandyWall=new WallBlock(Properties.of().mapColor(MapColor.STONE).strength(2, 6).requiresCorrectToolForDrops());
 
 		SandyCollector=new BlockCreosoteCollector(Properties.copy(SandyBrick));
 		Kiln=new BlockPotteryKiln();
-		CeramicPot=new BlockCeramicPot(MaterialColor.COLOR_ORANGE);
-		WhitePot=new BlockCeramicPot(MaterialColor.TERRACOTTA_WHITE);
-		OrangePot=new BlockCeramicPot(MaterialColor.TERRACOTTA_ORANGE);
-		MagentaPot=new BlockCeramicPot(MaterialColor.TERRACOTTA_MAGENTA);
-		LightBluePot=new BlockCeramicPot(MaterialColor.TERRACOTTA_LIGHT_BLUE);
-		YellowPot=new BlockCeramicPot(MaterialColor.TERRACOTTA_YELLOW);
-		LimePot=new BlockCeramicPot(MaterialColor.TERRACOTTA_LIGHT_GREEN);
-		PinkPot=new BlockCeramicPot(MaterialColor.TERRACOTTA_PINK);
-		GrayPot = new BlockCeramicPot(MaterialColor.TERRACOTTA_GRAY);
-		LightGrayPot = new BlockCeramicPot(MaterialColor.TERRACOTTA_LIGHT_GRAY);
-		CyanPot = new BlockCeramicPot(MaterialColor.TERRACOTTA_CYAN);
-		PurplePot = new BlockCeramicPot(MaterialColor.TERRACOTTA_PURPLE);
-		BluePot = new BlockCeramicPot(MaterialColor.TERRACOTTA_BLUE);
-		BrownPot = new BlockCeramicPot(MaterialColor.TERRACOTTA_BROWN);
-		GreenPot = new BlockCeramicPot(MaterialColor.TERRACOTTA_GREEN);
-		RedPot = new BlockCeramicPot(MaterialColor.TERRACOTTA_RED);
-		BlackPot = new BlockCeramicPot(MaterialColor.TERRACOTTA_BLACK);
+		CeramicPot=new BlockCeramicPot(MapColor.COLOR_ORANGE);
+		WhitePot=new BlockCeramicPot(MapColor.TERRACOTTA_WHITE);
+		OrangePot=new BlockCeramicPot(MapColor.TERRACOTTA_ORANGE);
+		MagentaPot=new BlockCeramicPot(MapColor.TERRACOTTA_MAGENTA);
+		LightBluePot=new BlockCeramicPot(MapColor.TERRACOTTA_LIGHT_BLUE);
+		YellowPot=new BlockCeramicPot(MapColor.TERRACOTTA_YELLOW);
+		LimePot=new BlockCeramicPot(MapColor.TERRACOTTA_LIGHT_GREEN);
+		PinkPot=new BlockCeramicPot(MapColor.TERRACOTTA_PINK);
+		GrayPot = new BlockCeramicPot(MapColor.TERRACOTTA_GRAY);
+		LightGrayPot = new BlockCeramicPot(MapColor.TERRACOTTA_LIGHT_GRAY);
+		CyanPot = new BlockCeramicPot(MapColor.TERRACOTTA_CYAN);
+		PurplePot = new BlockCeramicPot(MapColor.TERRACOTTA_PURPLE);
+		BluePot = new BlockCeramicPot(MapColor.TERRACOTTA_BLUE);
+		BrownPot = new BlockCeramicPot(MapColor.TERRACOTTA_BROWN);
+		GreenPot = new BlockCeramicPot(MapColor.TERRACOTTA_GREEN);
+		RedPot = new BlockCeramicPot(MapColor.TERRACOTTA_RED);
+		BlackPot = new BlockCeramicPot(MapColor.TERRACOTTA_BLACK);
 		Bellows = new BlockBellows();
 		TuyereSandy = new Block(Properties.copy(SandyBrick));
 
@@ -106,23 +103,62 @@ public class ModBlockRegistry {
 			EndDoor=new DoorBlock(Properties.from(Blocks.IRON_DOOR));*/
 
 
-//	@SubscribeEvent
-	public static void registerBlocks(RegistryEvent.Register<Block> event) {
-		event.getRegistry().registerAll(Thatch.setRegistryName("thatch"), LogPile.setRegistryName("log_pile"), CoalPile.setRegistryName("coal_pile"),
-				WoodAsh.setRegistryName("wood_ash"), CoalAsh.setRegistryName("coal_ash"),
-				CokeBlock.setRegistryName("coke"), Ash.setRegistryName("ash"),
-				SandyBrick.setRegistryName("sandy_brick"), SandySlab.setRegistryName("sandy_slab"), SandyStair.setRegistryName("sandy_stair"), SandyWall.setRegistryName("sandy_wall"),
-				SandyCollector.setRegistryName("sandy_collector"),
-				Kiln.setRegistryName("pottery_kiln"), Bellows.setRegistryName("bellows"),
-				TuyereSandy.setRegistryName("sandy_tuyere"),
-				Bloomery.setRegistryName("bloomery"), MainBloomery.setRegistryName("main_bloomery"),
-				Barrel.setRegistryName("barrel")/*,BrickDoor.setRegistryName("brick_door"),SandyDoor.setRegistryName("sandy_door"),NetherDoor.setRegistryName("nether_door"),
-				EndDoor.setRegistryName("end_door")*/, MechanicalBellows.setRegistryName("mechanical_bellows"));
-		event.getRegistry().registerAll(CeramicPot.setRegistryName("ceramic_pot"), YellowPot.setRegistryName("yellow_pot"), WhitePot.setRegistryName("white_pot"),
-				RedPot.setRegistryName("red_pot"), PurplePot.setRegistryName("purple_pot"), PinkPot.setRegistryName("pink_pot"), OrangePot.setRegistryName("orange_pot"),
-				MagentaPot.setRegistryName("magenta_pot"), LimePot.setRegistryName("lime_pot"), LightGrayPot.setRegistryName("light_gray_pot"),
-				LightBluePot.setRegistryName("light_blue_pot"), GreenPot.setRegistryName("green_pot"), GrayPot.setRegistryName("gray_pot"), CyanPot.setRegistryName("cyan_pot"),
-				BrownPot.setRegistryName("brown_pot"), BluePot.setRegistryName("blue_pot"), BlackPot.setRegistryName("black_pot"));
+	public static void registerBlocks(RegisterEvent event) {
+		event.register(ForgeRegistries.Keys.BLOCKS,
+				helper -> {
+					helper.register(new ResourceLocation(CharcoalPit.MODID, "thatch"), Thatch);
+					helper.register(new ResourceLocation( "log_pile"), LogPile);
+					helper.register(new ResourceLocation( "coal_pile"), CoalPile);
+					helper.register(new ResourceLocation( "wood_ash"), WoodAsh);
+					helper.register(new ResourceLocation( "coal_ash"), CoalPile);
+					helper.register(new ResourceLocation( "coke"), CokeBlock);
+					helper.register(new ResourceLocation( "ash"), Ash);
+					helper.register(new ResourceLocation( "sandy_brick"), SandyBrick);
+					helper.register(new ResourceLocation( "sandy_slab"), SandySlab);
+					helper.register(new ResourceLocation( "sandy_stair"), SandyStair);
+					helper.register(new ResourceLocation( "sandy_wall"), SandyWall);
+					helper.register(new ResourceLocation( "sandy_collector"), SandyCollector);
+					helper.register(new ResourceLocation( "pottery_kiln"),Kiln);
+					helper.register(new ResourceLocation( "bellows"),Bellows );
+					helper.register(new ResourceLocation( "sandy_tuyere"), TuyereSandy);
+					helper.register(new ResourceLocation( "bloomery"), Bloomery);
+					helper.register(new ResourceLocation( "main_bloomery"), MainBloomery);
+					helper.register(new ResourceLocation( "barrel"), Barrel);
+					helper.register(new ResourceLocation( "mechanical_bellows"), MechanicalBellows);
+
+					helper.register(new ResourceLocation( "ceramic_pot"),CeramicPot );
+					helper.register(new ResourceLocation( "yellow_pot"), YellowPot);
+					helper.register(new ResourceLocation( "white_pot"), WhitePot);
+					helper.register(new ResourceLocation( "red_pot"), RedPot);
+					helper.register(new ResourceLocation( "purple_pot"), PurplePot);
+					helper.register(new ResourceLocation( "pink_pot"), PinkPot);
+					helper.register(new ResourceLocation( "orange_pot"), OrangePot);
+					helper.register(new ResourceLocation( "magenta_pot"), MagentaPot);
+					helper.register(new ResourceLocation( "lime_pot"), LimePot);
+					helper.register(new ResourceLocation( "light_gray_pot"), LightGrayPot);
+					helper.register(new ResourceLocation( "light_blue_pot"), LightBluePot);
+					helper.register(new ResourceLocation( "green_pot"), GrayPot);
+					helper.register(new ResourceLocation( "cyan_pot"), CyanPot);
+					helper.register(new ResourceLocation( "brown_pot"), BrownPot);
+					helper.register(new ResourceLocation( "black_pot"), BlackPot);
+				}
+		);
+
+//		event.getRegistry().registerAll(Thatch.setRegistryName("thatch"), LogPile.setRegistryName("log_pile"), CoalPile.setRegistryName("coal_pile"),
+//				WoodAsh.setRegistryName("wood_ash"), CoalAsh.setRegistryName("coal_ash"),
+//				CokeBlock.setRegistryName("coke"), Ash.setRegistryName("ash"),
+//				SandyBrick.setRegistryName("sandy_brick"), SandySlab.setRegistryName("sandy_slab"), SandyStair.setRegistryName("sandy_stair"), SandyWall.setRegistryName("sandy_wall"),
+//				SandyCollector.setRegistryName("sandy_collector"),
+//				Kiln.setRegistryName("pottery_kiln"), Bellows.setRegistryName("bellows"),
+//				TuyereSandy.setRegistryName("sandy_tuyere"),
+//				Bloomery.setRegistryName("bloomery"), MainBloomery.setRegistryName("main_bloomery"),
+//				Barrel.setRegistryName("barrel")/*,BrickDoor.setRegistryName("brick_door"),SandyDoor.setRegistryName("sandy_door"),NetherDoor.setRegistryName("nether_door"),
+//				EndDoor.setRegistryName("end_door")*/, MechanicalBellows.setRegistryName("mechanical_bellows"));
+//		event.getRegistry().registerAll(CeramicPot.setRegistryName("ceramic_pot"), YellowPot.setRegistryName("yellow_pot"), WhitePot.setRegistryName("white_pot"),
+//				RedPot.setRegistryName("red_pot"), PurplePot.setRegistryName("purple_pot"), PinkPot.setRegistryName("pink_pot"), OrangePot.setRegistryName("orange_pot"),
+//				MagentaPot.setRegistryName("magenta_pot"), LimePot.setRegistryName("lime_pot"), LightGrayPot.setRegistryName("light_gray_pot"),
+//				LightBluePot.setRegistryName("light_blue_pot"), GreenPot.setRegistryName("green_pot"), GrayPot.setRegistryName("gray_pot"), CyanPot.setRegistryName("cyan_pot"),
+//				BrownPot.setRegistryName("brown_pot"), BluePot.setRegistryName("blue_pot"), BlackPot.setRegistryName("black_pot"));
 	}
 
 }

@@ -12,7 +12,7 @@ import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.ColorHandlerEvent;
+import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -30,7 +30,7 @@ public class ClientSetup {
 		MenuScreens.register(ModContainerRegistry.Barrel, BarrelScreen::new);
 	}
 	@SubscribeEvent
-	public static void registerColors(ColorHandlerEvent.Item event){
+	public static void registerColors(RegisterColorHandlersEvent.Item event){
 		event.getItemColors().register(new ItemColor() {
 			@Override
 			public int getColor(ItemStack p_getColor_1_, int p_getColor_2_) {

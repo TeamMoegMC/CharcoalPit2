@@ -5,14 +5,14 @@ import java.util.List;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.storage.loot.LootContext.Builder;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -33,7 +33,7 @@ public class BlockBloomeryPile extends Block{
 			Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D)};
 
 	public BlockBloomeryPile() {
-		super(Properties.of(Material.STONE).strength(5F, 6F));
+		super(Properties.of().mapColor(MapColor.STONE).strength(5F, 6F));
 	}
 	
 	@Override
@@ -51,7 +51,7 @@ public class BlockBloomeryPile extends Block{
 	}
 	
 	@Override
-	public List<ItemStack> getDrops(BlockState state, Builder builder) {
+	public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
 		ArrayList<ItemStack> drops=new ArrayList<>();
 		drops.add(new ItemStack(Items.IRON_ORE, Math.min(4, state.getValue(LAYER))));
 		drops.add(new ItemStack(Items.CHARCOAL, Math.max(0, state.getValue(LAYER)-4)));

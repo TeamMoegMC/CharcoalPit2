@@ -4,14 +4,14 @@ import charcoalPit.fluid.ModFluidRegistry;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.LiquidBlock;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 
 public class BlockAlcohol extends LiquidBlock{
 	
 	public BlockAlcohol() {
-		super(()->ModFluidRegistry.AlcoholStill, Properties.of(Material.WATER).noCollission().strength(100.0F).noDrops());
+		super(()->ModFluidRegistry.AlcoholStill, Properties.of().mapColor(MapColor.WATER).noCollission().strength(100.0F).noLootTable());
 	}
 	
 	@Override

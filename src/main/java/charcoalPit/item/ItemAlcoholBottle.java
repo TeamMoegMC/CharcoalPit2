@@ -20,7 +20,7 @@ import net.minecraft.world.level.Level;
 public class ItemAlcoholBottle extends PotionItem{
 
 	public ItemAlcoholBottle() {
-		super(new Item.Properties().tab(ModItemRegistry.CHARCOAL_PIT_FOODS).stacksTo(16).craftRemainder(Items.GLASS_BOTTLE));
+		super(new Item.Properties().stacksTo(16).craftRemainder(Items.GLASS_BOTTLE));
 	}
 	
 	@Override

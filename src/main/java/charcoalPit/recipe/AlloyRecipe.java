@@ -28,7 +28,7 @@ public class AlloyRecipe {
 		if(in.isEmpty())
 			return false;
 		for(int i=0;i<input.length;i++) {
-			if(MethodHelper.isItemInString(input[i], in.getItem()))
+			if(MethodHelper.isItemInString(input[i], in))
 				return true;
 		}
 		return false;
@@ -39,7 +39,7 @@ public class AlloyRecipe {
 			return false;
 		if(slot<0&&slot>=input.length)
 			return false;
-		return MethodHelper.isItemInString(input[slot], in.getItem());
+		return MethodHelper.isItemInString(input[slot], in);
 	}
 	
 	public boolean isValid() {

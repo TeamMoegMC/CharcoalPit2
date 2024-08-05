@@ -5,6 +5,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.InteractionResult;
 
+import net.minecraft.world.item.Item.Properties;
+
 public class ItemSapling extends Item {
 	public final BlockState state;
 	public ItemSapling(Properties properties, BlockState state) {

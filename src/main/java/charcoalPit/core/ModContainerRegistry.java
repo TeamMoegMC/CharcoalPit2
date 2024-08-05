@@ -4,17 +4,15 @@ import charcoalPit.CharcoalPit;
 import charcoalPit.gui.BarrelContainer;
 import charcoalPit.gui.CeramicPotContainer;
 import charcoalPit.gui.ClayPotContainer2;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraftforge.common.extensions.IForgeMenuType;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
-import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegisterEvent;
 
 
-@EventBusSubscriber(modid=CharcoalPit.MODID, bus=Bus.MOD)
+
 public class ModContainerRegistry {
 
 	public static MenuType<CeramicPotContainer> CeramicPot= IForgeMenuType.create((id, inv, data)->{
@@ -29,10 +27,14 @@ public class ModContainerRegistry {
 	public static MenuType<BarrelContainer> Barrel=IForgeMenuType.create((id,inv,data)->{
 		return new BarrelContainer(id, data.readBlockPos(), inv);
 	});
-	@SubscribeEvent
-	public static void registerContainers(RegistryEvent.Register<MenuType<?>> event) {
-		event.getRegistry().registerAll(CeramicPot.setRegistryName("ceramic_pot"),ClayPot.setRegistryName("clay_pot"),Barrel.setRegistryName("barrel"));
+
+	public static void registerContainers(RegisterEvent event) {
+		event.register(ForgeRegistries.Keys.MENU_TYPES,
+				helper -> {
+					helper.register(new ResourceLocation(CharcoalPit.MODID, "ceramic_pot"), CeramicPot);
+					helper.register(new ResourceLocation(CharcoalPit.MODID,"clay_pot"), ClayPot);
+					helper.register(new ResourceLocation(CharcoalPit.MODID, "barrel"), Barrel);
+				}
+		);
 	}
-	
-	
 }

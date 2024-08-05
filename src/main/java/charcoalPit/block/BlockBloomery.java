@@ -5,11 +5,12 @@ import charcoalPit.core.Config;
 import charcoalPit.core.MethodHelper;
 import charcoalPit.core.ModBlockRegistry;
 import charcoalPit.tile.TileBloomery;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -60,7 +61,7 @@ public class BlockBloomery extends Block implements EntityBlock {
 			Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D)};
 
 	public BlockBloomery() {
-		super(Properties.of(Material.STONE).strength(4F, 6F).lightLevel((state)->{
+		super(Properties.of().mapColor(MapColor.STONE).strength(4F, 6F).lightLevel((state)->{
 			int i=state.getValue(STAGE);
 			if(i==9)
 				return 15;
@@ -140,7 +141,7 @@ public class BlockBloomery extends Block implements EntityBlock {
 	public void stepOn(Level worldIn, BlockPos pos, Entity entityIn) {
 	      if (!entityIn.fireImmune() && entityIn instanceof LivingEntity && !EnchantmentHelper.hasFrostWalker((LivingEntity)entityIn) && worldIn.getBlockState(pos).getValue(STAGE)>=10 
 	    		  && worldIn.getBlockState(pos).getValue(STAGE)<12) {
-	         entityIn.hurt(DamageSource.HOT_FLOOR, 1.0F);
+	         entityIn.hurt(worldIn.damageSources().hotFloor(), 1.0F);
 	      }
 
 	      super.stepOn(worldIn, pos, worldIn.getBlockState(pos),entityIn);
@@ -148,7 +149,7 @@ public class BlockBloomery extends Block implements EntityBlock {
 	
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, Random rand) {
+	public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, RandomSource rand) {
 		if(stateIn.getValue(STAGE)!=9)
 			return;
 		double centerX = pos.getX() + 0.5F;

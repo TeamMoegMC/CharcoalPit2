@@ -2,8 +2,7 @@ package charcoalPit.block;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.core.BlockPos;
@@ -13,7 +12,7 @@ public class BlockMainBloomery extends Block {
     public static final IntegerProperty STAGE = IntegerProperty.create("stage", 0, 2);
 
     public BlockMainBloomery() {
-        super(Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE).strength(4, 8).requiresCorrectToolForDrops());
+        super(Properties.of().mapColor(MapColor.COLOR_ORANGE).strength(4, 8).requiresCorrectToolForDrops());
     }
 
     @Override

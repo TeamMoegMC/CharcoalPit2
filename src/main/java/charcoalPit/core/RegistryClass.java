@@ -1,33 +1,37 @@
 package charcoalPit.core;
 
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.RegisterEvent;
 
-@Mod.EventBusSubscriber(
-        modid = "charcoal_pit",
-        bus = Mod.EventBusSubscriber.Bus.MOD
-)
+@Mod.EventBusSubscriber(modid = "charcoal_pit", bus = Mod.EventBusSubscriber.Bus.MOD)
 public class RegistryClass {
     public RegistryClass() {
     }
 
     @SubscribeEvent
-    public static void registerBlocks(RegistryEvent.Register<Block> event) {
+    public static void registerBlocks(RegisterEvent event) {
         ModBlockRegistry.registerBlocks(event);
     }
 
     @SubscribeEvent
-    public static void registerItems(RegistryEvent.Register<Item> event) {
+    public static void registerItems(RegisterEvent event) {
         ModItemRegistry.registerItems(event);
     }
 
     @SubscribeEvent
-    public static void registerTileEntity(RegistryEvent.Register<BlockEntityType<?>> event) {
+    public static void registerContainers(RegisterEvent event) {
+        ModContainerRegistry.registerContainers(event);
+    }
+
+    @SubscribeEvent
+    public static void registerTileEntity(RegisterEvent event) {
         ModTileRegistry.registerTileEntity(event);
+    }
+
+    @SubscribeEvent
+    public static void registerRecipeType(RegisterEvent event) {
+        ModRecipeRegistry.registerRecipeType(event);
     }
 
 }

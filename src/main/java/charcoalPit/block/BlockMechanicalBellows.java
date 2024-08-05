@@ -1,8 +1,9 @@
 package charcoalPit.block;
 
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionHand;
@@ -18,7 +19,7 @@ import java.util.Random;
 public class BlockMechanicalBellows extends BlockBellows {
 	
 	public BlockMechanicalBellows(){
-		super(Material.STONE);
+		super(MapColor.STONE);
 	}
 	
 	@Override
@@ -37,7 +38,7 @@ public class BlockMechanicalBellows extends BlockBellows {
 	}
 	
 	@Override
-	public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, Random rand) {
+	public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, RandomSource rand) {
 		if(state.getValue(PUSH)) {
 			if(!worldIn.hasNeighborSignal(pos)) {
 				worldIn.setBlockAndUpdate(pos, state.setValue(PUSH, false));

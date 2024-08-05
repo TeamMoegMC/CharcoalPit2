@@ -3,9 +3,10 @@ package charcoalPit.block;
 import charcoalPit.CharcoalPit;
 import charcoalPit.core.ModBlockRegistry;
 import charcoalPit.tile.TileBloomery;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -21,8 +22,6 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
-
-import java.util.Random;
 
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -42,12 +41,12 @@ public class BlockBellows extends Block{
 	public static final VoxelShape EAST=Shapes.box(10D/16D, 0D, 0D, 1D, 1D, 1D);
 
 	public BlockBellows() {
-		super(Properties.of(Material.WOOD).strength(2, 3));
+		super(Properties.of().mapColor(MapColor.WOOD).strength(2, 3));
 		registerDefaultState(defaultBlockState().setValue(PUSH, false));
 	}
 	
-	public BlockBellows(Material m){
-		super(Properties.of(m).strength(2, 3));
+	public BlockBellows(MapColor color){
+		super(Properties.of().mapColor(color).strength(2, 3));
 		registerDefaultState(defaultBlockState().setValue(PUSH, false));
 	}
 	
@@ -97,7 +96,7 @@ public class BlockBellows extends Block{
 	}
 	
 	@Override
-	public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, Random rand) {
+	public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, RandomSource rand) {
 		if(state.getValue(PUSH)) {
 			worldIn.setBlockAndUpdate(pos, state.setValue(PUSH, false));
 		}else {
