@@ -106,54 +106,61 @@ public class ModBlockRegistry {
 	public static void registerBlocks(RegisterEvent event) {
 		event.register(ForgeRegistries.Keys.BLOCKS,
 				helper -> {
-					helper.register(new ResourceLocation(CharcoalPit.MODID, "thatch"), Thatch);
-					helper.register(new ResourceLocation( "log_pile"), LogPile);
-					helper.register(new ResourceLocation( "coal_pile"), CoalPile);
-					helper.register(new ResourceLocation( "wood_ash"), WoodAsh);
-					helper.register(new ResourceLocation( "coal_ash"), CoalPile);
-					helper.register(new ResourceLocation( "coke"), CokeBlock);
-					helper.register(new ResourceLocation( "ash"), Ash);
-					helper.register(new ResourceLocation( "sandy_brick"), SandyBrick);
-					helper.register(new ResourceLocation( "sandy_slab"), SandySlab);
-					helper.register(new ResourceLocation( "sandy_stair"), SandyStair);
-					helper.register(new ResourceLocation( "sandy_wall"), SandyWall);
-					helper.register(new ResourceLocation( "sandy_collector"), SandyCollector);
-					helper.register(new ResourceLocation( "pottery_kiln"),Kiln);
-					helper.register(new ResourceLocation( "bellows"),Bellows );
-					helper.register(new ResourceLocation( "sandy_tuyere"), TuyereSandy);
-					helper.register(new ResourceLocation( "bloomery"), Bloomery);
-					helper.register(new ResourceLocation( "main_bloomery"), MainBloomery);
-					helper.register(new ResourceLocation( "barrel"), Barrel);
-					helper.register(new ResourceLocation( "mechanical_bellows"), MechanicalBellows);
+					helper.register(new ResourceLocation(CharcoalPit.MODID,"thatch"), Thatch);
+					helper.register(new ResourceLocation(CharcoalPit.MODID,"log_pile"), LogPile);
+					helper.register(new ResourceLocation(CharcoalPit.MODID,"coal_pile"), CoalPile);
+					helper.register(new ResourceLocation(CharcoalPit.MODID,"wood_ash"), WoodAsh);
+					helper.register(new ResourceLocation(CharcoalPit.MODID,"coal_ash"), CoalAsh);
+					helper.register(new ResourceLocation(CharcoalPit.MODID,"coke"), CokeBlock);
+					helper.register(new ResourceLocation(CharcoalPit.MODID,"ash"), Ash);
+					helper.register(new ResourceLocation(CharcoalPit.MODID,"sandy_brick"), SandyBrick);
+					helper.register(new ResourceLocation(CharcoalPit.MODID,"sandy_slab"), SandySlab);
+					helper.register(new ResourceLocation(CharcoalPit.MODID,"sandy_stair"), SandyStair);
+					helper.register(new ResourceLocation(CharcoalPit.MODID,"sandy_wall"), SandyWall);
+					helper.register(new ResourceLocation(CharcoalPit.MODID,"sandy_collector"), SandyCollector);
+					helper.register(new ResourceLocation(CharcoalPit.MODID,"pottery_kiln"),Kiln);
+					helper.register(new ResourceLocation(CharcoalPit.MODID,"bellows"),Bellows );
+					helper.register(new ResourceLocation(CharcoalPit.MODID,"sandy_tuyere"), TuyereSandy);
+					helper.register(new ResourceLocation(CharcoalPit.MODID,"bloomery"), Bloomery);
+					helper.register(new ResourceLocation(CharcoalPit.MODID,"main_bloomery"), MainBloomery);
+					helper.register(new ResourceLocation(CharcoalPit.MODID,"barrel"), Barrel);
+					helper.register(new ResourceLocation(CharcoalPit.MODID,"mechanical_bellows"), MechanicalBellows);
 
-					helper.register(new ResourceLocation( "ceramic_pot"),CeramicPot );
-					helper.register(new ResourceLocation( "yellow_pot"), YellowPot);
-					helper.register(new ResourceLocation( "white_pot"), WhitePot);
-					helper.register(new ResourceLocation( "red_pot"), RedPot);
-					helper.register(new ResourceLocation( "purple_pot"), PurplePot);
-					helper.register(new ResourceLocation( "pink_pot"), PinkPot);
-					helper.register(new ResourceLocation( "orange_pot"), OrangePot);
-					helper.register(new ResourceLocation( "magenta_pot"), MagentaPot);
-					helper.register(new ResourceLocation( "lime_pot"), LimePot);
-					helper.register(new ResourceLocation( "light_gray_pot"), LightGrayPot);
-					helper.register(new ResourceLocation( "light_blue_pot"), LightBluePot);
-					helper.register(new ResourceLocation( "green_pot"), GrayPot);
-					helper.register(new ResourceLocation( "cyan_pot"), CyanPot);
-					helper.register(new ResourceLocation( "brown_pot"), BrownPot);
-					helper.register(new ResourceLocation( "black_pot"), BlackPot);
+					helper.register(new ResourceLocation(CharcoalPit.MODID,"ceramic_pot"),CeramicPot );
+					helper.register(new ResourceLocation(CharcoalPit.MODID,"yellow_pot"), YellowPot);
+					helper.register(new ResourceLocation(CharcoalPit.MODID,"white_pot"), WhitePot);
+					helper.register(new ResourceLocation(CharcoalPit.MODID,"red_pot"), RedPot);
+					helper.register(new ResourceLocation(CharcoalPit.MODID,"purple_pot"), PurplePot);
+					helper.register(new ResourceLocation(CharcoalPit.MODID,"pink_pot"), PinkPot);
+					helper.register(new ResourceLocation(CharcoalPit.MODID,"orange_pot"), OrangePot);
+					helper.register(new ResourceLocation(CharcoalPit.MODID,"magenta_pot"), MagentaPot);
+					helper.register(new ResourceLocation(CharcoalPit.MODID,"lime_pot"), LimePot);
+					helper.register(new ResourceLocation(CharcoalPit.MODID,"light_gray_pot"), LightGrayPot);
+					helper.register(new ResourceLocation(CharcoalPit.MODID,"light_blue_pot"), LightBluePot);
+					helper.register(new ResourceLocation(CharcoalPit.MODID,"green_pot"), GreenPot);
+					helper.register(new ResourceLocation(CharcoalPit.MODID,"gray_pot"), GrayPot);
+					helper.register(new ResourceLocation(CharcoalPit.MODID,"cyan_pot"), CyanPot);
+					helper.register(new ResourceLocation(CharcoalPit.MODID,"brown_pot"), BrownPot);
+					helper.register(new ResourceLocation(CharcoalPit.MODID,"blue_pot"), BluePot);
+					helper.register(new ResourceLocation(CharcoalPit.MODID,"black_pot"), BlackPot);
 				}
 		);
 
 //		event.getRegistry().registerAll(Thatch.setRegistryName("thatch"), LogPile.setRegistryName("log_pile"), CoalPile.setRegistryName("coal_pile"),
 //				WoodAsh.setRegistryName("wood_ash"), CoalAsh.setRegistryName("coal_ash"),
 //				CokeBlock.setRegistryName("coke"), Ash.setRegistryName("ash"),
+
 //				SandyBrick.setRegistryName("sandy_brick"), SandySlab.setRegistryName("sandy_slab"), SandyStair.setRegistryName("sandy_stair"), SandyWall.setRegistryName("sandy_wall"),
 //				SandyCollector.setRegistryName("sandy_collector"),
+
 //				Kiln.setRegistryName("pottery_kiln"), Bellows.setRegistryName("bellows"),
 //				TuyereSandy.setRegistryName("sandy_tuyere"),
+
 //				Bloomery.setRegistryName("bloomery"), MainBloomery.setRegistryName("main_bloomery"),
+
 //				Barrel.setRegistryName("barrel")/*,BrickDoor.setRegistryName("brick_door"),SandyDoor.setRegistryName("sandy_door"),NetherDoor.setRegistryName("nether_door"),
 //				EndDoor.setRegistryName("end_door")*/, MechanicalBellows.setRegistryName("mechanical_bellows"));
+
 //		event.getRegistry().registerAll(CeramicPot.setRegistryName("ceramic_pot"), YellowPot.setRegistryName("yellow_pot"), WhitePot.setRegistryName("white_pot"),
 //				RedPot.setRegistryName("red_pot"), PurplePot.setRegistryName("purple_pot"), PinkPot.setRegistryName("pink_pot"), OrangePot.setRegistryName("orange_pot"),
 //				MagentaPot.setRegistryName("magenta_pot"), LimePot.setRegistryName("lime_pot"), LightGrayPot.setRegistryName("light_gray_pot"),

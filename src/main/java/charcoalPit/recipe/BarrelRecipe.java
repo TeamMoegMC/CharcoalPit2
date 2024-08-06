@@ -7,6 +7,7 @@ import com.google.gson.JsonParseException;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 
 import charcoalPit.CharcoalPit;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
@@ -20,12 +21,15 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.registries.ForgeRegistryEntry;
 
 public class BarrelRecipe implements Recipe<Container>{
 	
 	public static final ResourceLocation BARREL=new ResourceLocation(CharcoalPit.MODID, "barrel");
-	public static final RecipeType<BarrelRecipe> BARREL_RECIPE=RecipeType.register(BARREL.toString());
+	public static final RecipeType<BarrelRecipe> BARREL_RECIPE=new RecipeType<>() {
+		public String toString() {
+			return BARREL.toString();
+		}
+	};;
 	
 	public static final Serializer SERIALIZER=new Serializer();
 	
@@ -76,9 +80,8 @@ public class BarrelRecipe implements Recipe<Container>{
 		// TODO Auto-generated method stub
 		return false;
 	}
-
 	@Override
-	public ItemStack assemble(Container inv) {
+	public ItemStack assemble(Container inv,RegistryAccess access) {
 		// TODO Auto-generated method stub
 		return ItemStack.EMPTY;
 	}
@@ -90,7 +93,7 @@ public class BarrelRecipe implements Recipe<Container>{
 	}
 
 	@Override
-	public ItemStack getResultItem() {
+	public ItemStack getResultItem(RegistryAccess access){
 		// TODO Auto-generated method stub
 		return ItemStack.EMPTY;
 	}
@@ -110,7 +113,7 @@ public class BarrelRecipe implements Recipe<Container>{
 		return BARREL_RECIPE;
 	}
 	
-	public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<BarrelRecipe>{
+	public static class Serializer implements RecipeSerializer<BarrelRecipe>{
 
 		@Override
 		public BarrelRecipe fromJson(ResourceLocation recipeId, JsonObject json) {

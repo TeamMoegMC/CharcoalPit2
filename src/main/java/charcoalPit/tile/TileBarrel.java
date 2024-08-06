@@ -22,12 +22,13 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraftforge.common.SoundActions;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidActionResult;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
@@ -45,7 +46,7 @@ public class TileBarrel extends BlockEntity {
 	
 	public TileBarrel(BlockPos blockPos, BlockState state) {
 		super(ModTileRegistry.Barrel,blockPos,state);
-		tank=new FluidTank(16000, f->f.getFluid().getAttributes().getTemperature()<450 && !f.getFluid().getAttributes().isGaseous()) {
+		tank=new FluidTank(16000, f->f.getFluid().getFluidType().getTemperature()<450 && !f.getFluid().getFluidType().isAir()) {
 			@Override
 			protected void onContentsChanged() {
 				setChanged();
@@ -127,7 +128,7 @@ public class TileBarrel extends BlockEntity {
 				}else
 					if(!tile.input.getStackInSlot(0).isEmpty()) {
 						if(tile.input.getStackInSlot(0).getItem()==Items.GLASS_BOTTLE){
-							if(tile.tank.getFluid().getFluid()==ModFluidRegistry.AlcoholStill&&tile.tank.getFluidAmount()>=250){
+							if(tile.tank.getFluid().getFluid()==ModFluidRegistry.AlcoholStill.get()&&tile.tank.getFluidAmount()>=250){
 								ItemStack stack=new ItemStack(ModItemRegistry.AlcoholBottle);
 								stack.setTag(tile.tank.getFluid().getTag().copy());
 								if(tile.output.insertItem(0,stack,true)==ItemStack.EMPTY){
@@ -136,7 +137,7 @@ public class TileBarrel extends BlockEntity {
 									tile.input.extractItem(0,1,false);
 								}
 							}
-							if(tile.tank.getFluid().getFluid()==ModFluidRegistry.VinegarStill&&tile.tank.getFluidAmount()>=250){
+							if(tile.tank.getFluid().getFluid()==ModFluidRegistry.VinegarStill.get()&&tile.tank.getFluidAmount()>=250){
 								ItemStack stack=new ItemStack(ModItemRegistry.VinegarBottle);
 								if(tile.output.insertItem(0,stack,true)==ItemStack.EMPTY){
 									tile.output.insertItem(0,stack,false);
@@ -259,8 +260,8 @@ public class TileBarrel extends BlockEntity {
                     
                     if (doDrain && player != null)
                     {
-                        SoundEvent soundevent = transfer.getFluid().getAttributes().getEmptySound(transfer);
-                        player.level.playSound(null, player.getX(), player.getY() + 0.5, player.getZ(), soundevent, SoundSource.BLOCKS, 1.0F, 1.0F);
+                        SoundEvent soundevent = transfer.getFluid().getFluidType().getSound(transfer,SoundActions.BUCKET_EMPTY);
+                        player.level().playSound(null, player.getX(), player.getY() + 0.5, player.getZ(), soundevent, SoundSource.BLOCKS, 1.0F, 1.0F);
                     }
 
                     ItemStack resultContainer = containerFluidHandler.getContainer();
@@ -281,8 +282,8 @@ public class TileBarrel extends BlockEntity {
                             FluidUtil.tryFluidTransfer(containerFluidHandler, fluidSource, maxAmount, true);
                             if (player != null)
                             {
-                                SoundEvent soundevent = simulatedTransfer.getFluid().getAttributes().getFillSound(simulatedTransfer);
-                                player.level.playSound(null, player.getX(), player.getY() + 0.5, player.getZ(), soundevent, SoundSource.BLOCKS, 1.0F, 1.0F);
+                                SoundEvent soundevent = simulatedTransfer.getFluid().getFluidType().getSound(simulatedTransfer, SoundActions.BUCKET_FILL);
+                                player.level().playSound(null, player.getX(), player.getY() + 0.5, player.getZ(), soundevent, SoundSource.BLOCKS, 1.0F, 1.0F);
                             }
                         }
                         else
@@ -314,7 +315,7 @@ public class TileBarrel extends BlockEntity {
 		
 		@Override
 		public boolean isItemValid(int slot, ItemStack stack) {
-			return stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null).isPresent()||
+			return stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM, null).isPresent()||
 					BarrelRecipe.isValidItem(stack, getLevel())||stack.getItem()==Items.GLASS_BOTTLE;
 		}
 		

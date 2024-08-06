@@ -8,6 +8,7 @@ import charcoalPit.core.ModBlockRegistry;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.block.entity.CampfireBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.Minecraft;
@@ -38,7 +39,7 @@ public class TESRPotteryKiln implements BlockEntityRenderer<TilePotteryKiln>{
 	        ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
 	        ItemStack stack=tile.pottery.getStackInSlot(0);
 	        BakedModel ibakedmodel = itemRenderer.getModel(stack, tile.getLevel(), null,0);
-	        itemRenderer.render(stack, ItemTransforms.TransformType.GROUND, true, matrixStack, buffer, combinedLight, combinedOverlay, ibakedmodel);
+	        itemRenderer.render(stack,  ItemDisplayContext.GROUND, true, matrixStack, buffer, combinedLight, combinedOverlay, ibakedmodel);
 			
 	        matrixStack.popPose();
 		}

@@ -37,17 +37,17 @@ public class BlockCreosoteCollector extends Block implements EntityBlock {
 	public void appendHoverText(ItemStack stack, BlockGetter worldIn, List<Component> tooltip,
 			TooltipFlag flagIn) {
 		if(InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), GLFW.GLFW_KEY_LEFT_SHIFT)) {
-			tooltip.add(Component.translatable("\u00A77"+"message.charcoal_pit.creosotecollector_1"));
-			tooltip.add(Component.translatable("\u00A77"+"Collection area is a 9x9 '+' shape"));
-			tooltip.add(Component.translatable("\u00A77"+"Piles need to be connected to funnel"));
-			tooltip.add(Component.translatable("\u00A77"+"Creosote oil only flows down between piles"));
-			tooltip.add(Component.translatable("\u00A77"+"If redstone signal is applied:"));
-			tooltip.add(Component.translatable("\u00A77"+"-Funnel will also collect from neighboring funnels"));
-			tooltip.add(Component.translatable("\u00A77"+"-Funnel will auto output creosote oil"));
-			tooltip.add(Component.translatable("\u00A77"+"Creosote oil can only be extracted from the bottom"));
-			tooltip.add(Component.translatable("\u00A77"+"A line of funnels works best"));
+			tooltip.add(Component.translatable("info.charcoal_pit.creosotecollector_1"));
+			tooltip.add(Component.translatable("info.charcoal_pit.creosotecollector_2"));
+			tooltip.add(Component.translatable("info.charcoal_pit.creosotecollector_3"));
+			tooltip.add(Component.translatable("info.charcoal_pit.creosotecollector_4"));
+			tooltip.add(Component.translatable("info.charcoal_pit.creosotecollector_5"));
+			tooltip.add(Component.translatable("info.charcoal_pit.creosotecollector_6"));
+			tooltip.add(Component.translatable("info.charcoal_pit.creosotecollector_7"));
+			tooltip.add(Component.translatable("info.charcoal_pit.creosotecollector_8"));
+			tooltip.add(Component.translatable("info.charcoal_pit.creosotecollector_9"));
 		}else {
-			tooltip.add(Component.translatable("\u00A77"+"<Hold Shift>"+"\u00A77"));
+			tooltip.add(Component.translatable("info.charcoal_pit.creosotecollector_0"));
 		}
 	}
 

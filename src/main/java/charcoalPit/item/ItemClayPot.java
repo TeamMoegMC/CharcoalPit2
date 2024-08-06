@@ -16,9 +16,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -30,7 +28,7 @@ import java.util.List;
 public class ItemClayPot extends Item{
 	
 	public ItemClayPot() {
-		super(new Item.Properties().tab(ModItemRegistry.CHARCOAL_PIT).stacksTo(1));
+		super(new Item.Properties().stacksTo(1));
 	}
 	
 	@OnlyIn(Dist.CLIENT)
@@ -41,13 +39,13 @@ public class ItemClayPot extends Item{
 			ItemStackHandler inv=new ItemStackHandler();
 			inv.deserializeNBT(stack.getTag().getCompound("inventory"));
 			if(OreKilnRecipe.oreKilnIsEmpty(inv)) {
-				tooltip.add(new TextComponent("Empty"));
+				tooltip.add(Component.translatable("info.charcoal_pit.claypot_empty"));
 			}else {
 				ItemStack out=OreKilnRecipe.OreKilnGetOutput(stack.getTag().getCompound("inventory"), Minecraft.getInstance().level);
 				if(out.isEmpty()) {
-					tooltip.add(new TextComponent(ChatFormatting.DARK_RED+"Invalid"+" ("+OreKilnRecipe.oreKilnGetOreAmount(inv)+"/8)"));
+					tooltip.add(Component.translatable(ChatFormatting.DARK_RED+"info.charcoal_pit.charcoal_pit.claypot_invalid"+" ("+OreKilnRecipe.oreKilnGetOreAmount(inv)+"/8)"));
 				}else {
-					Component tx=out.getHoverName().plainCopy().append(new TextComponent(" x"+out.getCount()));
+					Component tx=out.getHoverName().plainCopy().append(Component.translatable(" x"+out.getCount()));
 					tx.getStyle().applyFormat(ChatFormatting.GREEN);
 					tooltip.add(tx);
 				}
@@ -56,18 +54,18 @@ public class ItemClayPot extends Item{
 			int n=OreKilnRecipe.oreKilnGetFuelRequired(inv);
 			if(f==0) {
 				if(n==0) {
-					tooltip.add(new TextComponent("No Fuel"));
+					tooltip.add(Component.translatable("info.charcoal_pit.charcoal_pit.claypot_nofuel"));
 				}else {
-					tooltip.add(new TextComponent(ChatFormatting.DARK_RED+"No Fuel (0/"+n+")"));
+					tooltip.add(Component.translatable(ChatFormatting.DARK_RED+"No Fuel (0/"+n+")"));
 				}
 			}else {
 				if(f<n) {
-					tooltip.add(new TextComponent(ChatFormatting.DARK_RED+"Fuel x"+f+" ("+f+"/"+n+")"));
+					tooltip.add(Component.translatable(ChatFormatting.DARK_RED+"Fuel x"+f+" ("+f+"/"+n+")"));
 				}else {
 					if(f>n) {
-						tooltip.add(new TextComponent(ChatFormatting.YELLOW+"Fuel x"+f+" ("+f+"/"+n+")"));
+						tooltip.add(Component.translatable(ChatFormatting.YELLOW+"Fuel x"+f+" ("+f+"/"+n+")"));
 					}else{
-						tooltip.add(new TextComponent(ChatFormatting.GREEN+"Fuel x"+f+" ("+f+"/"+n+")"));
+						tooltip.add(Component.translatable(ChatFormatting.GREEN+"Fuel x"+f+" ("+f+"/"+n+")"));
 					}
 				}
 			}
@@ -92,12 +90,12 @@ public class ItemClayPot extends Item{
 
 					@Override
 					public Component getDisplayName() {
-						return new TranslatableComponent("screen.charcoal_pit.clay_pot");
+						return Component.translatable("screen.charcoal_pit.clay_pot");
 					}
 				}, buf -> buf.writeByte((byte) slot));
 			}
 			else {
-				playerIn.displayClientMessage(new TranslatableComponent("message." + CharcoalPit.MODID + "." + "nofuel"), true);
+				playerIn.displayClientMessage(Component.translatable("message." + CharcoalPit.MODID + "." + "nofuel"), true);
 			}
 		}
 		return super.use(worldIn, playerIn, handIn);

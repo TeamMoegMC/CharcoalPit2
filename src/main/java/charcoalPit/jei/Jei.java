@@ -79,20 +79,20 @@ public class Jei implements IModPlugin {
 	
 	@Override
 	public void registerRecipeTransferHandlers(IRecipeTransferRegistration registration) {
-	
+
 	}
 	
 	@Override
 	public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-        registration.addRecipeCatalyst(new ItemStack(ModItemRegistry.Straw), PotteryRecipeCategory.ID);
-        registration.addRecipeCatalyst(new ItemStack(ModItemRegistry.ClayPot), OreKilnRecipeCategory.ID);
-        registration.addRecipeCatalyst(new ItemStack(ModBlockRegistry.Bellows), BloomeryRecipeCategory.ID);
-        registration.addRecipeCatalyst(new ItemStack(ModBlockRegistry.Barrel), BarrelRecipeCategory.ID);
+        registration.addRecipeCatalyst(new ItemStack(ModItemRegistry.Straw), PotteryRecipeCategory.POTTERY_KILN_RECIPE_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(ModItemRegistry.ClayPot), OreKilnRecipeCategory.ORE_KILN_RECIPE_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(ModBlockRegistry.Bellows), BloomeryRecipeCategory.BLOOMERY_RECIPE_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(ModBlockRegistry.Barrel), BarrelRecipeCategory.BARREL_RECIPE_TYPE);
     }
 	
 	@Override
 	public void registerGuiHandlers(IGuiHandlerRegistration registration) {
-		registration.addRecipeClickArea(BarrelScreen.class,98,35,16,16,BarrelRecipeCategory.ID);
+		registration.addRecipeClickArea(BarrelScreen.class,98,35,16,16,BarrelRecipeCategory.BARREL_RECIPE_TYPE);
 	}
 	
 	@Override

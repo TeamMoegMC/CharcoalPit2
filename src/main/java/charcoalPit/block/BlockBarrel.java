@@ -126,7 +126,7 @@ public class BlockBarrel extends Block implements SimpleWaterloggedBlock, Entity
 					return InteractionResult.SUCCESS;
 		}else if(player.getItemInHand(handIn).getItem()==Items.GLASS_BOTTLE){
 			TileBarrel tile=((TileBarrel)worldIn.getBlockEntity(pos));
-			if(tile.tank.getFluid().getFluid()==ModFluidRegistry.AlcoholStill&&tile.tank.getFluidAmount()>=250){
+			if(tile.tank.getFluid().getFluid()==ModFluidRegistry.AlcoholStill.get()&&tile.tank.getFluidAmount()>=250){
 				player.getItemInHand(handIn).shrink(1);
 				ItemStack stack=new ItemStack(ModItemRegistry.AlcoholBottle);
 				stack.setTag(tile.tank.getFluid().getTag().copy());
@@ -134,7 +134,7 @@ public class BlockBarrel extends Block implements SimpleWaterloggedBlock, Entity
 				ItemHandlerHelper.giveItemToPlayer(player,stack);
 				return InteractionResult.SUCCESS;
 			}
-			if(tile.tank.getFluid().getFluid()==ModFluidRegistry.VinegarStill&&tile.tank.getFluidAmount()>=250){
+			if(tile.tank.getFluid().getFluid()==ModFluidRegistry.VinegarStill.get()&&tile.tank.getFluidAmount()>=250){
 				player.getItemInHand(handIn).shrink(1);
 				ItemStack stack=new ItemStack(ModItemRegistry.VinegarBottle);
 				tile.tank.drain(250, IFluidHandler.FluidAction.EXECUTE);

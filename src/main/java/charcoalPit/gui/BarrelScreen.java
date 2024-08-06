@@ -4,14 +4,15 @@ import charcoalPit.CharcoalPit;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.resources.ResourceLocation;
-import com.mojang.math.Matrix4f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
@@ -21,7 +22,8 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TextComponent;
+import org.joml.Matrix4f;
+
 @OnlyIn(Dist.CLIENT)
 public class BarrelScreen extends AbstractContainerScreen<BarrelContainer> {
 
@@ -35,32 +37,34 @@ public class BarrelScreen extends AbstractContainerScreen<BarrelContainer> {
 	}
 
 	@Override
-	protected void renderBg(PoseStack matrixStack, float partialTicks, int x, int y) {
+	protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int x, int y) {
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		this.minecraft.getTextureManager().bindForSetup(BARREL_GUI_TEXTURES);
 		int i = (this.width - this.imageWidth) / 2;
 	      int j = (this.height - this.imageHeight) / 2;
-	      this.blit(matrixStack, i, j, 0, 0, this.imageWidth, this.imageHeight);
-	      renderFluid(matrixStack,i,j);
+	      guiGraphics.blit(BARREL_GUI_TEXTURES, i, j, 0, 0, this.imageWidth, this.imageHeight);
+	      renderFluid(guiGraphics,i,j);
 		
 	}
 	
-	public void renderFluid(PoseStack matrixStack, int i, int j) {
+	public void renderFluid(GuiGraphics guiGraphics, int i, int j) {
 		fluid = FluidStack.loadFluidStackFromNBT(this.menu.slots.get(this.menu.slots.size() - 1).getItem().getTag().getCompound("fluid"));
+		IClientFluidTypeExtensions iClientFluidTypeExtension = IClientFluidTypeExtensions.of(fluid.getFluid());
+
 		if (fluid.isEmpty())
 			return;
 		int height = (int) (58 * fluid.getAmount() / 16000D);
 		Minecraft.getInstance().getTextureManager().bindForSetup(InventoryMenu.BLOCK_ATLAS);
-		TextureAtlasSprite sprite = this.minecraft.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(fluid.getFluid().getAttributes().getStillTexture());
-		int c = fluid.getFluid().getAttributes().getColor(fluid);
+		TextureAtlasSprite sprite = this.minecraft.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(iClientFluidTypeExtension.getStillTexture());
+		int c = iClientFluidTypeExtension.getTintColor();
 		RenderSystem.setShaderColor((c >> 16 & 255) / 255.0F, (c >> 8 & 255) / 255.0F, (c & 255) / 255.0F, 1F/*(c>>24&255)/255f*/);
 		//blit(matrixStack, i+62, j+71-height, this.getBlitOffset(), 16, height+1, sprite);
 		while (height >= 16) {
-			innerBlit(matrixStack.last().pose(), i + 62, i + 62 + 16, j + 72 - height, j + 72 + 16 - height, this.getBlitOffset(), sprite.getU0(), sprite.getU1(), sprite.getV0(), sprite.getV1());
+			innerBlit(guiGraphics.pose().last().pose(), i + 62, i + 62 + 16, j + 72 - height, j + 72 + 16 - height, 1, sprite.getU0(), sprite.getU1(), sprite.getV0(), sprite.getV1());
 			height-=16;
 		}
 		if(height>0)
-			innerBlit(matrixStack.last().pose(), i+62, i+62+16, j+72-height, j+72, this.getBlitOffset(), sprite.getU0(), sprite.getU1(), sprite.getV0(),
+			innerBlit(guiGraphics.pose().last().pose(), i+62, i+62+16, j+72-height, j+72, 1, sprite.getU0(), sprite.getU1(), sprite.getV0(),
 				(sprite.getV1()-sprite.getV0())*(height/16F)+sprite.getV0());
 		//innerBlit(matrixStack.getLast().getMatrix(), i+62, i+62+16, j+72-height, j+72, this.getBlitOffset(), sprite.getMinU(), sprite.getMaxU(), sprite.getMinV(), sprite.getMaxV());
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
@@ -78,38 +82,38 @@ public class BarrelScreen extends AbstractContainerScreen<BarrelContainer> {
 	      bufferbuilder.vertex(matrix, (float)x1, (float)y1, (float)blitOffset).uv(minU, minV).endVertex();
 	      bufferbuilder.end();
 	      RenderSystem.enableDepthTest();
-	      BufferUploader.end(bufferbuilder);
+	      BufferUploader.draw(bufferbuilder.end());
 	   }
 
 	@Override
-	protected void renderLabels(PoseStack matrixStack, int x, int y) {
-		super.renderLabels(matrixStack, x, y);
+	protected void renderLabels(GuiGraphics guiGraphics, int x, int y) {
+		super.renderLabels(guiGraphics, x, y);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 	      this.minecraft.getTextureManager().bindForSetup(BARREL_GUI_TEXTURES);
 	      //int i = (this.width - this.xSize) / 2;
 	      //int j = (this.height - this.ySize) / 2;
-	      this.blit(matrixStack, 62, 14, 176, 47, 16, 71-14);
+		guiGraphics.blit(BARREL_GUI_TEXTURES, 62, 14, 176, 47, 16, 71-14);
 	    int time=menu.array.get(0);
 	    int total=menu.array.get(1);
 	    if(total>0&&time>=0) {
 	    	int height=(int)(time*14F/total);
-	    	this.blit(matrixStack, 97, 36, 176, 2, 18, 14-height);
+	    	guiGraphics.blit(BARREL_GUI_TEXTURES, 97, 36, 176, 2, 18, 14-height);
 	    	height=BUBBLELENGTHS[(time)/2%7];
-	    	this.blit(matrixStack, 82, 14+29-height, 176, 18+29-height, 12, height);
+	    	guiGraphics.blit(BARREL_GUI_TEXTURES, 82, 14+29-height, 176, 18+29-height, 12, height);
 	    }
 	}
 	
 	@Override
-	public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-		this.renderBackground(matrixStack);
+	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+		this.renderBackground(guiGraphics);
 		List<Component> tooltip = new ArrayList<>();
 
-		super.render(matrixStack, mouseX, mouseY, partialTicks);
-		this.renderTooltip(matrixStack, mouseX, mouseY);
+		super.render(guiGraphics, mouseX, mouseY, partialTicks);
+		this.renderTooltip(guiGraphics, mouseX, mouseY);
 		if (isMouseIn(mouseX, mouseY, 62, 14, 15, 57)) {
 			Component displayName = fluid.getDisplayName();
 			tooltip.add(displayName);
-			tooltip.add(applyFormat(new TextComponent(fluid.getAmount() + "/" + "16000mB"), ChatFormatting.GOLD));
+			tooltip.add(applyFormat(Component.literal(fluid.getAmount() + "/" + "16000mB"), ChatFormatting.GOLD));
 		}
 	/*	if (!tooltip.isEmpty())
 			GuiUtils.drawGradientRect(matrixStack, tooltip, mouseX, mouseY, width, height, -1, font);*/

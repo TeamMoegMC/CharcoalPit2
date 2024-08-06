@@ -21,7 +21,7 @@ public class ItemSapling extends Item {
 	
 	public InteractionResult tryPlace(UseOnContext context){
 		if(state.canSurvive(context.getLevel(),context.getClickedPos().relative(context.getClickedFace()))){
-			if(context.getLevel().getBlockState(context.getClickedPos().relative(context.getClickedFace())).getMaterial().isReplaceable()){
+			if(context.getLevel().getBlockState(context.getClickedPos().relative(context.getClickedFace())).canBeReplaced()){
 				context.getLevel().setBlockAndUpdate(context.getClickedPos().relative(context.getClickedFace()),state);
 				return InteractionResult.SUCCESS;
 			}

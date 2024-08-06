@@ -75,27 +75,27 @@ public class ItemAlcoholBottle extends PotionItem{
 		return stack.isEnchanted();
 	}
 
-	@Override
-	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
-		if(group==ModItemRegistry.CHARCOAL_PIT_FOODS) {
-
-			if(!didInit)
-				this.initItems();
-
-			items.add(cider);
-			items.add(golden_cider);
-			items.add(chorus_cider);
-			items.add(vodka);
-			items.add(beetroot_beer);
-			items.add(beer);
-			items.add(sweetberry_wine);
-			items.add(warped_wine);
-			items.add(mead);
-			items.add(rum);
-			items.add(honey_dewois);
-			items.add(spider_spirit);
-		}
-	}
+//	@Override
+//	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
+//		if(group==ModItemRegistry.CHARCOAL_PIT_FOODS) {
+//
+//			if(!didInit)
+//				this.initItems();
+//
+//			items.add(cider);
+//			items.add(golden_cider);
+//			items.add(chorus_cider);
+//			items.add(vodka);
+//			items.add(beetroot_beer);
+//			items.add(beer);
+//			items.add(sweetberry_wine);
+//			items.add(warped_wine);
+//			items.add(mead);
+//			items.add(rum);
+//			items.add(honey_dewois);
+//			items.add(spider_spirit);
+//		}
+//	}
 
 	public static boolean didInit=false;
 

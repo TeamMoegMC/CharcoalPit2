@@ -38,7 +38,7 @@ public class ItemBarrel extends BlockItem {
         return new FluidHandlerItemStack(stack,16000){
             @Override
             public boolean isFluidValid(int tank, @Nonnull FluidStack stack) {
-                return stack.getFluid().getAttributes().getTemperature()<450&&!stack.getFluid().getAttributes().isGaseous();
+                return stack.getFluid().getFluidType().getTemperature()<450&&!stack.getFluid().getFluidType().isAir();
             }
 
             @Override

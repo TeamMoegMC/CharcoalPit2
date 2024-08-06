@@ -5,6 +5,7 @@ import charcoalPit.core.MethodHelper;
 import charcoalPit.core.ModBlockRegistry;
 import charcoalPit.core.ModTileRegistry;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -73,7 +74,7 @@ public class TileActivePile extends BlockEntity {
 			}
 		} else {
 			if (level.getBlockState(tile.worldPosition).getValue(BlockStateProperties.LIT)) {
-				Random random = level.random;
+				RandomSource random = level.random;
 				double centerX = tile.worldPosition.getX() + 0.5F;
 				double centerY = tile.worldPosition.getY() + 2F;
 				double centerZ = tile.worldPosition.getZ() + 0.5F;

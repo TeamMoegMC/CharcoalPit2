@@ -7,6 +7,7 @@ import com.google.gson.JsonObject;
 
 import charcoalPit.CharcoalPit;
 import charcoalPit.core.ModItemRegistry;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -21,12 +22,16 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.core.Registry;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.items.ItemStackHandler;
-import net.minecraftforge.registries.ForgeRegistryEntry;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class PotteryKilnRecipe implements Recipe<Container>{
 	
 	public static final ResourceLocation POTTERY=new ResourceLocation(CharcoalPit.MODID, "pottery");
-	public static final RecipeType<PotteryKilnRecipe> POTTERY_RECIPE=RecipeType.register(POTTERY.toString());
+	public static final RecipeType<PotteryKilnRecipe> POTTERY_RECIPE= new RecipeType<>() {
+        public String toString() {
+            return POTTERY.toString();
+        }
+    };
 	
 	public static final Serializer SERIALIZER=new Serializer();
 	
@@ -98,7 +103,7 @@ public class PotteryKilnRecipe implements Recipe<Container>{
 		return input.test(inv.getItem(0));
 	}
 	@Override
-	public ItemStack assemble(Container inv) {
+	public ItemStack assemble(Container inv,RegistryAccess access) {
 		return new ItemStack(output);
 	}
 	@Override
@@ -106,7 +111,7 @@ public class PotteryKilnRecipe implements Recipe<Container>{
 		return true;
 	}
 	@Override
-	public ItemStack getResultItem() {
+	public ItemStack getResultItem(RegistryAccess access) {
 		return new ItemStack(output);
 	}
 	@Override
@@ -122,7 +127,7 @@ public class PotteryKilnRecipe implements Recipe<Container>{
 		return POTTERY_RECIPE;
 	}
 	
-	public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<PotteryKilnRecipe>{
+	public static class Serializer implements RecipeSerializer<PotteryKilnRecipe>{
 
 		@SuppressWarnings("deprecation")
 		@Override
@@ -136,7 +141,7 @@ public class PotteryKilnRecipe implements Recipe<Container>{
 		    else {
 		    String s1 = GsonHelper.getAsString(json, "result");
 		    ResourceLocation resourcelocation = new ResourceLocation(s1);
-		    itemstack = new ItemStack(Registry.ITEM.get(resourcelocation));
+		    itemstack = new ItemStack(ForgeRegistries.ITEMS.getDelegateOrThrow(resourcelocation));
 		    }
 		    float f = GsonHelper.getAsFloat(json, "experience", 0.0F);
 			return new PotteryKilnRecipe(recipeId, ingredient, itemstack.getItem(), f);

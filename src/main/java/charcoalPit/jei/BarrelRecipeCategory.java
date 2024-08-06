@@ -7,16 +7,16 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.forge.ForgeTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
-import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
+import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
-import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
+import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
@@ -33,28 +33,24 @@ public class BarrelRecipeCategory implements IRecipeCategory<BarrelRecipe> {
 	public final IDrawable icon;
 	public final IDrawable overlay;
 	public final IDrawable tank_overlay;
+	public static final RecipeType<BarrelRecipe> BARREL_RECIPE_TYPE = new RecipeType<>(ID,BarrelRecipe.class);
 	public BarrelRecipeCategory(IGuiHelper helper){
 		loc_name= I18n.get("charcoal_pit.jei.barrel");
 		backgroung=helper.createBlankDrawable(175,85);
-		icon=helper.createDrawableIngredient(new ItemStack(ModBlockRegistry.Barrel));
+		icon=helper.createDrawableItemStack(new ItemStack(ModBlockRegistry.Barrel));
 		overlay=helper.createDrawable(new ResourceLocation(CharcoalPit.MODID,"textures/gui/container/barrel_recipe.png"),0,0,175,85);
 		tank_overlay=helper.createDrawable(new ResourceLocation(CharcoalPit.MODID,"textures/gui/container/barrel_recipe.png"),176,0,16,71-13);
 	}
-	
-	
+
+
 	@Override
-	public ResourceLocation getUid() {
-		return ID;
+	public RecipeType<BarrelRecipe> getRecipeType() {
+		return BARREL_RECIPE_TYPE;
 	}
-	
-	@Override
-	public Class<? extends BarrelRecipe> getRecipeClass() {
-		return BarrelRecipe.class;
-	}
-	
+
 	@Override
 	public Component getTitle() {
-		return new TextComponent(loc_name);
+		return Component.literal(loc_name);
 	}
 	
 	@Override
@@ -67,27 +63,27 @@ public class BarrelRecipeCategory implements IRecipeCategory<BarrelRecipe> {
 		return icon;
 	}
 	
+//	@Override
+//	public void setIngredients(BarrelRecipe recipe, IIngredients iIngredients) {
+//		/*ArrayList<ItemStack> list=new ArrayList<>();
+//		for(ItemStack s:recipe.item_in.getMatchingStacks()){
+//			list.add(new ItemStack(s.getItem(), recipe.in_amount));
+//		}
+//		iIngredients.setInputs(VanillaTypes.ITEM, list);*/
+//		ArrayList<List<ItemStack>> list2=new ArrayList<>();
+//		ItemStack stack = recipe.item_in.getItems()[0];
+//		stack.setCount(recipe.in_amount);
+//		list2.add(Arrays.asList(stack));
+//		iIngredients.setInputLists(VanillaTypes.ITEM,list2);
+//		iIngredients.setInput(ForgeTypes.FLUID_STACK,new FluidStack(recipe.fluid_in.getFluid(),recipe.fluid_in.amount,recipe.fluid_in.nbt));
+//		if((recipe.flags&0b100)==0b100){
+//			iIngredients.setOutput(VanillaTypes.ITEM,new ItemStack(recipe.item_out.getItems()[0].getItem(),recipe.out_amount,recipe.nbt_out));
+//		}
+//		if((recipe.flags&0b1000)==0b1000){
+//			iIngredients.setOutput(ForgeTypes.FLUID_STACK,new FluidStack(recipe.fluid_out.getFluid(), recipe.fluid_out.amount,recipe.fluid_out.nbt));
+//		}
+//	}
 	@Override
-	public void setIngredients(BarrelRecipe recipe, IIngredients iIngredients) {
-		/*ArrayList<ItemStack> list=new ArrayList<>();
-		for(ItemStack s:recipe.item_in.getMatchingStacks()){
-			list.add(new ItemStack(s.getItem(), recipe.in_amount));
-		}
-		iIngredients.setInputs(VanillaTypes.ITEM, list);*/
-		ArrayList<List<ItemStack>> list2=new ArrayList<>();
-		ItemStack stack = recipe.item_in.getItems()[0];
-		stack.setCount(recipe.in_amount);
-		list2.add(Arrays.asList(stack));
-		iIngredients.setInputLists(VanillaTypes.ITEM,list2);
-		iIngredients.setInput(ForgeTypes.FLUID_STACK,new FluidStack(recipe.fluid_in.getFluid(),recipe.fluid_in.amount,recipe.fluid_in.nbt));
-		if((recipe.flags&0b100)==0b100){
-			iIngredients.setOutput(VanillaTypes.ITEM,new ItemStack(recipe.item_out.getItems()[0].getItem(),recipe.out_amount,recipe.nbt_out));
-		}
-		if((recipe.flags&0b1000)==0b1000){
-			iIngredients.setOutput(ForgeTypes.FLUID_STACK,new FluidStack(recipe.fluid_out.getFluid(), recipe.fluid_out.amount,recipe.fluid_out.nbt));
-		}
-	}
-
 	public void setRecipe(IRecipeLayoutBuilder builder, BarrelRecipe recipe, IFocusGroup focuses) {
 
 		ItemStack[] stacks = recipe.item_in.getItems();
@@ -141,7 +137,7 @@ public class BarrelRecipeCategory implements IRecipeCategory<BarrelRecipe> {
 //	}
 	
 	@Override
-	public void draw(BarrelRecipe recipe, PoseStack matrixStack, double mouseX, double mouseY) {
-		overlay.draw(matrixStack);
+	public void draw(BarrelRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+		overlay.draw(guiGraphics);
 	}
 }

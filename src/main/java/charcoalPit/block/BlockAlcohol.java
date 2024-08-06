@@ -11,7 +11,7 @@ import net.minecraft.world.level.Level;
 public class BlockAlcohol extends LiquidBlock{
 	
 	public BlockAlcohol() {
-		super(()->ModFluidRegistry.AlcoholStill, Properties.of().mapColor(MapColor.WATER).noCollission().strength(100.0F).noLootTable());
+		super(()->ModFluidRegistry.AlcoholStill.get(), Properties.of().mapColor(MapColor.WATER).noCollission().strength(100.0F).noLootTable());
 	}
 	
 	@Override

@@ -7,6 +7,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
 import charcoalPit.CharcoalPit;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -23,12 +24,15 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
-import net.minecraftforge.registries.ForgeRegistryEntry;
 
 public class OreKilnRecipe implements Recipe<Container>{
 	
 	public static final ResourceLocation OREKILN=new ResourceLocation(CharcoalPit.MODID, "orekiln");
-	public static final RecipeType<OreKilnRecipe> ORE_KILN_RECIPE=RecipeType.register(OREKILN.toString());
+	public static final RecipeType<OreKilnRecipe> ORE_KILN_RECIPE= new RecipeType<>() {
+		public String toString() {
+			return OREKILN.toString();
+		}
+	};
 	
 	public static final Serializer SERIALIZER=new Serializer();
 
@@ -153,7 +157,7 @@ public class OreKilnRecipe implements Recipe<Container>{
 	}
 
 	@Override
-	public ItemStack assemble(Container inv) {
+	public ItemStack assemble(Container inv,RegistryAccess access) {
 		return ItemStack.EMPTY;
 	}
 
@@ -163,7 +167,7 @@ public class OreKilnRecipe implements Recipe<Container>{
 	}
 
 	@Override
-	public ItemStack getResultItem() {
+	public ItemStack getResultItem(RegistryAccess access) {
 		return ItemStack.EMPTY;
 	}
 
@@ -183,7 +187,7 @@ public class OreKilnRecipe implements Recipe<Container>{
 	}
 	//////////////////////////////////////////////
 	
-	public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<OreKilnRecipe>{
+	public static class Serializer implements RecipeSerializer<OreKilnRecipe>{
 
 		@Override
 		public OreKilnRecipe fromJson(ResourceLocation recipeId, JsonObject json) {

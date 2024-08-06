@@ -80,10 +80,10 @@ public class FluidIngredient {
 			mode+=2;
 		buffer.writeByte(mode);
 		if((mode&1)==1) {
-			buffer.writeResourceLocation(fluid.getRegistryName());
+			buffer.writeResourceLocation(ForgeRegistries.FLUIDS.getKey(fluid));
 		}
 		if((mode&2)==2) {
-			buffer.writeResourceLocation(this.getFluid().getRegistryName());
+			buffer.writeResourceLocation(ForgeRegistries.FLUIDS.getKey(this.getFluid()));
 		}
 		buffer.writeInt(amount);
 		if(nbt!=null) {

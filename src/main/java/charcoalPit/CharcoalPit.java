@@ -2,7 +2,9 @@ package charcoalPit;
 
 import charcoalPit.core.Config;
 import charcoalPit.core.ModBlockRegistry;
+import charcoalPit.core.ModCreativeModeTab;
 import charcoalPit.core.ModItemRegistry;
+import charcoalPit.fluid.ModFluidRegistry;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -20,15 +22,10 @@ public class CharcoalPit {
 	}
 	
 	public CharcoalPit() {
-
 		final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-//		ModItemRegistry.ITEMS.register(modEventBus);
-//		MinecraftForge.EVENT_BUS.register(ModItemRegistry.class);
-//		MinecraftForge.EVENT_BUS.register(ModBlockRegistry.class);
-////		MinecraftForge.EVENT_BUS.register(ModItemRegistry.class);
-////		MinecraftForge.EVENT_BUS.register(ModBlockRegistry.class);
-//		modEventBus.addListener(ModItemRegistry::registerItems);
-//		modEventBus.addGenericListener(ModBlockRegistry.class,ModBlockRegistry::registerBlocks);
+		ModCreativeModeTab.CREATIVE_MODE_TAB.register(modEventBus);
+		ModFluidRegistry.FLUID_TYPES.register(modEventBus);
+		ModFluidRegistry.FLUIDS.register(modEventBus);
 
 		ModLoadingContext.get().registerConfig(Type.COMMON, Config.CONFIG);
 	}

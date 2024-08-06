@@ -12,6 +12,13 @@ import net.minecraftforge.registries.RegisterEvent;
 public class ModRecipeRegistry {
 
 	public static void registerRecipeType(RegisterEvent event) {
+		event.register(ForgeRegistries.Keys.RECIPE_TYPES,
+				helper -> {
+					helper.register(new ResourceLocation(CharcoalPit.MODID, "pottery"), PotteryKilnRecipe.POTTERY_RECIPE);
+					helper.register(new ResourceLocation(CharcoalPit.MODID, "orekiln"), OreKilnRecipe.ORE_KILN_RECIPE);
+					helper.register(new ResourceLocation(CharcoalPit.MODID, "bloomery"), BarrelRecipe.BARREL_RECIPE);
+				}
+		);
 		event.register(ForgeRegistries.Keys.RECIPE_SERIALIZERS,
 				helper -> {
 					helper.register(new ResourceLocation(CharcoalPit.MODID, "pottery"), PotteryKilnRecipe.SERIALIZER);

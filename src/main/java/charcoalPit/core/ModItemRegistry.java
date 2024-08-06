@@ -45,7 +45,7 @@ public class ModItemRegistry {
 	public static Item SandyBrickItem, UnfireSandyBrick, UnfiredBrick;
 
 	public static BlockItem SandyCollector;
-	public static BlockItem CeramicPot, WhitePot,
+	public static BlockItem CeramicPot; /*WhitePot,
 			OrangePot, MagentaPot,
 			LightBluePot, YellowPot,
 			LimePot, PinkPot,
@@ -53,7 +53,7 @@ public class ModItemRegistry {
 			CyanPot, PurplePot,
 			BluePot, BrownPot,
 			GreenPot, RedPot,
-			BlackPot;
+			BlackPot;*/
 	public static BlockItem Bellows, TuyereSandy;
 	public static ItemClayPot ClayPot;
 	public static ItemCrackedPot CrackedPot;
@@ -95,7 +95,7 @@ public class ModItemRegistry {
 		UnfiredBrick = buildItem();
 
 		SandyCollector = buildBlockItem(ModBlockRegistry.SandyCollector);
-		CeramicPot = buildBlockItemP(ModBlockRegistry.CeramicPot); WhitePot = buildBlockItemP(ModBlockRegistry.WhitePot);
+		CeramicPot = buildBlockItemP(ModBlockRegistry.CeramicPot);/* WhitePot = buildBlockItemP(ModBlockRegistry.WhitePot);
 				OrangePot = buildBlockItemP(ModBlockRegistry.OrangePot); MagentaPot = buildBlockItemP(ModBlockRegistry.MagentaPot);
 				LightBluePot = buildBlockItemP(ModBlockRegistry.LightBluePot); YellowPot = buildBlockItemP(ModBlockRegistry.YellowPot);
 				LimePot = buildBlockItemP(ModBlockRegistry.LimePot); PinkPot = buildBlockItemP(ModBlockRegistry.PinkPot);
@@ -103,7 +103,7 @@ public class ModItemRegistry {
 				CyanPot = buildBlockItemP(ModBlockRegistry.CyanPot); PurplePot = buildBlockItemP(ModBlockRegistry.PurplePot);
 				BluePot = buildBlockItemP(ModBlockRegistry.BluePot); BrownPot = buildBlockItemP(ModBlockRegistry.BrownPot);
 				GreenPot = buildBlockItemP(ModBlockRegistry.GreenPot); RedPot = buildBlockItemP(ModBlockRegistry.RedPot);
-				BlackPot = buildBlockItemP(ModBlockRegistry.BlackPot);
+				BlackPot = buildBlockItemP(ModBlockRegistry.BlackPot);*/
 		Bellows = buildBlockItem(ModBlockRegistry.Bellows);
 		TuyereSandy = buildBlockItem(ModBlockRegistry.TuyereSandy);
 		ClayPot = new ItemClayPot();
@@ -113,7 +113,7 @@ public class ModItemRegistry {
 
 		//public static BucketItem AlcoholBucket=new BucketItem(()->ModFluidRegistry.AlcoholStill, new Item.Properties().group(ItemGroup.MISC).maxStackSize(1).containerItem(Items.BUCKET));
 		AlcoholBottle = new ItemAlcoholBottle();
-		VinegarBucket = new BucketItem(() -> ModFluidRegistry.VinegarStill, new Item.Properties().stacksTo(1).craftRemainder(Items.BUCKET));
+		VinegarBucket = new BucketItem(() -> ModFluidRegistry.VinegarStill.get(), new Item.Properties().stacksTo(1).craftRemainder(Items.BUCKET));
 		VinegarBottle = new Item(new Item.Properties().stacksTo(16).craftRemainder(Items.GLASS_BOTTLE));
 		Cheese = new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(5).saturationMod(1.2F).build()));
 		TinyCoke = buildItem(1600);
@@ -130,7 +130,48 @@ public class ModItemRegistry {
 		event.register(ForgeRegistries.Keys.ITEMS,
 				helper -> {
 					helper.register(new ResourceLocation(CharcoalPit.MODID, "thatch"), Thatch);
-					helper.register(new ResourceLocation( "log_pile"), LogPile);
+					helper.register(new ResourceLocation(CharcoalPit.MODID, "log_pile"), LogPile);
+
+
+					helper.register(new ResourceLocation(CharcoalPit.MODID, "coal_pile"), CoalPile);
+					helper.register(new ResourceLocation(CharcoalPit.MODID, "wood_ash"), WoodAsh);
+					helper.register(new ResourceLocation(CharcoalPit.MODID, "coal_ash"), CoalAsh);
+					helper.register(new ResourceLocation(CharcoalPit.MODID, "coke_block"), CokeBlock);
+					helper.register(new ResourceLocation(CharcoalPit.MODID, "ash_block"), AshBlock);
+					helper.register(new ResourceLocation(CharcoalPit.MODID, "sandy_brick"), SandyBrick);
+					helper.register(new ResourceLocation(CharcoalPit.MODID, "sandy_slab"), SandySlab);
+					helper.register(new ResourceLocation(CharcoalPit.MODID, "sandy_stair"), SandyStair);
+					helper.register(new ResourceLocation(CharcoalPit.MODID, "sandy_wall"), SandyWall);
+					helper.register(new ResourceLocation(CharcoalPit.MODID, "sandy_collector"), SandyCollector);
+					helper.register(new ResourceLocation(CharcoalPit.MODID, "main_bloomery"), MainBloomery);
+					helper.register(new ResourceLocation(CharcoalPit.MODID, "bellows"), Bellows);
+					helper.register(new ResourceLocation(CharcoalPit.MODID, "sandy_tuyere"), TuyereSandy);
+					helper.register(new ResourceLocation(CharcoalPit.MODID, "barrel"), Barrel);
+					helper.register(new ResourceLocation(CharcoalPit.MODID, "mechanical_bellows"), MechanicalBeellows);
+
+					helper.register(new ResourceLocation(CharcoalPit.MODID, "straw"), Straw);
+					helper.register(new ResourceLocation(CharcoalPit.MODID, "ash"), Ash);
+					helper.register(new ResourceLocation(CharcoalPit.MODID, "coke"), Coke);
+					helper.register(new ResourceLocation(CharcoalPit.MODID, "fertilizer"), Fertilizer);
+					helper.register(new ResourceLocation(CharcoalPit.MODID, "fire_starter"), FireStarter);
+					helper.register(new ResourceLocation(CharcoalPit.MODID, "clay_pot"), ClayPot);
+					helper.register(new ResourceLocation(CharcoalPit.MODID, "bloom_cool"), BloomCool);
+					helper.register(new ResourceLocation(CharcoalPit.MODID, "bloom_fail"), BloomFail);
+					helper.register(new ResourceLocation(CharcoalPit.MODID, "cracked_pot"), CrackedPot);
+					helper.register(new ResourceLocation(CharcoalPit.MODID, "bloom_nickel_cool"), BloomNiCool);
+					helper.register(new ResourceLocation(CharcoalPit.MODID, "bloom_nickel_fail"), BloomNiFail);
+					helper.register(new ResourceLocation(CharcoalPit.MODID, "sandy_brick_item"), SandyBrickItem);
+					helper.register(new ResourceLocation(CharcoalPit.MODID, "unfired_sandy_brick"), UnfireSandyBrick);
+					helper.register(new ResourceLocation(CharcoalPit.MODID, "unfired_brick"), UnfiredBrick);
+					helper.register(new ResourceLocation(CharcoalPit.MODID, "alcohol_bottle"), AlcoholBottle);
+					helper.register(new ResourceLocation(CharcoalPit.MODID, "vinegar_bucket"), VinegarBucket);
+					helper.register(new ResourceLocation(CharcoalPit.MODID, "vinegar_bottle"), VinegarBottle);
+					helper.register(new ResourceLocation(CharcoalPit.MODID, "cheese"), Cheese);
+					helper.register(new ResourceLocation(CharcoalPit.MODID, "tiny_coke"), TinyCoke);
+
+					helper.register(new ResourceLocation(CharcoalPit.MODID, "ceramic_pot"), CeramicPot);
+//					helper.register(new ResourceLocation(CharcoalPit.MODID, ""), YellowPot);
+
 
 				}
 		);
@@ -156,22 +197,22 @@ public class ModItemRegistry {
 
 
 		DispenserBlock.registerBehavior(ModItemRegistry.CeramicPot, new DispenserPlacePot());
-		DispenserBlock.registerBehavior(ModItemRegistry.BlackPot, new DispenserPlacePot());
-		DispenserBlock.registerBehavior(ModItemRegistry.BluePot, new DispenserPlacePot());
-		DispenserBlock.registerBehavior(ModItemRegistry.BrownPot, new DispenserPlacePot());
-		DispenserBlock.registerBehavior(ModItemRegistry.CyanPot, new DispenserPlacePot());
-		DispenserBlock.registerBehavior(ModItemRegistry.GrayPot, new DispenserPlacePot());
-		DispenserBlock.registerBehavior(ModItemRegistry.GreenPot, new DispenserPlacePot());
-		DispenserBlock.registerBehavior(ModItemRegistry.LightBluePot, new DispenserPlacePot());
-		DispenserBlock.registerBehavior(ModItemRegistry.LightGrayPot, new DispenserPlacePot());
-		DispenserBlock.registerBehavior(ModItemRegistry.LimePot, new DispenserPlacePot());
-		DispenserBlock.registerBehavior(ModItemRegistry.MagentaPot, new DispenserPlacePot());
-		DispenserBlock.registerBehavior(ModItemRegistry.OrangePot, new DispenserPlacePot());
-		DispenserBlock.registerBehavior(ModItemRegistry.PinkPot, new DispenserPlacePot());
-		DispenserBlock.registerBehavior(ModItemRegistry.PurplePot, new DispenserPlacePot());
-		DispenserBlock.registerBehavior(ModItemRegistry.RedPot, new DispenserPlacePot());
-		DispenserBlock.registerBehavior(ModItemRegistry.WhitePot, new DispenserPlacePot());
-		DispenserBlock.registerBehavior(ModItemRegistry.YellowPot, new DispenserPlacePot());
+//		DispenserBlock.registerBehavior(ModItemRegistry.BlackPot, new DispenserPlacePot());
+//		DispenserBlock.registerBehavior(ModItemRegistry.BluePot, new DispenserPlacePot());
+//		DispenserBlock.registerBehavior(ModItemRegistry.BrownPot, new DispenserPlacePot());
+//		DispenserBlock.registerBehavior(ModItemRegistry.CyanPot, new DispenserPlacePot());
+//		DispenserBlock.registerBehavior(ModItemRegistry.GrayPot, new DispenserPlacePot());
+//		DispenserBlock.registerBehavior(ModItemRegistry.GreenPot, new DispenserPlacePot());
+//		DispenserBlock.registerBehavior(ModItemRegistry.LightBluePot, new DispenserPlacePot());
+//		DispenserBlock.registerBehavior(ModItemRegistry.LightGrayPot, new DispenserPlacePot());
+//		DispenserBlock.registerBehavior(ModItemRegistry.LimePot, new DispenserPlacePot());
+//		DispenserBlock.registerBehavior(ModItemRegistry.MagentaPot, new DispenserPlacePot());
+//		DispenserBlock.registerBehavior(ModItemRegistry.OrangePot, new DispenserPlacePot());
+//		DispenserBlock.registerBehavior(ModItemRegistry.PinkPot, new DispenserPlacePot());
+//		DispenserBlock.registerBehavior(ModItemRegistry.PurplePot, new DispenserPlacePot());
+//		DispenserBlock.registerBehavior(ModItemRegistry.RedPot, new DispenserPlacePot());
+//		DispenserBlock.registerBehavior(ModItemRegistry.WhitePot, new DispenserPlacePot());
+//		DispenserBlock.registerBehavior(ModItemRegistry.YellowPot, new DispenserPlacePot());
 
 	}
 
@@ -180,15 +221,12 @@ public class ModItemRegistry {
 		return new BlockItemFuel(block, new Item.Properties()).setBurnTime(time);
 	}
 
-	public static BlockItem buildBlockItem(Block block) {
-		return buildBlockItem(block);
-	}
 	
 	public static BlockItem buildBlockItemP(Block block) {
 		return new BlockItem(block, new Item.Properties().stacksTo(1));
 	}
 
-	public static BlockItem buildBlockItem(Block block, CreativeModeTab group) {
+	public static BlockItem buildBlockItem(Block block) {
 		return new BlockItem(block, new Item.Properties());
 	}
 	

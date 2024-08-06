@@ -38,7 +38,7 @@ import net.minecraft.world.item.Item.Properties;
 public class ItemFireStarter extends Item{
 
 	public ItemFireStarter() {
-		super(new Properties().tab(ModItemRegistry.CHARCOAL_PIT));
+		super(new Properties());
 	}
 	
 	@Override
@@ -54,7 +54,7 @@ public class ItemFireStarter extends Item{
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
 		Vec3 eyePos=new Vec3(playerIn.getX(), playerIn.getEyeY(), playerIn.getZ());
-		Vec3 rangedLookRot=playerIn.getLookAngle().scale(playerIn.getAttribute(ForgeMod.REACH_DISTANCE.get()).getValue());
+		Vec3 rangedLookRot=playerIn.getLookAngle().scale(playerIn.getAttribute(ForgeMod.BLOCK_REACH.get()).getValue());
 		Vec3 lookVec=eyePos.add(rangedLookRot);
 		BlockHitResult trace=worldIn.clip(new ClipContext(eyePos, lookVec, Block.OUTLINE, Fluid.NONE, playerIn));
 		ItemStack stack= playerIn.getItemInHand(handIn);
@@ -72,24 +72,24 @@ public class ItemFireStarter extends Item{
 	}
 	
 	@Override
-	public void onUsingTick(ItemStack stack, LivingEntity player, int count) {
+	public void onUseTick(Level level,LivingEntity player,ItemStack stack, int count) {
 		Vec3 eyePos=new Vec3(player.getX(), player.getEyeY(), player.getZ());
-		Vec3 rangedLookRot=player.getLookAngle().scale(player.getAttribute(ForgeMod.REACH_DISTANCE.get()).getValue());
+		Vec3 rangedLookRot=player.getLookAngle().scale(player.getAttribute(ForgeMod.BLOCK_REACH.get()).getValue());
 		Vec3 lookVec=eyePos.add(rangedLookRot);
-		BlockHitResult trace=player.level.clip(new ClipContext(eyePos, lookVec, Block.OUTLINE, Fluid.NONE, player));
-		EntityHitResult trace2=ItemFireStarter.rayTraceEntities(player.level, null, eyePos, trace.getLocation(), new AABB(eyePos, trace.getLocation()), null);
-		if(!player.level.isClientSide) {
+		BlockHitResult trace= level.clip(new ClipContext(eyePos, lookVec, Block.OUTLINE, Fluid.NONE, player));
+		EntityHitResult trace2=ItemFireStarter.rayTraceEntities(level, null, eyePos, trace.getLocation(), new AABB(eyePos, trace.getLocation()), null);
+		if(!level.isClientSide) {
 			if(trace.getType()==Type.BLOCK&&trace2==null) {
 				if(count==1) {
 					BlockPos hit=new BlockPos(trace.getBlockPos().relative(trace.getDirection()));
-					if(CampfireBlock.canLight(player.level.getBlockState(trace.getBlockPos()))){
-						player.level.playSound(null, trace.getBlockPos(), SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1F, player.getRandom().nextFloat()*0.4F+0.8F);
-						player.level.setBlock(trace.getBlockPos(), player.level.getBlockState(trace.getBlockPos()).setValue(BlockStateProperties.LIT, Boolean.valueOf(true)), 11);
+					if(CampfireBlock.canLight(level.getBlockState(trace.getBlockPos()))){
+						level.playSound(null, trace.getBlockPos(), SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1F, player.getRandom().nextFloat()*0.4F+0.8F);
+						level.setBlock(trace.getBlockPos(), level.getBlockState(trace.getBlockPos()).setValue(BlockStateProperties.LIT, Boolean.valueOf(true)), 11);
 						stack.shrink(1);
-					}else if(BaseFireBlock.canBePlacedAt(player.level, hit, Direction.UP)) {
-						BlockState blockstate1 = BaseFireBlock.getState(player.level, hit);
-						player.level.setBlockAndUpdate(hit, blockstate1);
-						player.level.playSound(null, hit, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1F, player.getRandom().nextFloat()*0.4F+0.8F);
+					}else if(BaseFireBlock.canBePlacedAt(level, hit, Direction.UP)) {
+						BlockState blockstate1 = BaseFireBlock.getState(level, hit);
+						level.setBlockAndUpdate(hit, blockstate1);
+						level.playSound(null, hit, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1F, player.getRandom().nextFloat()*0.4F+0.8F);
 						stack.shrink(1);
 					}else {
 						player.releaseUsingItem();
@@ -100,7 +100,7 @@ public class ItemFireStarter extends Item{
 			}
 		}else {
 			if(trace.getType()==Type.BLOCK&&trace2==null) {
-				player.level.addParticle(ParticleTypes.SMOKE, trace.getLocation().x, trace.getLocation().y, trace.getLocation().z, 0, 0, 0);
+				level.addParticle(ParticleTypes.SMOKE, trace.getLocation().x, trace.getLocation().y, trace.getLocation().z, 0, 0, 0);
 			}
 		}
 	}

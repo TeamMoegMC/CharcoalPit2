@@ -2,7 +2,6 @@ package charcoalPit.item;
 
 import java.util.List;
 
-import charcoalPit.core.ModItemRegistry;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.item.Item;
@@ -12,7 +11,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -22,7 +20,7 @@ import net.minecraftforge.items.ItemStackHandler;
 public class ItemCrackedPot extends Item{
 
 	public ItemCrackedPot() {
-		super(new Item.Properties().stacksTo(1).tab(ModItemRegistry.CHARCOAL_PIT));
+		super(new Item.Properties().stacksTo(1));
 	}
 	
 	@OnlyIn(Dist.CLIENT)
@@ -32,7 +30,7 @@ public class ItemCrackedPot extends Item{
 		if(stack.hasTag()&&stack.getTag().contains("inventory")) {
 			ItemStackHandler inv=new ItemStackHandler();
 			inv.deserializeNBT(stack.getTag().getCompound("inventory"));
-			tooltip.add(new TextComponent("").append(inv.getStackInSlot(0).getHoverName()).append(new TextComponent(" x"+inv.getStackInSlot(0).getCount())));
+			tooltip.add(Component.literal("").append(inv.getStackInSlot(0).getHoverName()).append(Component.literal(" x"+inv.getStackInSlot(0).getCount())));
 		}
 	}
 	

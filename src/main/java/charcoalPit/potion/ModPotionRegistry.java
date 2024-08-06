@@ -1,13 +1,10 @@
 package charcoalPit.potion;
 
 import charcoalPit.CharcoalPit;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
@@ -18,8 +15,8 @@ import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.alchemy.Potion;
+import net.minecraftforge.registries.RegisterEvent;
 
-@Mod.EventBusSubscriber(modid = CharcoalPit.MODID, bus= Mod.EventBusSubscriber.Bus.MOD)
 public class ModPotionRegistry {
 
     public static MobEffect DRUNK=new MobEffect(MobEffectCategory.HARMFUL,0xFFFFFF){
@@ -39,7 +36,7 @@ public class ModPotionRegistry {
                 entityLivingBaseIn.addEffect(new MobEffectInstance(MobEffects.POISON, 20*5));
             }
             if(amplifier>=4){
-                entityLivingBaseIn.hurt(DamageSource.GENERIC, (amplifier-3)*2);
+                entityLivingBaseIn.hurt(entityLivingBaseIn.level().damageSources().generic(), (amplifier-3)*2);
             }
         }
 
@@ -149,17 +146,39 @@ public class ModPotionRegistry {
             new MobEffectInstance(WITHER_RESISTANCE,20*60*3));
 
 
-    @SubscribeEvent
-    public static void registerEffects(RegistryEvent.Register<MobEffect> event){
-        event.getRegistry().registerAll(DRUNK.setRegistryName("drunk"),ROULETTE.setRegistryName("roulette"),POISON_RESISTANCE.setRegistryName("poison_resistance"),
-                WITHER_RESISTANCE.setRegistryName("wither_resistance"));
+    public static void registerEffects(RegisterEvent event){
+//        event.getRegistry().registerAll(DRUNK.setRegistryName("drunk"),ROULETTE.setRegistryName("roulette"),POISON_RESISTANCE.setRegistryName("poison_resistance"),
+//                WITHER_RESISTANCE.setRegistryName("wither_resistance"));
+        event.register(ForgeRegistries.Keys.MOB_EFFECTS,
+                helper -> {
+                    helper.register(new ResourceLocation(CharcoalPit.MODID, "drunkt"), DRUNK);
+                    helper.register(new ResourceLocation(CharcoalPit.MODID,"roulette"), ROULETTE);
+                    helper.register(new ResourceLocation(CharcoalPit.MODID, "poison_resistance"), POISON_RESISTANCE);
+                    helper.register(new ResourceLocation(CharcoalPit.MODID, "wither_resistance"), WITHER_RESISTANCE);
+                }
+        );
     }
-    @SubscribeEvent
-    public static void registerPotions(RegistryEvent.Register<Potion> event){
-        event.getRegistry().registerAll(CIDER.setRegistryName("cider"),GOLDEN_CIDER.setRegistryName("golden_cider"),VODKA.setRegistryName("vodka"),
-                BEETROOT_BEER.setRegistryName("beetroot_beer"),SWEETBERRY_WINE.setRegistryName("sweetberry_wine"),MEAD.setRegistryName("mead"),
-                BEER.setRegistryName("beer"),RUM.setRegistryName("rum"),CHORUS_CIDER.setRegistryName("chorus_cider"),SPIDER_SPIRIT.setRegistryName("spider_spirit"),
-                HONEY_DEWOIS.setRegistryName("honey_dewois"),WARPED_WINE.setRegistryName("warped_wine"));
+    public static void registerPotions(RegisterEvent event){
+//        event.getRegistry().registerAll(CIDER.setRegistryName("cider"),GOLDEN_CIDER.setRegistryName("golden_cider"),VODKA.setRegistryName("vodka"),
+//                BEETROOT_BEER.setRegistryName("beetroot_beer"),SWEETBERRY_WINE.setRegistryName("sweetberry_wine"),MEAD.setRegistryName("mead"),
+//                BEER.setRegistryName("beer"),RUM.setRegistryName("rum"),CHORUS_CIDER.setRegistryName("chorus_cider"),SPIDER_SPIRIT.setRegistryName("spider_spirit"),
+//                HONEY_DEWOIS.setRegistryName("honey_dewois"),WARPED_WINE.setRegistryName("warped_wine"));
+        event.register(ForgeRegistries.Keys.POTIONS,
+                helper -> {
+                    helper.register(new ResourceLocation(CharcoalPit.MODID, "cider"), CIDER);
+                    helper.register(new ResourceLocation(CharcoalPit.MODID,"golden_cider"), GOLDEN_CIDER);
+                    helper.register(new ResourceLocation(CharcoalPit.MODID, "vodka"), VODKA);
+                    helper.register(new ResourceLocation(CharcoalPit.MODID, "beetroot_beer"), BEETROOT_BEER);
+                    helper.register(new ResourceLocation(CharcoalPit.MODID,"sweetberry_wine"), SWEETBERRY_WINE);
+                    helper.register(new ResourceLocation(CharcoalPit.MODID, "mead"), MEAD);
+                    helper.register(new ResourceLocation(CharcoalPit.MODID, "beer"), BEER);
+                    helper.register(new ResourceLocation(CharcoalPit.MODID, "rum"), RUM);
+                    helper.register(new ResourceLocation(CharcoalPit.MODID, "chorus_cider"), CHORUS_CIDER);
+                    helper.register(new ResourceLocation(CharcoalPit.MODID, "spider_spirit"), SPIDER_SPIRIT);
+                    helper.register(new ResourceLocation(CharcoalPit.MODID, "honey_dewois"), HONEY_DEWOIS);
+                    helper.register(new ResourceLocation(CharcoalPit.MODID, "warped_wine"), WARPED_WINE);
+                }
+        );
     }
 
 }
