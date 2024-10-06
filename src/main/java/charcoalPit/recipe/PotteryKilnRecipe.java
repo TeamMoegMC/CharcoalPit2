@@ -27,11 +27,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class PotteryKilnRecipe implements Recipe<Container>{
 	
 	public static final ResourceLocation POTTERY=new ResourceLocation(CharcoalPit.MODID, "pottery");
-	public static final RecipeType<PotteryKilnRecipe> POTTERY_RECIPE= new RecipeType<>() {
-        public String toString() {
-            return POTTERY.toString();
-        }
-    };
+	public static RecipeType<PotteryKilnRecipe> POTTERY_RECIPE =RecipeType.simple(new ResourceLocation(CharcoalPit.MODID, "pottery"));;
 	
 	public static final Serializer SERIALIZER=new Serializer();
 	
