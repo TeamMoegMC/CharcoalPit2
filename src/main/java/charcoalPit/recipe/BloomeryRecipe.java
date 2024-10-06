@@ -20,7 +20,7 @@ import net.minecraft.world.level.Level;
 public class BloomeryRecipe implements Recipe<Container>{
 	
 	public static final ResourceLocation BLOOMERY=new ResourceLocation(CharcoalPit.MODID, "bloomery");
-	public static final RecipeType<BloomeryRecipe> BLOOMERY_RECIPE=RecipeType.register(BLOOMERY.toString());
+	public static final RecipeType<BloomeryRecipe> BLOOMERY_RECIPE= RecipeType.simple(new ResourceLocation(CharcoalPit.MODID, "bloomery"));
 	
 	public final ResourceLocation id;
 	public Ingredient input,output,fail,cool;
