@@ -24,6 +24,8 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.common.SoundActions;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidActionResult;
@@ -304,14 +306,16 @@ public class TileBarrel extends BlockEntity {
 		Containers.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), input.getStackInSlot(0));
 		Containers.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), output.getStackInSlot(0));
 	}
-	
 
-	public static Capability<IFluidHandler> FLUID=null;
-	public LazyOptional<IFluidHandler> fluid_out=LazyOptional.of(()->tank);
-	
 
-	public static Capability<IItemHandler> ITEM=null;
-	public LazyOptional<IItemHandler> item_out=LazyOptional.of(()->new IItemHandler() {
+	public static Capability<IFluidHandler> FLUID= CapabilityManager.get(new CapabilityToken<IFluidHandler>() {
+    });
+    public LazyOptional<IFluidHandler> fluid_out=LazyOptional.of(()->tank);
+
+
+	public static Capability<IItemHandler> ITEM=CapabilityManager.get(new CapabilityToken<IItemHandler>() {
+	});
+    public LazyOptional<IItemHandler> item_out=LazyOptional.of(()->new IItemHandler() {
 		
 		@Override
 		public boolean isItemValid(int slot, ItemStack stack) {

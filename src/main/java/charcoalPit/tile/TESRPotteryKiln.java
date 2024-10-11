@@ -24,8 +24,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class TESRPotteryKiln implements BlockEntityRenderer<TilePotteryKiln>{
-
+	private final ItemRenderer itemRenderer;
 	public TESRPotteryKiln(BlockEntityRendererProvider.Context context) {
+		this.itemRenderer = context.getItemRenderer();
 	}
 
 	@Override
@@ -33,14 +34,16 @@ public class TESRPotteryKiln implements BlockEntityRenderer<TilePotteryKiln>{
 			MultiBufferSource buffer, int combinedLight, int combinedOverlay) {
 		BlockState state=tile.getLevel().getBlockState(tile.getBlockPos());
 		if(state.getBlock()==ModBlockRegistry.Kiln&&(state.getValue(BlockPotteryKiln.TYPE)==EnumKilnTypes.EMPTY||state.getValue(BlockPotteryKiln.TYPE)==EnumKilnTypes.COMPLETE)) {
+			int i = (int)tile.getBlockPos().asLong();
 			matrixStack.pushPose();
 	
 	        matrixStack.translate(0.5, 0.1, 0.5);
-	        ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
+//	        ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
+//			this.itemRenderer = p_173602_.getItemRenderer();
 	        ItemStack stack=tile.pottery.getStackInSlot(0);
-	        BakedModel ibakedmodel = itemRenderer.getModel(stack, tile.getLevel(), null,0);
-	        itemRenderer.render(stack,  ItemDisplayContext.GROUND, true, matrixStack, buffer, combinedLight, combinedOverlay, ibakedmodel);
-			
+//	        BakedModel ibakedmodel = itemRenderer.getModel(stack, tile.getLevel(), null,i);
+//	        itemRenderer.render(stack,  ItemDisplayContext.GROUND, true, matrixStack, buffer, combinedLight, combinedOverlay, ibakedmodel);
+			this.itemRenderer.renderStatic(stack, ItemDisplayContext.GROUND, combinedLight, combinedOverlay, matrixStack, buffer, tile.getLevel(), i);
 	        matrixStack.popPose();
 		}
 	}

@@ -8,14 +8,19 @@ import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
+import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.resources.language.I18n;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.network.chat.Component;
+import net.minecraftforge.registries.ForgeRegistries;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -56,8 +61,16 @@ public class PotteryRecipeCategory implements IRecipeCategory<PotteryKilnRecipe>
 	}
 
 	@Override
-	public void setRecipe(IRecipeLayoutBuilder iRecipeLayoutBuilder, PotteryKilnRecipe potteryKilnRecipe, IFocusGroup iFocusGroup) {
+	public void setRecipe(IRecipeLayoutBuilder builder, PotteryKilnRecipe potteryKilnRecipe, IFocusGroup iFocusGroup) {
+		ArrayList<ItemStack> logs=new ArrayList();
+		for(Item i: ForgeRegistries.ITEMS.tags().getTag(ItemTags.LOGS_THAT_BURN)){
+			logs.add(new ItemStack(i,3));
+		}
+		builder.addSlot(RecipeIngredientRole.RENDER_ONLY,26,17).addItemStacks(logs);
+		builder.addSlot(RecipeIngredientRole.RENDER_ONLY,26,35).addItemStack(new ItemStack(ModItemRegistry.Straw,6));
 
+		builder.addSlot(RecipeIngredientRole.INPUT,26,53).addIngredients(potteryKilnRecipe.input);
+		builder.addSlot(RecipeIngredientRole.OUTPUT,134,35).addItemStack(potteryKilnRecipe.output.getDefaultInstance());
 	}
 
 //	@Override

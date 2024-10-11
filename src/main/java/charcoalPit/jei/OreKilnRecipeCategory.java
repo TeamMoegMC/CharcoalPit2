@@ -8,6 +8,7 @@ import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
+import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.gui.GuiGraphics;
@@ -57,8 +58,48 @@ public class OreKilnRecipeCategory implements IRecipeCategory<OreKilnRecipe> {
 	}
 
 	@Override
-	public void setRecipe(IRecipeLayoutBuilder iRecipeLayoutBuilder, OreKilnRecipe oreKilnRecipe, IFocusGroup iFocusGroup) {
-
+	public void setRecipe(IRecipeLayoutBuilder builder, OreKilnRecipe oreKilnRecipe, IFocusGroup iFocusGroup) {
+		int index=0;
+		for(index=0;index<oreKilnRecipe.input.length;index++){
+			int pos=index;
+			if(pos>4)
+				pos++;
+//			iRecipeLayout.getItemStacks().init(index,true,7+18*(pos%3),16+18*(pos/3));
+			builder.addSlot(RecipeIngredientRole.INPUT,8+18*(pos%3),17+18*(pos/3)).addIngredients(oreKilnRecipe.input[index]);
+//			iRecipeLayout.getItemStacks().set(index,iIngredients.getInputs(VanillaTypes.ITEM).get(index));
+		}
+		index++;
+//		iRecipeLayout.getItemStacks().init(index,false,187,34);
+		builder.addSlot(RecipeIngredientRole.OUTPUT,188,35).addIngredients(oreKilnRecipe.output);
+//		iRecipeLayout.getItemStacks().set(index,iIngredients.getOutputs(VanillaTypes.ITEM).get(0));
+		////
+//		index++;
+//		ArrayList<ItemStack> logs=new ArrayList();
+////		for(Item i: ItemTags.LOGS_THAT_BURN.getValues()){
+////			logs.add(new ItemStack(i,3));
+////		}
+//		iRecipeLayout.getItemStacks().init(index,true,79,16);
+//		iRecipeLayout.getItemStacks().set(index,logs);
+//		index++;
+//		iRecipeLayout.getItemStacks().init(index,true,79,34);
+//		iRecipeLayout.getItemStacks().set(index,new ItemStack(ModItemRegistry.Straw,6));
+//		index++;
+//		iRecipeLayout.getItemStacks().init(index,true,79,52);
+//		iRecipeLayout.getItemStacks().set(index,new ItemStack(ModItemRegistry.ClayPot));
+//		index++;
+//		ArrayList<ItemStack> coal=new ArrayList();
+//		for(Item i: ItemTags.getAllTags().getTag(new ResourceLocation(CharcoalPit.MODID,"orekiln_fuels")).getValues()){
+//			coal.add(new ItemStack(i));
+//		}
+//		iRecipeLayout.getItemStacks().init(index,true,25,34);
+//		iRecipeLayout.getItemStacks().set(index,coal);
+//		index++;
+//		iRecipeLayout.getItemStacks().init(index,true,115,34);
+//		iRecipeLayout.getItemStacks().init(index+1,true,151,34);
+//		iRecipeLayout.getItemStacks().init(index+2,true,133,52);
+//		iRecipeLayout.getItemStacks().set(index,new ItemStack(Items.DIRT));
+//		iRecipeLayout.getItemStacks().set(index+1,new ItemStack(Items.DIRT));
+//		iRecipeLayout.getItemStacks().set(index+2,new ItemStack(Items.DIRT));
 	}
 
 //	@Override

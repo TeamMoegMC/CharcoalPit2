@@ -147,16 +147,18 @@ public class TilePotteryKiln extends BlockEntity {
 		return nbt;
 	}
 	
-/*	@Override
-	public ClientboundBlockEntityDataPacket getUpdatePacket() {
-		return new ClientboundBlockEntityDataPacket(getBlockPos(), 1, pottery.serializeNBT());
-	}
-	
 	@Override
-	public void handleUpdateTag(BlockState state, CompoundTag tag) {
-		super.handleUpdateTag(state, tag);
+	public ClientboundBlockEntityDataPacket getUpdatePacket() {
+		return ClientboundBlockEntityDataPacket.create(this,(entity)->{
+            return pottery.serializeNBT();
+        });
+	}
+
+	@Override
+	public void handleUpdateTag(CompoundTag tag) {
+		super.handleUpdateTag(tag);
 		pottery.deserializeNBT(tag.getCompound("pottery"));
-	}*/
+	}
 	
 	@Override
 	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {

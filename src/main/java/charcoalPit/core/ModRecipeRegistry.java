@@ -25,7 +25,8 @@ public class ModRecipeRegistry {
 				helper -> {
 					helper.register(new ResourceLocation(CharcoalPit.MODID, "pottery"), PotteryKilnRecipe.SERIALIZER);
 					helper.register(new ResourceLocation(CharcoalPit.MODID, "orekiln"), OreKilnRecipe.SERIALIZER);
-					helper.register(new ResourceLocation(CharcoalPit.MODID, "bloomery"), BarrelRecipe.SERIALIZER);
+					helper.register(new ResourceLocation(CharcoalPit.MODID, "bloomery"), BloomeryRecipe.SERIALIZER);
+					helper.register(new ResourceLocation(CharcoalPit.MODID, "barrel"), BarrelRecipe.SERIALIZER);
 				}
 		);
 	}

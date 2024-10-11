@@ -42,7 +42,7 @@ public class BarrelContainer extends AbstractContainerMenu{
 		this.addSlot(new SlotItemHandler(tile.input, 0, 98, 17) {
 			@Override
 			public boolean mayPlace(ItemStack stack) {
-				return stack.getCapability(ForgeCapabilities.FLUID_HANDLER).isPresent()||
+				return stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).isPresent()||
 						BarrelRecipe.isValidItem(stack, tile.getLevel())||stack.getItem()==Items.GLASS_BOTTLE;
 			}
 			

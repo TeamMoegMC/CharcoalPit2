@@ -61,14 +61,18 @@ public class Jei implements IModPlugin {
 	public void registerRecipes(IRecipeRegistration registration) {
 		RecipeManager recipeManager = Objects.requireNonNull(Minecraft.getInstance().level).getRecipeManager();
 
-		registration.addRecipes(new RecipeType<>(PotteryRecipeCategory.ID,PotteryKilnRecipe.class),recipeManager.getAllRecipesFor(PotteryKilnRecipe.POTTERY_RECIPE));
+//		registration.addRecipes(new RecipeType<>(PotteryRecipeCategory.ID,PotteryKilnRecipe.class),recipeManager.getAllRecipesFor(PotteryKilnRecipe.POTTERY_RECIPE));
+		registration.addRecipes(PotteryRecipeCategory.POTTERY_KILN_RECIPE_TYPE,recipeManager.getAllRecipesFor(PotteryKilnRecipe.POTTERY_RECIPE));
 
-		registration.addRecipes(new RecipeType<>(OreKilnRecipeCategory.ID,OreKilnRecipe.class),recipeManager.getAllRecipesFor(OreKilnRecipe.ORE_KILN_RECIPE).stream().filter((r) -> !r.output.test(new ItemStack(Items.BARRIER))).collect(Collectors.toList()));
+//		registration.addRecipes(new RecipeType<>(OreKilnRecipeCategory.ID,OreKilnRecipe.class),recipeManager.getAllRecipesFor(OreKilnRecipe.ORE_KILN_RECIPE).stream().filter((r) -> !r.output.test(new ItemStack(Items.BARRIER))).collect(Collectors.toList()));
+		registration.addRecipes(OreKilnRecipeCategory.ORE_KILN_RECIPE_TYPE,recipeManager.getAllRecipesFor(OreKilnRecipe.ORE_KILN_RECIPE));
 
-		registration.addRecipes(new RecipeType<>(BloomeryRecipeCategory.ID,BloomeryRecipe.class),recipeManager.getAllRecipesFor(BloomeryRecipe.BLOOMERY_RECIPE));
+//		registration.addRecipes(new RecipeType<>(BloomeryRecipeCategory.ID,BloomeryRecipe.class),recipeManager.getAllRecipesFor(BloomeryRecipe.BLOOMERY_RECIPE));
+		registration.addRecipes(BloomeryRecipeCategory.BLOOMERY_RECIPE_TYPE,recipeManager.getAllRecipesFor(BloomeryRecipe.BLOOMERY_RECIPE));
 
-		registration.addRecipes(new RecipeType<>(BarrelRecipeCategory.ID,BarrelRecipe.class),recipeManager.getAllRecipesFor(BarrelRecipe.BARREL_RECIPE));
 
+//		registration.addRecipes(new RecipeType<>(BarrelRecipeCategory.ID,BarrelRecipe.class),recipeManager.getAllRecipesFor(BarrelRecipe.BARREL_RECIPE));
+		registration.addRecipes(BarrelRecipeCategory.BARREL_RECIPE_TYPE,recipeManager.getAllRecipesFor(BarrelRecipe.BARREL_RECIPE));
 
 
 

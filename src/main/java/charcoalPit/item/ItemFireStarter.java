@@ -4,6 +4,7 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 import charcoalPit.core.ModItemRegistry;
+import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.CampfireBlock;
@@ -59,7 +60,7 @@ public class ItemFireStarter extends Item{
 		BlockHitResult trace=worldIn.clip(new ClipContext(eyePos, lookVec, Block.OUTLINE, Fluid.NONE, playerIn));
 		ItemStack stack= playerIn.getItemInHand(handIn);
 		if(trace.getType()==Type.BLOCK) {
-			EntityHitResult trace2=ItemFireStarter.rayTraceEntities(worldIn, null, eyePos, trace.getLocation(), new AABB(eyePos, trace.getLocation()), null);
+			EntityHitResult trace2=ItemFireStarter.rayTraceEntities(worldIn, null, eyePos, trace.getLocation(), new AABB(eyePos, trace.getLocation()), EntitySelector.NO_SPECTATORS);
 			if(trace2==null) {
 				playerIn.startUsingItem(handIn);
 				return new InteractionResultHolder<ItemStack>(InteractionResult.SUCCESS, stack);
@@ -77,7 +78,7 @@ public class ItemFireStarter extends Item{
 		Vec3 rangedLookRot=player.getLookAngle().scale(player.getAttribute(ForgeMod.BLOCK_REACH.get()).getValue());
 		Vec3 lookVec=eyePos.add(rangedLookRot);
 		BlockHitResult trace= level.clip(new ClipContext(eyePos, lookVec, Block.OUTLINE, Fluid.NONE, player));
-		EntityHitResult trace2=ItemFireStarter.rayTraceEntities(level, null, eyePos, trace.getLocation(), new AABB(eyePos, trace.getLocation()), null);
+		EntityHitResult trace2=ItemFireStarter.rayTraceEntities(level, null, eyePos, trace.getLocation(), new AABB(eyePos, trace.getLocation()), EntitySelector.NO_SPECTATORS);
 		if(!level.isClientSide) {
 			if(trace.getType()==Type.BLOCK&&trace2==null) {
 				if(count==1) {

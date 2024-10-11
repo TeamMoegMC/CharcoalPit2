@@ -3,7 +3,6 @@ package charcoalPit.jei;
 import charcoalPit.CharcoalPit;
 import charcoalPit.core.ModBlockRegistry;
 import charcoalPit.recipe.BarrelRecipe;
-import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.forge.ForgeTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -21,9 +20,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class BarrelRecipeCategory implements IRecipeCategory<BarrelRecipe> {
 	
@@ -84,35 +81,35 @@ public class BarrelRecipeCategory implements IRecipeCategory<BarrelRecipe> {
 //		}
 //	}
 	@Override
-	public void setRecipe(IRecipeLayoutBuilder builder, BarrelRecipe recipe, IFocusGroup focuses) {
+	public void setRecipe(IRecipeLayoutBuilder builder, BarrelRecipe barrelRecipe, IFocusGroup focuses) {
 
-		ItemStack[] stacks = recipe.item_in.getItems();
+		ItemStack[] stacks = barrelRecipe.item_in.getItems();
 		ItemStack[] stacks2 = stacks;
 		int var6 = stacks.length;
 
 		int var7;
 		for(var7 = 0; var7 < var6; ++var7) {
 			ItemStack stack = stacks2[var7];
-			stack.setCount(recipe.in_amount);
+			stack.setCount(barrelRecipe.in_amount);
 		}
 
 		builder.addSlot(RecipeIngredientRole.INPUT, 80, 17).addIngredients(VanillaTypes.ITEM_STACK, Arrays.stream(stacks).toList());
-		builder.addSlot(RecipeIngredientRole.INPUT, 44, 14).addIngredient(ForgeTypes.FLUID_STACK, new FluidStack(recipe.fluid_out.getFluid(),recipe.fluid_out.amount)).setFluidRenderer(Math.min(16000, recipe.fluid_in.amount * 2), false, 16, 58).setOverlay(this.tank_overlay, 0, 0);
-		if (recipe.item_out != null) {
-			stacks2 = recipe.item_out.getItems();
+		builder.addSlot(RecipeIngredientRole.INPUT, 44, 14).addIngredient(ForgeTypes.FLUID_STACK, new FluidStack(barrelRecipe.fluid_in.getFluid(),barrelRecipe.fluid_in.amount)).setFluidRenderer(Math.min(16000, barrelRecipe.fluid_in.amount * 2), false, 16, 58).setOverlay(this.tank_overlay, 0, 0);
+		if (barrelRecipe.item_out != null) {
+			stacks2 = barrelRecipe.item_out.getItems();
 			ItemStack[] var10 = stacks2;
 			var7 = stacks2.length;
 
 			for(int var11 = 0; var11 < var7; ++var11) {
 				ItemStack stack2 = var10[var11];
-				stack2.setCount(recipe.out_amount);
+				stack2.setCount(barrelRecipe.out_amount);
 			}
 
 			builder.addSlot(RecipeIngredientRole.OUTPUT, 80, 53).addIngredients(VanillaTypes.ITEM_STACK, Arrays.stream(stacks2).toList());
 		}
 
-		if (recipe.fluid_out != null) {
-			builder.addSlot(RecipeIngredientRole.OUTPUT, 116, 14).addIngredient(ForgeTypes.FLUID_STACK, new FluidStack(recipe.fluid_out.getFluid(),recipe.fluid_out.amount)).setFluidRenderer(Math.min(16000, recipe.fluid_out.amount * 2), false, 16, 58).setOverlay(this.tank_overlay, 0, 0);
+		if (barrelRecipe.fluid_out != null) {
+			builder.addSlot(RecipeIngredientRole.OUTPUT, 116, 14).addIngredient(ForgeTypes.FLUID_STACK, new FluidStack(barrelRecipe.fluid_out.getFluid(),barrelRecipe.fluid_out.amount)).setFluidRenderer(Math.min(16000, barrelRecipe.fluid_out.amount * 2), false, 16, 58).setOverlay(this.tank_overlay, 0, 0);
 		}
 
 	}

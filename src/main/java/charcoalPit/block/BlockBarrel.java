@@ -4,11 +4,15 @@ import java.util.Arrays;
 import java.util.List;
 
 import charcoalPit.core.ModItemRegistry;
+import charcoalPit.core.ModTileRegistry;
 import charcoalPit.fluid.ModFluidRegistry;
 import charcoalPit.gui.BarrelContainer;
+import charcoalPit.tile.TileActivePile;
 import charcoalPit.tile.TileBarrel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.material.MapColor;
@@ -106,6 +110,13 @@ public class BlockBarrel extends Block implements SimpleWaterloggedBlock, Entity
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new TileBarrel(pos,state);
+	}
+	@Override
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
+		return createTickerHelper(type,ModTileRegistry.Barrel,TileBarrel::tick);
+	}
+	protected static <E extends BlockEntity, A extends BlockEntity> BlockEntityTicker<A> createTickerHelper(BlockEntityType<A> type, BlockEntityType<E> entitytype, BlockEntityTicker<? super E> ticker) {
+		return type == entitytype ? (BlockEntityTicker<A>) ticker : null;
 	}
 	
 	@Override
