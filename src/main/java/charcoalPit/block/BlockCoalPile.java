@@ -16,19 +16,16 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.Level;
 
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-
-public class BlockCoalPile extends BaseEntityBlock {
+public class BlockCoalPile extends Block implements EntityBlock {
 	public static final BooleanProperty LIT = BlockStateProperties.LIT;
 
 	public BlockCoalPile() {
 		super(Properties.copy(Blocks.COAL_BLOCK));
-		this.registerDefaultState(this.stateDefinition.any().setValue(LIT, Boolean.valueOf(false)));
+		this.registerDefaultState(defaultBlockState().setValue(LIT, Boolean.valueOf(false)));
 	}
 
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
@@ -40,11 +37,12 @@ public class BlockCoalPile extends BaseEntityBlock {
 		return new TileActivePile(true,pos,state);
 	}
 
-	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
 		return createTickerHelper(type,ModTileRegistry.ActivePile,TileActivePile::tick);
 	}
-
+	protected static <E extends BlockEntity, A extends BlockEntity> BlockEntityTicker<A> createTickerHelper(BlockEntityType<A> type, BlockEntityType<E> entitytype, BlockEntityTicker<? super E> ticker) {
+		return type == entitytype ? (BlockEntityTicker<A>) ticker : null;
+	}
 	@Override
 	public boolean isFireSource(BlockState state, LevelReader world, BlockPos pos, Direction side) {
 		return true;
