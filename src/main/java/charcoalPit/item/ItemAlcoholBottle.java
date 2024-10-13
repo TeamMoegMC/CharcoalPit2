@@ -94,49 +94,49 @@ public class ItemAlcoholBottle extends PotionItem{
 //		}
 //	}
 
-	public static boolean didInit=false;
-
-	public void initItems()
-	{
-		didInit=true;
-		cider=PotionUtils.setPotion(new ItemStack(this), ModPotionRegistry.CIDER);
-		golden_cider=PotionUtils.setPotion(new ItemStack(this), ModPotionRegistry.GOLDEN_CIDER);
-		vodka=PotionUtils.setPotion(new ItemStack(this), ModPotionRegistry.VODKA);
-		beetroot_beer=PotionUtils.setPotion(new ItemStack(this), ModPotionRegistry.BEETROOT_BEER);
-		sweetberry_wine=PotionUtils.setPotion(new ItemStack(this), ModPotionRegistry.SWEETBERRY_WINE);
-		mead=PotionUtils.setPotion(new ItemStack(this), ModPotionRegistry.MEAD);
-		beer=PotionUtils.setPotion(new ItemStack(this), ModPotionRegistry.BEER);
-		rum=PotionUtils.setPotion(new ItemStack(this), ModPotionRegistry.RUM);
-		chorus_cider=PotionUtils.setPotion(new ItemStack(this), ModPotionRegistry.CHORUS_CIDER);
-		spider_spirit=PotionUtils.setPotion(new ItemStack(this), ModPotionRegistry.SPIDER_SPIRIT);
-		honey_dewois=PotionUtils.setPotion(new ItemStack(this), ModPotionRegistry.HONEY_DEWOIS);
-		warped_wine=PotionUtils.setPotion(new ItemStack(this), ModPotionRegistry.WARPED_WINE);
-
-		cider.getTag().putInt("CustomPotionColor", 0xE50000);
-		golden_cider.getTag().putInt("CustomPotionColor", 0xDBB40C);
-		vodka.getTag().putInt("CustomPotionColor", 0xE6DAA6);
-		beetroot_beer.getTag().putInt("CustomPotionColor", 0x840000);
-		sweetberry_wine.getTag().putInt("CustomPotionColor", 0x06470C);
-		mead.getTag().putInt("CustomPotionColor", 0xFAC205);
-		beer.getTag().putInt("CustomPotionColor", 0xFDAA48);
-		rum.getTag().putInt("CustomPotionColor", 0x650021);
-		chorus_cider.getTag().putInt("CustomPotionColor", 0x9A0EAA);
-		honey_dewois.getTag().putInt("CustomPotionColor", 0xF97306);
-		warped_wine.getTag().putInt("CustomPotionColor", 0x0485D1);
-		spider_spirit.getTag().putInt("CustomPotionColor", 0xA5A502);
-	}
-
-	public static ItemStack cider;
-	public static ItemStack golden_cider;
-	public static ItemStack vodka;
-	public static ItemStack beetroot_beer;
-	public static ItemStack sweetberry_wine;
-	public static ItemStack mead;
-	public static ItemStack beer;
-	public static ItemStack rum;
-	public static ItemStack chorus_cider;
-	public static ItemStack spider_spirit;
-	public static ItemStack honey_dewois;
-	public static ItemStack warped_wine;
+//	public static boolean didInit=false;
+//
+//	public void initItems()
+//	{
+//		didInit=true;
+//		cider=PotionUtils.setPotion(new ItemStack(this), ModPotionRegistry.CIDER);
+//		golden_cider=PotionUtils.setPotion(new ItemStack(this), ModPotionRegistry.GOLDEN_CIDER);
+//		vodka=PotionUtils.setPotion(new ItemStack(this), ModPotionRegistry.VODKA);
+//		beetroot_beer=PotionUtils.setPotion(new ItemStack(this), ModPotionRegistry.BEETROOT_BEER);
+//		sweetberry_wine=PotionUtils.setPotion(new ItemStack(this), ModPotionRegistry.SWEETBERRY_WINE);
+//		mead=PotionUtils.setPotion(new ItemStack(this), ModPotionRegistry.MEAD);
+//		beer=PotionUtils.setPotion(new ItemStack(this), ModPotionRegistry.BEER);
+//		rum=PotionUtils.setPotion(new ItemStack(this), ModPotionRegistry.RUM);
+//		chorus_cider=PotionUtils.setPotion(new ItemStack(this), ModPotionRegistry.CHORUS_CIDER);
+//		spider_spirit=PotionUtils.setPotion(new ItemStack(this), ModPotionRegistry.SPIDER_SPIRIT);
+//		honey_dewois=PotionUtils.setPotion(new ItemStack(this), ModPotionRegistry.HONEY_DEWOIS);
+//		warped_wine=PotionUtils.setPotion(new ItemStack(this), ModPotionRegistry.WARPED_WINE);
+//
+//		cider.getTag().putInt("CustomPotionColor", 0xE50000);
+//		golden_cider.getTag().putInt("CustomPotionColor", 0xDBB40C);
+//		vodka.getTag().putInt("CustomPotionColor", 0xE6DAA6);
+//		beetroot_beer.getTag().putInt("CustomPotionColor", 0x840000);
+//		sweetberry_wine.getTag().putInt("CustomPotionColor", 0x06470C);
+//		mead.getTag().putInt("CustomPotionColor", 0xFAC205);
+//		beer.getTag().putInt("CustomPotionColor", 0xFDAA48);
+//		rum.getTag().putInt("CustomPotionColor", 0x650021);
+//		chorus_cider.getTag().putInt("CustomPotionColor", 0x9A0EAA);
+//		honey_dewois.getTag().putInt("CustomPotionColor", 0xF97306);
+//		warped_wine.getTag().putInt("CustomPotionColor", 0x0485D1);
+//		spider_spirit.getTag().putInt("CustomPotionColor", 0xA5A502);
+//	}
+//
+//	public static ItemStack cider;
+//	public static ItemStack golden_cider;
+//	public static ItemStack vodka;
+//	public static ItemStack beetroot_beer;
+//	public static ItemStack sweetberry_wine;
+//	public static ItemStack mead;
+//	public static ItemStack beer;
+//	public static ItemStack rum;
+//	public static ItemStack chorus_cider;
+//	public static ItemStack spider_spirit;
+//	public static ItemStack honey_dewois;
+//	public static ItemStack warped_wine;
 
 }

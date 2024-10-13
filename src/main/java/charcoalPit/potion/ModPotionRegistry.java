@@ -151,7 +151,7 @@ public class ModPotionRegistry {
 //                WITHER_RESISTANCE.setRegistryName("wither_resistance"));
         event.register(ForgeRegistries.Keys.MOB_EFFECTS,
                 helper -> {
-                    helper.register(new ResourceLocation(CharcoalPit.MODID, "drunkt"), DRUNK);
+                    helper.register(new ResourceLocation(CharcoalPit.MODID, "drunk"), DRUNK);
                     helper.register(new ResourceLocation(CharcoalPit.MODID,"roulette"), ROULETTE);
                     helper.register(new ResourceLocation(CharcoalPit.MODID, "poison_resistance"), POISON_RESISTANCE);
                     helper.register(new ResourceLocation(CharcoalPit.MODID, "wither_resistance"), WITHER_RESISTANCE);

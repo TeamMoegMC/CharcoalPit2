@@ -3,11 +3,15 @@ package charcoalPit.block;
 import charcoalPit.CharcoalPit;
 import charcoalPit.core.Config;
 import charcoalPit.core.ModBlockRegistry;
+import charcoalPit.core.ModTileRegistry;
 import charcoalPit.recipe.PotteryKilnRecipe;
+import charcoalPit.tile.TileActivePile;
 import charcoalPit.tile.TilePotteryKiln;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
@@ -155,7 +159,13 @@ public class BlockPotteryKiln extends Block implements EntityBlock {
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new TilePotteryKiln(pos,state);
 	}
-	
+	@Override
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
+		return createTickerHelper(type, ModTileRegistry.PotteryKiln, TilePotteryKiln::tick);
+	}
+	protected static <E extends BlockEntity, A extends BlockEntity> BlockEntityTicker<A> createTickerHelper(BlockEntityType<A> type, BlockEntityType<E> entitytype, BlockEntityTicker<? super E> ticker) {
+		return type == entitytype ? (BlockEntityTicker<A>) ticker : null;
+	}
 	@Override
 	public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player,
 			InteractionHand handIn, BlockHitResult hit) {
