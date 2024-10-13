@@ -4,10 +4,14 @@ import charcoalPit.CharcoalPit;
 import charcoalPit.core.Config;
 import charcoalPit.core.MethodHelper;
 import charcoalPit.core.ModBlockRegistry;
+import charcoalPit.core.ModTileRegistry;
+import charcoalPit.tile.TileActivePile;
 import charcoalPit.tile.TileBloomery;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.MapColor;
@@ -61,7 +65,7 @@ public class BlockBloomery extends Block implements EntityBlock {
 			Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D)};
 
 	public BlockBloomery() {
-		super(Properties.of().mapColor(MapColor.STONE).strength(4F, 6F).lightLevel((state)->{
+		super(Properties.of().mapColor(MapColor.STONE).strength(3.5F, 6F).lightLevel((state)->{
 			int i=state.getValue(STAGE);
 			if(i==9)
 				return 15;
@@ -167,7 +171,13 @@ public class BlockBloomery extends Block implements EntityBlock {
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new TileBloomery(pos,state);
 	}
-	
+	@Override
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
+		return createTickerHelper(type, ModTileRegistry.Bloomery2,TileBloomery::tick);
+	}
+	protected static <E extends BlockEntity, A extends BlockEntity> BlockEntityTicker<A> createTickerHelper(BlockEntityType<A> type, BlockEntityType<E> entitytype, BlockEntityTicker<? super E> ticker) {
+		return type == entitytype ? (BlockEntityTicker<A>) ticker : null;
+	}
 	@Override
 	public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player,
 			InteractionHand handIn, BlockHitResult hit) {
@@ -240,6 +250,4 @@ public class BlockBloomery extends Block implements EntityBlock {
 			}
 		}
 	}
-
-
 }

@@ -29,7 +29,7 @@ public class ModBlockRegistry {
 
 	public static BlockCreosoteCollector SandyCollector;
 	public static BlockPotteryKiln Kiln;
-	public static BlockCeramicPot CeramicPot,WhitePot,
+	public static BlockCeramicPot CeramicPot;/*,WhitePot,
 			OrangePot,MagentaPot,
 			LightBluePot,YellowPot,
 			LimePot,PinkPot,
@@ -37,7 +37,7 @@ public class ModBlockRegistry {
 			CyanPot, PurplePot,
 			BluePot, BrownPot,
 			GreenPot, RedPot,
-			BlackPot;
+			BlackPot;*/
 	public static BlockBellows Bellows;
 	public static Block TuyereSandy;
 	//public static BlockClayPot ClayPot=new BlockClayPot();
@@ -72,7 +72,7 @@ public class ModBlockRegistry {
 		SandyCollector=new BlockCreosoteCollector(Properties.copy(SandyBrick));
 		Kiln=new BlockPotteryKiln();
 		CeramicPot=new BlockCeramicPot(MapColor.COLOR_ORANGE);
-		WhitePot=new BlockCeramicPot(MapColor.TERRACOTTA_WHITE);
+		/*WhitePot=new BlockCeramicPot(MapColor.TERRACOTTA_WHITE);
 		OrangePot=new BlockCeramicPot(MapColor.TERRACOTTA_ORANGE);
 		MagentaPot=new BlockCeramicPot(MapColor.TERRACOTTA_MAGENTA);
 		LightBluePot=new BlockCeramicPot(MapColor.TERRACOTTA_LIGHT_BLUE);
@@ -87,7 +87,7 @@ public class ModBlockRegistry {
 		BrownPot = new BlockCeramicPot(MapColor.TERRACOTTA_BROWN);
 		GreenPot = new BlockCeramicPot(MapColor.TERRACOTTA_GREEN);
 		RedPot = new BlockCeramicPot(MapColor.TERRACOTTA_RED);
-		BlackPot = new BlockCeramicPot(MapColor.TERRACOTTA_BLACK);
+		BlackPot = new BlockCeramicPot(MapColor.TERRACOTTA_BLACK);*/
 		Bellows = new BlockBellows();
 		TuyereSandy = new Block(Properties.copy(SandyBrick));
 
@@ -127,7 +127,7 @@ public class ModBlockRegistry {
 					helper.register(new ResourceLocation(CharcoalPit.MODID,"mechanical_bellows"), MechanicalBellows);
 
 					helper.register(new ResourceLocation(CharcoalPit.MODID,"ceramic_pot"),CeramicPot );
-					helper.register(new ResourceLocation(CharcoalPit.MODID,"yellow_pot"), YellowPot);
+					/*helper.register(new ResourceLocation(CharcoalPit.MODID,"yellow_pot"), YellowPot);
 					helper.register(new ResourceLocation(CharcoalPit.MODID,"white_pot"), WhitePot);
 					helper.register(new ResourceLocation(CharcoalPit.MODID,"red_pot"), RedPot);
 					helper.register(new ResourceLocation(CharcoalPit.MODID,"purple_pot"), PurplePot);
@@ -142,7 +142,7 @@ public class ModBlockRegistry {
 					helper.register(new ResourceLocation(CharcoalPit.MODID,"cyan_pot"), CyanPot);
 					helper.register(new ResourceLocation(CharcoalPit.MODID,"brown_pot"), BrownPot);
 					helper.register(new ResourceLocation(CharcoalPit.MODID,"blue_pot"), BluePot);
-					helper.register(new ResourceLocation(CharcoalPit.MODID,"black_pot"), BlackPot);
+					helper.register(new ResourceLocation(CharcoalPit.MODID,"black_pot"), BlackPot);*/
 				}
 		);
 

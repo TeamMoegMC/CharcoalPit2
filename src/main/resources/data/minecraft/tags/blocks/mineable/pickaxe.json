@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "#charcoal_pit:bloomery_walls",
+    "charcoal_pit:coal_pile",
+    "charcoal_pit:coke",
+    "charcoal_pit:bloomery",
+    "charcoal_pit:sandy_collector",
+    "charcoal_pit:mechanical_bellows",
+    "charcoal_pit:ceramic_pot"
+  ]
+}

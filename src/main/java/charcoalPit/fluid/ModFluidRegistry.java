@@ -6,6 +6,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
 import net.minecraftforge.fluids.ForgeFlowingFluid.Properties;
@@ -108,10 +109,12 @@ public class ModFluidRegistry {
 		public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
 			consumer.accept(new IClientFluidTypeExtensions() {
 				@Override
-				public int getTintColor() {
+				public int getTintColor(FluidStack stack) {
+					if(stack.hasTag()&&stack.getTag().contains("CustomPotionColor")){
+						return stack.getTag().getInt("CustomPotionColor")+0xFF000000;
+					}
 					return tint;
 				}
-
 				@Override
 				public ResourceLocation getStillTexture() {
 					return stillTexture;

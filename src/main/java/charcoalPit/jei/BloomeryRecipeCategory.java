@@ -8,6 +8,7 @@ import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
+import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.gui.GuiGraphics;
@@ -57,8 +58,9 @@ public class BloomeryRecipeCategory implements IRecipeCategory<BloomeryRecipe> {
 	}
 
 	@Override
-	public void setRecipe(IRecipeLayoutBuilder iRecipeLayoutBuilder, BloomeryRecipe bloomeryRecipe, IFocusGroup iFocusGroup) {
-
+	public void setRecipe(IRecipeLayoutBuilder builder, BloomeryRecipe bloomeryRecipe, IFocusGroup iFocusGroup) {
+		builder.addSlot(RecipeIngredientRole.INPUT,26,35).addIngredients(bloomeryRecipe.input);
+		builder.addSlot(RecipeIngredientRole.OUTPUT,134,35).addIngredients(bloomeryRecipe.output);
 	}
 
 //	@Override

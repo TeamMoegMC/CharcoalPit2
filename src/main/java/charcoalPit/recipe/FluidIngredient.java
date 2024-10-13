@@ -25,7 +25,7 @@ public class FluidIngredient {
 	public boolean test(Fluid in) {
 		if(fluid!=null&&fluid==in)
 			return true;
-		if(tag!=null&&tag.equals(in))
+		if(tag!=null&&tag.contains(in))
 			return true;
 		return false;
 	}
@@ -83,7 +83,7 @@ public class FluidIngredient {
 			buffer.writeResourceLocation(ForgeRegistries.FLUIDS.getKey(fluid));
 		}
 		if((mode&2)==2) {
-			buffer.writeResourceLocation(ForgeRegistries.FLUIDS.getKey(this.getFluid()));
+			buffer.writeResourceLocation(ForgeRegistries.FLUIDS.tags().createTagKey(buffer.readResourceLocation()).location());
 		}
 		buffer.writeInt(amount);
 		if(nbt!=null) {

@@ -94,7 +94,7 @@ public class BarrelRecipeCategory implements IRecipeCategory<BarrelRecipe> {
 		}
 
 		builder.addSlot(RecipeIngredientRole.INPUT, 80, 17).addIngredients(VanillaTypes.ITEM_STACK, Arrays.stream(stacks).toList());
-		builder.addSlot(RecipeIngredientRole.INPUT, 44, 14).addIngredient(ForgeTypes.FLUID_STACK, new FluidStack(barrelRecipe.fluid_in.getFluid(),barrelRecipe.fluid_in.amount)).setFluidRenderer(Math.min(16000, barrelRecipe.fluid_in.amount * 2), false, 16, 58).setOverlay(this.tank_overlay, 0, 0);
+		builder.addSlot(RecipeIngredientRole.INPUT, 44, 14).addIngredient(ForgeTypes.FLUID_STACK, new FluidStack(barrelRecipe.fluid_in.getFluid(),barrelRecipe.fluid_in.amount,barrelRecipe.fluid_in.nbt)).setFluidRenderer(Math.min(16000, barrelRecipe.fluid_in.amount * 2), false, 16, 58).setOverlay(this.tank_overlay, 0, 0);
 		if (barrelRecipe.item_out != null) {
 			stacks2 = barrelRecipe.item_out.getItems();
 			ItemStack[] var10 = stacks2;
@@ -109,7 +109,7 @@ public class BarrelRecipeCategory implements IRecipeCategory<BarrelRecipe> {
 		}
 
 		if (barrelRecipe.fluid_out != null) {
-			builder.addSlot(RecipeIngredientRole.OUTPUT, 116, 14).addIngredient(ForgeTypes.FLUID_STACK, new FluidStack(barrelRecipe.fluid_out.getFluid(),barrelRecipe.fluid_out.amount)).setFluidRenderer(Math.min(16000, barrelRecipe.fluid_out.amount * 2), false, 16, 58).setOverlay(this.tank_overlay, 0, 0);
+			builder.addSlot(RecipeIngredientRole.OUTPUT, 116, 14).addIngredient(ForgeTypes.FLUID_STACK, new FluidStack(barrelRecipe.fluid_out.getFluid(),barrelRecipe.fluid_out.amount,barrelRecipe.fluid_out.nbt)).setFluidRenderer(Math.min(16000, barrelRecipe.fluid_out.amount * 2), false, 16, 58).setOverlay(this.tank_overlay, 0, 0);
 		}
 
 	}

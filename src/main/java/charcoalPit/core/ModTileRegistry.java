@@ -14,10 +14,10 @@ public class ModTileRegistry {
     public static BlockEntityType<TileActivePile> ActivePile = BlockEntityType.Builder.of(TileActivePile::new, ModBlockRegistry.LogPile, ModBlockRegistry.CoalPile).build(null);
     public static BlockEntityType<TileCreosoteCollector> CreosoteCollector = BlockEntityType.Builder.of(TileCreosoteCollector::new, ModBlockRegistry.SandyCollector).build(null);
     public static BlockEntityType<TilePotteryKiln> PotteryKiln = BlockEntityType.Builder.of(TilePotteryKiln::new, ModBlockRegistry.Kiln).build(null);
-    public static BlockEntityType<TileCeramicPot> CeramicPot = BlockEntityType.Builder.of(TileCeramicPot::new, ModBlockRegistry.CeramicPot, ModBlockRegistry.BlackPot,
+    public static BlockEntityType<TileCeramicPot> CeramicPot = BlockEntityType.Builder.of(TileCeramicPot::new, ModBlockRegistry.CeramicPot/*, ModBlockRegistry.BlackPot,
             ModBlockRegistry.BluePot, ModBlockRegistry.BrownPot, ModBlockRegistry.CyanPot, ModBlockRegistry.GrayPot, ModBlockRegistry.GreenPot,
             ModBlockRegistry.LightBluePot, ModBlockRegistry.LightGrayPot, ModBlockRegistry.LimePot, ModBlockRegistry.MagentaPot, ModBlockRegistry.OrangePot,
-            ModBlockRegistry.PinkPot, ModBlockRegistry.PurplePot, ModBlockRegistry.RedPot, ModBlockRegistry.WhitePot, ModBlockRegistry.YellowPot).build(null);
+            ModBlockRegistry.PinkPot, ModBlockRegistry.PurplePot, ModBlockRegistry.RedPot, ModBlockRegistry.WhitePot, ModBlockRegistry.YellowPot*/).build(null);
     //public static TileEntityType<TileClayPot> ClayPot=TileEntityType.Builder.create(TileClayPot::new, ModBlockRegistry.ClayPot).build(null);
     public static BlockEntityType<TileBloomery> Bloomery2 = BlockEntityType.Builder.of(TileBloomery::new, ModBlockRegistry.Bloomery).build(null);
     public static BlockEntityType<TileBarrel> Barrel = BlockEntityType.Builder.of(TileBarrel::new, ModBlockRegistry.Barrel).build(null);
