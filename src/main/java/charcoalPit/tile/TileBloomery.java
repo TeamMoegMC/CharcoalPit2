@@ -247,7 +247,6 @@ public class TileBloomery extends BlockEntity{
 	
 	@Override
 	public void saveAdditional(CompoundTag compound) {
-		super.saveAdditional(compound);
 		compound.putBoolean("valid", isValid);
 		compound.putInt("burn", burnTime);
 		compound.putInt("air", airTicks);
@@ -258,11 +257,11 @@ public class TileBloomery extends BlockEntity{
 		compound.put("ore", ore.serializeNBT());
 		compound.put("fuel", fuel.serializeNBT());
 		compound.putInt("ingots", ingots);
+		super.saveAdditional(compound);
 	}
 	
 	@Override
 	public void load(CompoundTag nbt) {
-		super.load( nbt);
 		isValid=nbt.getBoolean("valid");
 		burnTime=nbt.getInt("burn");
 		airTicks=nbt.getInt("air");
@@ -273,6 +272,7 @@ public class TileBloomery extends BlockEntity{
 		ore.deserializeNBT(nbt.getCompound("ore"));
 		fuel.deserializeNBT(nbt.getCompound("fuel"));
 		ingots=nbt.getInt("ingots");
+		super.load(nbt);
 	}
 
 	public static class OneItemHandler extends ItemStackHandler{
