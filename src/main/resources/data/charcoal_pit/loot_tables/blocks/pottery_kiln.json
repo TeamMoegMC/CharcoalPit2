@@ -15,7 +15,7 @@
           ],
           "conditions": [
             {
-              "condition": "minecraft:alternative",
+              "condition": "minecraft:any_of",
               "terms": [
                 {
                   "condition": "minecraft:block_state_property",
@@ -58,7 +58,7 @@
           ],
           "conditions": [
             {
-              "condition": "minecraft:alternative",
+              "condition": "minecraft:any_of",
               "terms": [
                 {
                   "condition": "minecraft:block_state_property",
