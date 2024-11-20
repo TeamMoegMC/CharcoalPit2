@@ -110,7 +110,7 @@ public class BarrelScreen extends AbstractContainerScreen<BarrelContainer> {
 	protected void renderLabels(GuiGraphics guiGraphics, int x, int y) {
 		super.renderLabels(guiGraphics, x, y);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-	      this.minecraft.getTextureManager().bindForSetup(BARREL_GUI_TEXTURES);
+//	      this.minecraft.getTextureManager().bindForSetup(BARREL_GUI_TEXTURES);
 		guiGraphics.blit(BARREL_GUI_TEXTURES, 62, 14, 176, 47, 16, 71-14);
 	    int time=menu.array.get(0);
 	    int total=menu.array.get(1);

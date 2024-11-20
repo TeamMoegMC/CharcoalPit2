@@ -24,7 +24,7 @@ public class CeramicPotScreen extends AbstractContainerScreen<CeramicPotContaine
 	@Override
 	protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int x, int y) {
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-	      this.minecraft.getTextureManager().bindForSetup(DISPENSER_GUI_TEXTURES);
+//	      this.minecraft.getTextureManager().bindForSetup(DISPENSER_GUI_TEXTURES);
 	      int i = (this.width - this.imageWidth) / 2;
 	      int j = (this.height - this.imageHeight) / 2;
 	      guiGraphics.blit(DISPENSER_GUI_TEXTURES, i, j, 0, 0, this.imageWidth, this.imageHeight);

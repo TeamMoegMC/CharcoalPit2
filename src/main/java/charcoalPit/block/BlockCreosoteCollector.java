@@ -40,12 +40,12 @@ public class BlockCreosoteCollector extends Block implements EntityBlock {
 			tooltip.add(Component.translatable("info.charcoal_pit.creosotecollector_1"));
 			tooltip.add(Component.translatable("info.charcoal_pit.creosotecollector_2"));
 			tooltip.add(Component.translatable("info.charcoal_pit.creosotecollector_3"));
-			tooltip.add(Component.translatable("info.charcoal_pit.creosotecollector_4"));
+//			tooltip.add(Component.translatable("info.charcoal_pit.creosotecollector_4"));
 			tooltip.add(Component.translatable("info.charcoal_pit.creosotecollector_5"));
 			tooltip.add(Component.translatable("info.charcoal_pit.creosotecollector_6"));
 			tooltip.add(Component.translatable("info.charcoal_pit.creosotecollector_7"));
 			tooltip.add(Component.translatable("info.charcoal_pit.creosotecollector_8"));
-			tooltip.add(Component.translatable("info.charcoal_pit.creosotecollector_9"));
+//			tooltip.add(Component.translatable("info.charcoal_pit.creosotecollector_9"));
 		}else {
 			tooltip.add(Component.translatable("info.charcoal_pit.creosotecollector_0"));
 		}
