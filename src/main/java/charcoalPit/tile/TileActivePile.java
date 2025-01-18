@@ -73,13 +73,15 @@ public class TileActivePile extends BlockEntity {
 				}
 			}
 		} else {
-			if (level.getBlockState(tile.worldPosition).getValue(BlockStateProperties.LIT)) {
+			if (level.getBlockState(tile.worldPosition).hasProperty(BlockStateProperties.LIT)){
+				if (level.getBlockState(tile.worldPosition).getValue(BlockStateProperties.LIT)) {
 				RandomSource random = level.random;
 				double centerX = tile.worldPosition.getX() + 0.5F;
 				double centerY = tile.worldPosition.getY() + 2F;
 				double centerZ = tile.worldPosition.getZ() + 0.5F;
 				level.addParticle(ParticleTypes.SMOKE, centerX + (random.nextDouble() - 0.5), centerY, centerZ + (random.nextDouble() - 0.5), 0.0D, 0.1D, 0.0D);
 				level.addParticle(ParticleTypes.SMOKE, centerX + (random.nextDouble() - 0.5), centerY, centerZ + (random.nextDouble() - 0.5), 0.0D, 0.15D, 0.0D);
+				}
 			}
 		}
 	}
