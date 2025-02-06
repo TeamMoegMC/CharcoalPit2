@@ -10,7 +10,7 @@ import net.minecraftforge.items.ItemStackHandler;
 
 public class AlloyRecipe {
 	
-	public static ArrayList<AlloyRecipe> recipes;
+/*	public static ArrayList<AlloyRecipe> recipes;
 	
 	public String[] input;
 	public String output;
@@ -99,6 +99,6 @@ public class AlloyRecipe {
 			}
 		}
 		return ItemStack.EMPTY;
-	}
+	}*/
 	
 }

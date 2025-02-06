@@ -4,7 +4,7 @@
   	"item":"charcoal_pit:vinegar_bucket"
   },
   "fluid_in":{
-  	"tag":"forge:milk",
+  	"fluid":"minecraft:milk",
   	"amount": 16000
   },
   "item_out":{

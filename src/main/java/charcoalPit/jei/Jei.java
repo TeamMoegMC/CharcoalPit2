@@ -10,21 +10,17 @@ import charcoalPit.recipe.OreKilnRecipe;
 import charcoalPit.recipe.PotteryKilnRecipe;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
-import mezz.jei.api.constants.VanillaTypes;
-import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.registration.*;
 import mezz.jei.api.runtime.IJeiRuntime;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.language.I18n;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeManager;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Objects;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @JeiPlugin
 public class Jei implements IModPlugin {
@@ -50,6 +46,7 @@ public class Jei implements IModPlugin {
 		registration.addRecipeCategories(new OreKilnRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
 		registration.addRecipeCategories(new BloomeryRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
 		registration.addRecipeCategories(new BarrelRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
+		registration.addRecipeCategories(new CharcoalPitRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
 	}
 	
 	@Override
@@ -74,7 +71,7 @@ public class Jei implements IModPlugin {
 //		registration.addRecipes(new RecipeType<>(BarrelRecipeCategory.ID,BarrelRecipe.class),recipeManager.getAllRecipesFor(BarrelRecipe.BARREL_RECIPE));
 		registration.addRecipes(BarrelRecipeCategory.BARREL_RECIPE_TYPE,recipeManager.getAllRecipesFor(BarrelRecipe.BARREL_RECIPE));
 
-
+		registration.addRecipes(CharcoalPitRecipeCategory.CHARCOAL_PIT_RECIPE_TYPE, Stream.of(new CharcoalPitRecipeCategory.CharcoalPitRecipe(new ItemStack(ModBlockRegistry.LogPile),new ItemStack(Items.CHARCOAL))).toList());
 
 //		registration.addIngredientInfo(Arrays.asList(new ItemStack(Items.CHARCOAL), new ItemStack(ModItemRegistry.Coke), new ItemStack(ModBlockRegistry.LogPile), new ItemStack(ModBlockRegistry.CoalPile)),
 //				VanillaTypes.ITEM, I18n.get("charcoal_pit.instruction.build_pit"));
@@ -92,6 +89,7 @@ public class Jei implements IModPlugin {
         registration.addRecipeCatalyst(new ItemStack(ModItemRegistry.ClayPot), OreKilnRecipeCategory.ORE_KILN_RECIPE_TYPE);
         registration.addRecipeCatalyst(new ItemStack(ModBlockRegistry.Bellows), BloomeryRecipeCategory.BLOOMERY_RECIPE_TYPE);
         registration.addRecipeCatalyst(new ItemStack(ModBlockRegistry.Barrel), BarrelRecipeCategory.BARREL_RECIPE_TYPE);
+		registration.addRecipeCatalyst(new ItemStack(Items.CHARCOAL), CharcoalPitRecipeCategory.CHARCOAL_PIT_RECIPE_TYPE);
     }
 	
 	@Override

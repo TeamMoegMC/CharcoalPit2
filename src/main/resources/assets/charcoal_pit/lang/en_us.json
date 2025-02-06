@@ -166,6 +166,7 @@
   "item.minecraft.lingering_potion.effect.honey_dewois": "Lingering Potion of Honey Dewois",
   "item.minecraft.lingering_potion.effect.spider_spirit": "Lingering Potion of Spider Spirit",
   "fluid.charcoal_pit.creosote_still": "Creosote Oil",
+  "fluid_type.charcoal_pit.alcohol": "Alcohol",
   "fluid.charcoal_pit.alcohol_still": "Alcohol",
   "fluid.charcoal_pit.vinegar_still": "Vinegar",
   "screen.charcoal_pit.ceramic_pot": "Ceramic Vessel",
@@ -254,9 +255,9 @@
   "info.charcoal_pit.creosotecollector_2": "§7Collection area is a 9x9 '+' shape",
   "info.charcoal_pit.creosotecollector_3": "§7Piles need to be connected to funnel",
   "info.charcoal_pit.creosotecollector_4": "§7Creosote oil only flows down between piles",
-  "info.charcoal_pit.creosotecollector_5": "§7If redstone signal is applied:",
+  "info.charcoal_pit.creosotecollector_5": "§7If redstone signal is applied:(",
   "info.charcoal_pit.creosotecollector_6": "§7-Funnel will also collect from neighboring funnels",
   "info.charcoal_pit.creosotecollector_7": "§7-Funnel will auto output creosote oil",
   "info.charcoal_pit.creosotecollector_8": "§7Creosote oil can only be extracted from the bottom",
-  "info.charcoal_pit.creosotecollector_9": "§7A line of funnels works best"
+  "info.charcoal_pit.creosotecollector_9": "§7A line of funnels works best)"
 }

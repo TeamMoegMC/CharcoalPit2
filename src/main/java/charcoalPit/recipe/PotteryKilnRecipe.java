@@ -25,7 +25,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class PotteryKilnRecipe implements Recipe<Container>{
 	
-	public static final ResourceLocation POTTERY=new ResourceLocation(CharcoalPit.MODID, "pottery");
+//	public static final ResourceLocation POTTERY=new ResourceLocation(CharcoalPit.MODID, "pottery");
 	public static RecipeType<PotteryKilnRecipe> POTTERY_RECIPE =RecipeType.simple(new ResourceLocation(CharcoalPit.MODID, "pottery"));;
 	
 	public static final Serializer SERIALIZER=new Serializer();
@@ -157,9 +157,13 @@ public class PotteryKilnRecipe implements Recipe<Container>{
 			buffer.writeFloat(recipe.xp);
 			
 		}
-		
-		
-		
+
+
+
 	}
-	
+	@Override
+	public boolean isSpecial()
+	{
+		return true;
+	}
 }
