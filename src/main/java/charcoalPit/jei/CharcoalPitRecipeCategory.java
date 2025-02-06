@@ -65,7 +65,7 @@ public class CharcoalPitRecipeCategory implements IRecipeCategory<CharcoalPitRec
 
 		if (!ForgeRegistries.FLUIDS.getValue(new ResourceLocation("immersiveengineering", "creosote")).getFluidType().isAir())
 		{
-			builder.addSlot(RecipeIngredientRole.RENDER_ONLY, 56, 53).addItemStack(new ItemStack(ForgeRegistries.FLUIDS.
+			builder.addSlot(RecipeIngredientRole.OUTPUT, 56, 53).addItemStack(new ItemStack(ForgeRegistries.FLUIDS.
 					getValue(new ResourceLocation("immersiveengineering", "creosote")).getBucket()));
 		}
 		builder.addSlot(RecipeIngredientRole.OUTPUT,116,35).addItemStack(charcoalPitRecipeRecipe.output);
