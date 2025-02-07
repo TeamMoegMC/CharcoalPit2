@@ -243,6 +243,7 @@
   "charcoal_pit.jei.bloomery": "Bloomery",
   "charcoal_pit.jei.charcoal": "Charcoal Pit/Coke Oven",
   "charcoal_pit.jei.barrel": "Barrel",
+  "charcoal_pit.jei.charcoal_pit_recipe": "Charcoal Pit",
   "charcoal_pit.instruction.place_kiln": "Shift-Right-Click ingredient on ground to place Kiln/Bloomery",
   "charcoal_pit.instruction.coke_oven": "Fortune enchant increases efficiency. Default 80%, up to 95%",
   "charcoal_pit.instruction.charcoal_pit": "Fortune enchant increases efficiency. Default 50%, up to 80%",
