@@ -2,6 +2,7 @@ package charcoalPit.jei;
 
 import charcoalPit.CharcoalPit;
 import charcoalPit.core.ModBlockRegistry;
+import charcoalPit.core.ModItemRegistry;
 import charcoalPit.recipe.BloomeryRecipe;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -13,10 +14,17 @@ import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.resources.language.I18n;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Block;
+import net.minecraftforge.registries.ForgeRegistries;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -60,6 +68,29 @@ public class BloomeryRecipeCategory implements IRecipeCategory<BloomeryRecipe> {
 	@Override
 	public void setRecipe(IRecipeLayoutBuilder builder, BloomeryRecipe bloomeryRecipe, IFocusGroup iFocusGroup) {
 		builder.addSlot(RecipeIngredientRole.INPUT,26,35).addIngredients(bloomeryRecipe.input);
+
+		ArrayList<ItemStack> coal=new ArrayList();
+		for(Item i: ForgeRegistries.ITEMS.tags().getTag(ItemTags.create(new ResourceLocation(CharcoalPit.MODID,"basic_fuels")))){
+			coal.add(new ItemStack(i));
+		}
+		coal.add(new ItemStack(Items.COAL));
+		coal.add(new ItemStack(Items.CHARCOAL));
+		coal.add(new ItemStack(ModItemRegistry.TinyCoke));
+		builder.addSlot(RecipeIngredientRole.INPUT,26,17).addItemStacks(coal);
+
+		builder.addSlot(RecipeIngredientRole.RENDER_ONLY,62, 35).addItemStack(ModItemRegistry.SandyBrick.getDefaultInstance());
+		builder.addSlot(RecipeIngredientRole.RENDER_ONLY,98, 35).addItemStack(ModItemRegistry.SandyBrick.getDefaultInstance());
+
+		builder.addSlot(RecipeIngredientRole.INPUT,80, 71).addItemStack(new ItemStack(ModBlockRegistry.MainBloomery));
+
+		builder.addSlot(RecipeIngredientRole.INPUT,44, 53).addItemStack(new ItemStack(ModBlockRegistry.Bellows));
+		builder.addSlot(RecipeIngredientRole.INPUT,116, 53).addItemStack(new ItemStack(ModBlockRegistry.Bellows));
+
+
+		builder.addSlot(RecipeIngredientRole.RENDER_ONLY,62, 53).addItemStack(ModItemRegistry.TuyereSandy.getDefaultInstance());
+		builder.addSlot(RecipeIngredientRole.RENDER_ONLY,98, 53).addItemStack(ModItemRegistry.TuyereSandy.getDefaultInstance());
+
+
 		builder.addSlot(RecipeIngredientRole.OUTPUT,134,35).addIngredients(bloomeryRecipe.output);
 	}
 

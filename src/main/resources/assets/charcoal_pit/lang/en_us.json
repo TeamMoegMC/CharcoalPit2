@@ -259,5 +259,9 @@
   "info.charcoal_pit.creosotecollector_5": "§7If redstone signal is applied:[",
   "info.charcoal_pit.creosotecollector_6": "§7-Funnel will also collect from neighboring funnels",
   "info.charcoal_pit.creosotecollector_7": "§7-Funnel will auto output creosote oil",
-  "info.charcoal_pit.creosotecollector_8": "§7Creosote oil can only be extracted from the bottom]"
+  "info.charcoal_pit.creosotecollector_8": "§7Creosote oil can only be extracted from the bottom]",
+  "info.charcoal_pit.claypot_empty": "Empty",
+  "info.charcoal_pit.charcoal_pit.claypot_no_fuel": "No Fuel",
+  "info.charcoal_pit.charcoal_pit.claypot_no_fuel_x": "No Fuel (%s/%s)",
+  "info.charcoal_pit.charcoal_pit.claypot_fuel_x": "Fuel x%s (%s/%s)"
 }

@@ -43,7 +43,7 @@ public class ItemClayPot extends Item{
 			}else {
 				ItemStack out=OreKilnRecipe.OreKilnGetOutput(stack.getTag().getCompound("inventory"), Minecraft.getInstance().level);
 				if(out.isEmpty()) {
-					tooltip.add(Component.translatable(ChatFormatting.DARK_RED+"info.charcoal_pit.charcoal_pit.claypot_invalid"+" ("+OreKilnRecipe.oreKilnGetOreAmount(inv)+"/8)"));
+					tooltip.add(Component.translatable(ChatFormatting.DARK_RED+"Invalid"+" ("+OreKilnRecipe.oreKilnGetOreAmount(inv)+"/8)"));
 				}else {
 					Component tx=out.getHoverName().plainCopy().append(Component.translatable(" x"+out.getCount()));
 					tx.getStyle().applyFormat(ChatFormatting.GREEN);
@@ -54,18 +54,18 @@ public class ItemClayPot extends Item{
 			int n=OreKilnRecipe.oreKilnGetFuelRequired(inv);
 			if(f==0) {
 				if(n==0) {
-					tooltip.add(Component.translatable("info.charcoal_pit.charcoal_pit.claypot_nofuel"));
+					tooltip.add(Component.translatable("info.charcoal_pit.charcoal_pit.claypot_no_fuel"));
 				}else {
-					tooltip.add(Component.translatable(ChatFormatting.DARK_RED+"No Fuel (0/"+n+")"));
+					tooltip.add(Component.translatable("info.charcoal_pit.charcoal_pit.claypot_no_fuel_x",f,n).withStyle(ChatFormatting.DARK_RED));
 				}
 			}else {
 				if(f<n) {
-					tooltip.add(Component.translatable(ChatFormatting.DARK_RED+"Fuel x"+f+" ("+f+"/"+n+")"));
+					tooltip.add(Component.translatable("info.charcoal_pit.charcoal_pit.claypot_no_fuel_x",f,n).withStyle(ChatFormatting.DARK_RED));
 				}else {
 					if(f>n) {
-						tooltip.add(Component.translatable(ChatFormatting.YELLOW+"Fuel x"+f+" ("+f+"/"+n+")"));
+						tooltip.add(Component.translatable("info.charcoal_pit.charcoal_pit.claypot_fuel_x",f,f,n).withStyle(ChatFormatting.YELLOW));
 					}else{
-						tooltip.add(Component.translatable(ChatFormatting.GREEN+"Fuel x"+f+" ("+f+"/"+n+")"));
+						tooltip.add(Component.translatable("info.charcoal_pit.charcoal_pit.claypot_fuel_x",f,f,n).withStyle(ChatFormatting.GREEN));
 					}
 				}
 			}

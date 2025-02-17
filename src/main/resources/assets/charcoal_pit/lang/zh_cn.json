@@ -261,6 +261,7 @@
   "info.charcoal_pit.creosotecollector_7": "§7漏斗会自动输出",
   "info.charcoal_pit.creosotecollector_8": "§7杂酚油只能从底部输出】",
   "info.charcoal_pit.claypot_empty": "空的",
-  "info.charcoal_pit.claypot_invalid": "无效的",
-  "info.charcoal_pit.charcoal_pit.claypot_nofuel": "没有燃料"
+  "info.charcoal_pit.charcoal_pit.claypot_no_fuel": "没有燃料",
+  "info.charcoal_pit.charcoal_pit.claypot_no_fuel_x": "燃料不足 (%s/%s)",
+  "info.charcoal_pit.charcoal_pit.claypot_fuel_x": "燃料 x%s (%s/%s)"
 }

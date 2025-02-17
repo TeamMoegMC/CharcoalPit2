@@ -18,6 +18,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.ArrayList;
@@ -71,6 +72,10 @@ public class PotteryRecipeCategory implements IRecipeCategory<PotteryKilnRecipe>
 
 		builder.addSlot(RecipeIngredientRole.INPUT,26,53).addIngredients(potteryKilnRecipe.input);
 		builder.addSlot(RecipeIngredientRole.OUTPUT,134,35).addItemStack(potteryKilnRecipe.output.getDefaultInstance());
+
+		builder.addSlot(RecipeIngredientRole.RENDER_ONLY,62,35).addItemStack(Items.DIRT.getDefaultInstance());
+		builder.addSlot(RecipeIngredientRole.RENDER_ONLY,98,35).addItemStack(Items.DIRT.getDefaultInstance());
+		builder.addSlot(RecipeIngredientRole.RENDER_ONLY,80,53).addItemStack(Items.DIRT.getDefaultInstance());
 	}
 
 //	@Override

@@ -13,10 +13,15 @@ import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.resources.language.I18n;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.Items;
+import net.minecraftforge.registries.ForgeRegistries;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -68,9 +73,30 @@ public class OreKilnRecipeCategory implements IRecipeCategory<OreKilnRecipe> {
 			builder.addSlot(RecipeIngredientRole.INPUT,8+18*(pos%3),17+18*(pos/3)).addIngredients(oreKilnRecipe.input[index]);
 //			iRecipeLayout.getItemStacks().set(index,iIngredients.getInputs(VanillaTypes.ITEM).get(index));
 		}
-		index++;
+
+
+		ArrayList<ItemStack> coal=new ArrayList();
+		for(Item i: ForgeRegistries.ITEMS.tags().getTag(ItemTags.create(new ResourceLocation(CharcoalPit.MODID,"orekiln_fuels")))){
+			coal.add(new ItemStack(i));
+		}
+		builder.addSlot(RecipeIngredientRole.INPUT,26,35).addItemStacks(coal);
+
+		ArrayList<ItemStack> logs=new ArrayList();
+		for(Item i: ForgeRegistries.ITEMS.tags().getTag(ItemTags.LOGS_THAT_BURN)){
+			logs.add(new ItemStack(i,3));
+		}
+		builder.addSlot(RecipeIngredientRole.INPUT,80,17).addItemStacks(logs);
+
+		builder.addSlot(RecipeIngredientRole.INPUT,80,35).addItemStack(new ItemStack(ModItemRegistry.Straw,6));
+
 //		iRecipeLayout.getItemStacks().init(index,false,187,34);
+		builder.addSlot(RecipeIngredientRole.RENDER_ONLY,80,53).addItemStack(ModItemRegistry.ClayPot.getDefaultInstance());
+
 		builder.addSlot(RecipeIngredientRole.OUTPUT,188,35).addIngredients(oreKilnRecipe.output);
+
+		builder.addSlot(RecipeIngredientRole.RENDER_ONLY,116,35).addItemStack(Items.DIRT.getDefaultInstance());
+		builder.addSlot(RecipeIngredientRole.RENDER_ONLY,152,35).addItemStack(Items.DIRT.getDefaultInstance());
+		builder.addSlot(RecipeIngredientRole.RENDER_ONLY,134,53).addItemStack(Items.DIRT.getDefaultInstance());
 //		iRecipeLayout.getItemStacks().set(index,iIngredients.getOutputs(VanillaTypes.ITEM).get(0));
 		////
 //		index++;
