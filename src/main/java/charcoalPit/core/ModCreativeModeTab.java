@@ -18,7 +18,7 @@ public class ModCreativeModeTab {
 
     public static final RegistryObject<CreativeModeTab> CHARCOAL_PIT = CREATIVE_MODE_TAB.register("charcoal_pit", () -> CreativeModeTab.builder()
             .title(Component.translatable("itemGroup.charcoal_pit"))
-            .icon(() -> new ItemStack(Items.CHARCOAL))
+            .icon(() -> new ItemStack(ModItemRegistry.LogPile))
             .displayItems((params, output) -> {
                 output.accept(ModItemRegistry.Thatch);
                 output.accept(ModItemRegistry.LogPile);
