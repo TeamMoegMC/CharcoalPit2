@@ -92,7 +92,7 @@ public class OreKilnRecipeCategory implements IRecipeCategory<OreKilnRecipe> {
 //		iRecipeLayout.getItemStacks().init(index,false,187,34);
 		builder.addSlot(RecipeIngredientRole.RENDER_ONLY,80,53).addItemStack(ModItemRegistry.ClayPot.getDefaultInstance());
 
-		builder.addSlot(RecipeIngredientRole.OUTPUT,188,35).addIngredients(oreKilnRecipe.output);
+		builder.addSlot(RecipeIngredientRole.OUTPUT,188,35).addItemStack(oreKilnRecipe.output);
 
 		builder.addSlot(RecipeIngredientRole.RENDER_ONLY,116,35).addItemStack(Items.DIRT.getDefaultInstance());
 		builder.addSlot(RecipeIngredientRole.RENDER_ONLY,152,35).addItemStack(Items.DIRT.getDefaultInstance());

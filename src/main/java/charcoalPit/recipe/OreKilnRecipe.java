@@ -22,6 +22,7 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
@@ -34,13 +35,13 @@ public class OreKilnRecipe implements Recipe<Container>{
 
 	public final ResourceLocation id;
 	public Ingredient[] input;
-	public Ingredient output;
-	public int amount;
+	public ItemStack output;
+//	public int amount;
 	
-	public OreKilnRecipe(ResourceLocation id, Ingredient output, int amount, Ingredient... input) {
+	public OreKilnRecipe(ResourceLocation id, ItemStack output, Ingredient... input) {
 		this.id=id;
 		this.output=output;
-		this.amount=amount;
+//		this.amount=amount;
 		this.input=input;
 	}
 	
@@ -66,7 +67,7 @@ public class OreKilnRecipe implements Recipe<Container>{
 	public static boolean isValidInput(ItemStack stack, Level world) {
 		List<OreKilnRecipe> recipes=world.getRecipeManager().getAllRecipesFor(ORE_KILN_RECIPE);
 		for(OreKilnRecipe recipe:recipes)
-			if(recipe.isInputEqual(stack)&&!recipe.output.test(new ItemStack(Items.BARRIER)))
+			if(recipe.isInputEqual(stack)&& recipe.output.is(Items.BARRIER))
 				return true;
 		return false;
 	}
@@ -137,8 +138,8 @@ public class OreKilnRecipe implements Recipe<Container>{
 				}
 			}
 			if(r>0&&oreKilnIsEmpty(kiln)) {
-				ItemStack out=recipe.output.getItems()[0].copy();
-				out.setCount(r*recipe.amount);
+				ItemStack out=recipe.output;
+//				out.setCount(r*recipe.amount);
 				return out;
 			}
 		}
@@ -193,9 +194,9 @@ public class OreKilnRecipe implements Recipe<Container>{
 	         } else if (nonnulllist.size() > 8) {
 	            throw new JsonParseException("Too many ingredients for shapeless recipe the max is " + 8);
 	         } else {
-	        	Ingredient output=Ingredient.fromJson(GsonHelper.getAsJsonObject(json, "result"));
-	        	int amount=GsonHelper.getAsInt(json, "amount");
-	            return new OreKilnRecipe(recipeId, output, amount, nonnulllist.toArray(new Ingredient[0]));
+	        	ItemStack output= CraftingHelper.getItemStack(GsonHelper.getAsJsonObject(json, "result"), true);
+//	        	int amount=GsonHelper.getAsInt(json, "amount");
+	            return new OreKilnRecipe(recipeId, output, nonnulllist.toArray(new Ingredient[0]));
 	         }
 		}
 		
@@ -219,9 +220,9 @@ public class OreKilnRecipe implements Recipe<Container>{
 			for(int i=0;i<l;i++) {
 				in[i]=Ingredient.fromNetwork(buffer);
 			}
-			int a=buffer.readInt();
-			Ingredient o=Ingredient.fromNetwork(buffer);
-			return new OreKilnRecipe(recipeId, o, a, in);
+//			int a=buffer.readInt();
+			ItemStack o= buffer.readItem();
+			return new OreKilnRecipe(recipeId, o, in);
 		}
 
 		@Override
@@ -230,8 +231,9 @@ public class OreKilnRecipe implements Recipe<Container>{
 			for(int i=0;i<recipe.input.length;i++) {
 				recipe.input[i].toNetwork(buffer);
 			}
-			buffer.writeInt(recipe.amount);
-			recipe.output.toNetwork(buffer);
+//			buffer.writeInt(recipe.amount);
+			buffer.writeItem(recipe.output);
+//			recipe.output.toNetwork(buffer);
 		}
 		
 	}
