@@ -5,7 +5,6 @@ import charcoalPit.core.Config;
 import charcoalPit.core.ModBlockRegistry;
 import charcoalPit.core.ModTileRegistry;
 import charcoalPit.recipe.PotteryKilnRecipe;
-import charcoalPit.tile.TileActivePile;
 import charcoalPit.tile.TilePotteryKiln;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.Block;
@@ -177,7 +176,7 @@ public class BlockPotteryKiln extends Block implements EntityBlock {
 						return InteractionResult.SUCCESS;
 					}
 					TilePotteryKiln tile = ((TilePotteryKiln) worldIn.getBlockEntity(pos));
-					player.setItemInHand(handIn, tile.pottery.extractItem(0, 8, false));
+					player.setItemInHand(handIn, tile.potteryStackHandler.extractItem(0, 8, false));
 					worldIn.destroyBlock(pos, true);
 					return InteractionResult.SUCCESS;
 				} else {
@@ -186,7 +185,7 @@ public class BlockPotteryKiln extends Block implements EntityBlock {
 							return InteractionResult.SUCCESS;
 						}
 						TilePotteryKiln tile = ((TilePotteryKiln) worldIn.getBlockEntity(pos));
-						player.setItemInHand(handIn, tile.pottery.insertItem(0, itemStack, false));
+						player.setItemInHand(handIn, tile.potteryStackHandler.insertItem(0, itemStack, false));
 						worldIn.sendBlockUpdated(pos, state, state, 2);
 						return InteractionResult.SUCCESS;
 					} else {

@@ -9,10 +9,7 @@ import charcoalPit.recipe.PotteryKilnRecipe;
 import charcoalPit.tile.TileBloomery;
 import charcoalPit.tile.TilePotteryKiln;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.CauldronBlock;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.core.Direction;
@@ -54,7 +51,9 @@ public class PileIgnitr {
 						world.getBlockState(event.getPos().relative(Direction.UP)).canBeReplaced()) {
 					world.setBlockAndUpdate(event.getPos().relative(Direction.UP), ModBlockRegistry.Kiln.defaultBlockState());
 					TilePotteryKiln tile = ((TilePotteryKiln) world.getBlockEntity(event.getPos().relative(Direction.UP)));
-					event.getEntity().setItemInHand(event.getHand(), tile.pottery.insertItem(0, event.getItemStack(), false));
+					event.getEntity().setItemInHand(event.getHand(), tile.potteryStackHandler.insertItem(0, event.getItemStack(), false));
+//					world.sendBlockUpdated(event.getPos().relative(Direction.UP), world.getBlockState(event.getPos().relative(Direction.UP)), world.getBlockState(event.getPos().relative(Direction.UP)), 3);
+
 					world.playSound(null, event.getPos(), SoundEvents.GRAVEL_PLACE, SoundSource.BLOCKS, 1F, 1F);
 					event.setUseBlock(Result.DENY);
 					event.setUseItem(Result.DENY);

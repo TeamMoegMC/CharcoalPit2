@@ -27,7 +27,7 @@ public class TilePotteryKiln extends BlockEntity {
 	public int burnTime;
 	public float xp;
 	public boolean isValid;
-	public PotteryStackHandler pottery;
+	public PotteryStackHandler potteryStackHandler;
 	
 	public TilePotteryKiln(BlockPos blockPos, BlockState state) {
 		super(ModTileRegistry.PotteryKiln,blockPos,state);
@@ -35,7 +35,7 @@ public class TilePotteryKiln extends BlockEntity {
 		burnTime=-1;
 		xp=0;
 		isValid=false;
-		pottery=new PotteryStackHandler();
+		potteryStackHandler =new PotteryStackHandler();
 	}
 
 	public static void tick(Level level, BlockPos blockPos, BlockState state, TilePotteryKiln tile) {
@@ -47,13 +47,13 @@ public class TilePotteryKiln extends BlockEntity {
 					tile.setChanged();
 			}else{
 				if(tile.burnTime==0){
-					PotteryKilnRecipe result=PotteryKilnRecipe.getResult(tile.pottery.getStackInSlot(0), tile.level);
+					PotteryKilnRecipe result=PotteryKilnRecipe.getResult(tile.potteryStackHandler.getStackInSlot(0), tile.level);
 					if(result!=null) {
-						ItemStack out=PotteryKilnRecipe.processClayPot(tile.pottery.getStackInSlot(0), level);
+						ItemStack out=PotteryKilnRecipe.processClayPot(tile.potteryStackHandler.getStackInSlot(0), level);
 						if(out.isEmpty())
-							out=new ItemStack(result.output,tile.pottery.getStackInSlot(0).getCount());
-						tile.xp=result.xp*tile.pottery.getStackInSlot(0).getCount();
-						tile.pottery.setStackInSlot(0, out);
+							out=new ItemStack(result.output,tile.potteryStackHandler.getStackInSlot(0).getCount());
+						tile.xp=result.xp*tile.potteryStackHandler.getStackInSlot(0).getCount();
+						tile.potteryStackHandler.setStackInSlot(0, out);
 					}
 					tile.level.setBlockAndUpdate(tile.worldPosition, ModBlockRegistry.Kiln.defaultBlockState().setValue(BlockPotteryKiln.TYPE, EnumKilnTypes.COMPLETE));
 					tile.level.removeBlock(tile.worldPosition.relative(Direction.UP), false);
@@ -71,7 +71,7 @@ public class TilePotteryKiln extends BlockEntity {
 		}
 	}
 	public void dropInventory(){
-		Containers.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), pottery.getStackInSlot(0));
+		Containers.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), potteryStackHandler.getStackInSlot(0));
 		int x=(int)xp+Math.random()<(xp-(int)xp)?1:0;
 		while(x>0){
 			int i=ExperienceOrb.getExperienceValue(x);
@@ -127,7 +127,7 @@ public class TilePotteryKiln extends BlockEntity {
 		compound.putInt("time", burnTime);
 		compound.putFloat("xp", xp);
 		compound.putBoolean("valid", isValid);
-		compound.put("pottery", pottery.serializeNBT());
+		compound.put("pottery", potteryStackHandler.serializeNBT());
 	}
 	
 	@Override
@@ -137,38 +137,44 @@ public class TilePotteryKiln extends BlockEntity {
 		burnTime=nbt.getInt("time");
 		xp=nbt.getFloat("xp");
 		isValid=nbt.getBoolean("valid");
-		pottery.deserializeNBT(nbt.getCompound("pottery"));
+		potteryStackHandler.deserializeNBT(nbt.getCompound("pottery"));
 	}
 	
 	@Override
 	public CompoundTag getUpdateTag() {
 		CompoundTag nbt=super.getUpdateTag();
-		nbt.put("pottery", pottery.serializeNBT());
+		nbt.put("pottery", potteryStackHandler.serializeNBT());
 		return nbt;
 	}
 	
 	@Override
 	public ClientboundBlockEntityDataPacket getUpdatePacket() {
-		return ClientboundBlockEntityDataPacket.create(this,(entity)->{
-            return pottery.serializeNBT();
-        });
+		return ClientboundBlockEntityDataPacket.create(this);
 	}
 
 	@Override
 	public void handleUpdateTag(CompoundTag tag) {
 		super.handleUpdateTag(tag);
-		pottery.deserializeNBT(tag.getCompound("pottery"));
+		potteryStackHandler.deserializeNBT(tag.getCompound("pottery"));
 	}
 	
 	@Override
 	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-		pottery.deserializeNBT(pkt.getTag());
+//		potteryStackHandler.deserializeNBT(pkt.getTag());
+		super.onDataPacket(net, pkt);
+		this.load(pkt.getTag());
 	}
 	
 	public class PotteryStackHandler extends ItemStackHandler{
 		@Override
 		public int getSlotLimit(int slot) {
 			return 8;
+		}
+		@Override
+		protected void onContentsChanged(int slot) {
+			assert level != null;
+			setChanged();
+			level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
 		}
 	}
 

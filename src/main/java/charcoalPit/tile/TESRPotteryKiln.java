@@ -6,6 +6,7 @@ import charcoalPit.block.BlockPotteryKiln;
 import charcoalPit.block.BlockPotteryKiln.EnumKilnTypes;
 import charcoalPit.core.ModBlockRegistry;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -33,10 +34,10 @@ public class TESRPotteryKiln implements BlockEntityRenderer<TilePotteryKiln>{
 	        matrixStack.translate(0.5, 0.1, 0.5);
 //	        ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
 //			this.itemRenderer = p_173602_.getItemRenderer();
-	        ItemStack stack=tile.pottery.getStackInSlot(0);
-//	        BakedModel ibakedmodel = itemRenderer.getModel(stack, tile.getLevel(), null,i);
-//	        itemRenderer.render(stack,  ItemDisplayContext.GROUND, true, matrixStack, buffer, combinedLight, combinedOverlay, ibakedmodel);
-			this.itemRenderer.renderStatic(stack, ItemDisplayContext.GROUND, combinedLight, combinedOverlay, matrixStack, buffer, tile.getLevel(), i);
+	        ItemStack stack=tile.potteryStackHandler.getStackInSlot(0);
+	        BakedModel ibakedmodel = itemRenderer.getModel(stack, tile.getLevel(), null,i);
+	        itemRenderer.render(stack,  ItemDisplayContext.GROUND, true, matrixStack, buffer, combinedLight, combinedOverlay, ibakedmodel);
+//			this.itemRenderer.renderStatic(stack, ItemDisplayContext.GROUND, combinedLight, combinedOverlay, matrixStack, buffer, tile.getLevel(), i);
 	        matrixStack.popPose();
 		}
 	}

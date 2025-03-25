@@ -88,7 +88,7 @@ public class ItemBarrel extends BlockItem {
                             ItemHandlerHelper.giveItemToPlayer(context.getPlayer(),stack2);
                             context.getPlayer().getItemInHand(context.getHand()).shrink(1);
                             if(context.getLevel().getBlockState(pos).getBlock() instanceof BucketPickup){
-                                ((BucketPickup)context.getLevel().getBlockState(pos)).pickupBlock(context.getLevel(),pos,context.getLevel().getBlockState(pos));
+                                ((BucketPickup)context.getLevel().getBlockState(pos).getBlock()).pickupBlock(context.getLevel(),pos,context.getLevel().getBlockState(pos));
                             }
                             return InteractionResult.SUCCESS;
                         }
