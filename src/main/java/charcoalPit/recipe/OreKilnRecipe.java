@@ -67,7 +67,7 @@ public class OreKilnRecipe implements Recipe<Container>{
 	public static boolean isValidInput(ItemStack stack, Level world) {
 		List<OreKilnRecipe> recipes=world.getRecipeManager().getAllRecipesFor(ORE_KILN_RECIPE);
 		for(OreKilnRecipe recipe:recipes)
-			if(recipe.isInputEqual(stack)&& recipe.output.is(Items.BARRIER))
+			if(recipe.isInputEqual(stack)&& !recipe.output.is(Items.BARRIER))
 				return true;
 		return false;
 	}
@@ -139,7 +139,7 @@ public class OreKilnRecipe implements Recipe<Container>{
 			}
 			if(r>0&&oreKilnIsEmpty(kiln)) {
 				ItemStack out=recipe.output;
-//				out.setCount(r*recipe.amount);
+				out.setCount(r*out.getCount());
 				return out;
 			}
 		}

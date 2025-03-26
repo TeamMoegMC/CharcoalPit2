@@ -2,7 +2,11 @@ package charcoalPit.block;
 
 import java.util.List;
 
+import charcoalPit.core.ModTileRegistry;
+import charcoalPit.tile.TileActivePile;
 import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import org.lwjgl.glfw.GLFW;
 
@@ -66,5 +70,10 @@ public class BlockCreosoteCollector extends Block implements EntityBlock {
 			return FluidUtil.interactWithFluidHandler(player, handIn, tile.external)?InteractionResult.SUCCESS:InteractionResult.FAIL;
 		}
 	}
-
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
+		return createTickerHelper(type, ModTileRegistry.CreosoteCollector, TileCreosoteCollector::tick);
+	}
+	protected static <E extends BlockEntity, A extends BlockEntity> BlockEntityTicker<A> createTickerHelper(BlockEntityType<A> type, BlockEntityType<E> entitytype, BlockEntityTicker<? super E> ticker) {
+		return type == entitytype ? (BlockEntityTicker<A>) ticker : null;
+	}
 }

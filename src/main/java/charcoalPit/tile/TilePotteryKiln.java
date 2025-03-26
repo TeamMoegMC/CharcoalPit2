@@ -158,23 +158,17 @@ public class TilePotteryKiln extends BlockEntity {
 		potteryStackHandler.deserializeNBT(tag.getCompound("pottery"));
 	}
 	
-	@Override
+/*	@Override
 	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
 //		potteryStackHandler.deserializeNBT(pkt.getTag());
 		super.onDataPacket(net, pkt);
 		this.load(pkt.getTag());
-	}
+	}*/
 	
 	public class PotteryStackHandler extends ItemStackHandler{
 		@Override
 		public int getSlotLimit(int slot) {
 			return 8;
-		}
-		@Override
-		protected void onContentsChanged(int slot) {
-			assert level != null;
-			setChanged();
-			level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
 		}
 	}
 

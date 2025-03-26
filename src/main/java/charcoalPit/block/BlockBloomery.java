@@ -141,8 +141,8 @@ public class BlockBloomery extends Block implements EntityBlock {
 		}else
 			return super.onDestroyedByPlayer(state, world, pos, player, willHarvest, fluid);
 	}
-	
-	public void stepOn(Level worldIn, BlockPos pos, Entity entityIn) {
+	@Override
+	public void stepOn(Level worldIn, BlockPos pos, BlockState p_152433_,Entity entityIn) {
 	      if (!entityIn.fireImmune() && entityIn instanceof LivingEntity && !EnchantmentHelper.hasFrostWalker((LivingEntity)entityIn) && worldIn.getBlockState(pos).getValue(STAGE)>=10 
 	    		  && worldIn.getBlockState(pos).getValue(STAGE)<12) {
 	         entityIn.hurt(worldIn.damageSources().hotFloor(), 1.0F);

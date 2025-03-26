@@ -31,7 +31,6 @@ public class PileIgnitr {
 	public static void placeKiln(PlayerInteractEvent.RightClickBlock event) {
 		//undye pots
 		Level world = event.getLevel();
-		if (!world.isClientSide) {
 //			if (world.getBlockState(event.getPos()).getBlock() == Blocks.CAULDRON &&
 //					world.getBlockState(event.getPos()).getValue(CauldronBlock.LEVEL) > 0) {
 //				Block block = Block.byItem(event.getItemStack().getItem());
@@ -49,23 +48,27 @@ public class PileIgnitr {
 				if (PotteryKilnRecipe.isValidInput(event.getItemStack(), world) &&
 						event.getFace() == Direction.UP && world.getBlockState(event.getPos()).isFaceSturdy(world, event.getPos(), Direction.UP) &&
 						world.getBlockState(event.getPos().relative(Direction.UP)).canBeReplaced()) {
-					world.setBlockAndUpdate(event.getPos().relative(Direction.UP), ModBlockRegistry.Kiln.defaultBlockState());
-					TilePotteryKiln tile = ((TilePotteryKiln) world.getBlockEntity(event.getPos().relative(Direction.UP)));
-					event.getEntity().setItemInHand(event.getHand(), tile.potteryStackHandler.insertItem(0, event.getItemStack(), false));
+					if (!world.isClientSide) {
+						world.setBlockAndUpdate(event.getPos().relative(Direction.UP), ModBlockRegistry.Kiln.defaultBlockState());
+						TilePotteryKiln tile = ((TilePotteryKiln) world.getBlockEntity(event.getPos().relative(Direction.UP)));
+						event.getEntity().setItemInHand(event.getHand(), tile.potteryStackHandler.insertItem(0, event.getItemStack(), false));
 //					world.sendBlockUpdated(event.getPos().relative(Direction.UP), world.getBlockState(event.getPos().relative(Direction.UP)), world.getBlockState(event.getPos().relative(Direction.UP)), 3);
 
-					world.playSound(null, event.getPos(), SoundEvents.GRAVEL_PLACE, SoundSource.BLOCKS, 1F, 1F);
+						world.playSound(null, event.getPos(), SoundEvents.GRAVEL_PLACE, SoundSource.BLOCKS, 1F, 1F);
+					}
 					event.setUseBlock(Result.DENY);
 					event.setUseItem(Result.DENY);
 				} else if (BloomeryRecipe.getRecipe(event.getItemStack(), world) != null &&
 						event.getFace() == Direction.UP && world.getBlockState(event.getPos()).is(BlockTags.create(new ResourceLocation(CharcoalPit.MODID, "bloomery_walls"))) &&
 						world.getBlockState(event.getPos().relative(Direction.UP)).canBeReplaced() &&
 						MethodHelper.Bloomery2ValidPosition(world, event.getPos().relative(Direction.UP), false, false)) {
-					world.setBlockAndUpdate(event.getPos().relative(Direction.UP), ModBlockRegistry.Bloomery.defaultBlockState().setValue(BlockBloomery.STAGE, 1));
-					TileBloomery tile = ((TileBloomery) world.getBlockEntity(event.getPos().relative(Direction.UP)));
-					tile.recipe = BloomeryRecipe.getRecipe(event.getItemStack(), world);
-					event.getEntity().setItemInHand(event.getHand(), tile.ore.insertItem(0, event.getItemStack(), false));
-					world.playSound(null, event.getPos(), SoundEvents.GRAVEL_PLACE, SoundSource.BLOCKS, 1F, 1F);
+					if (!world.isClientSide) {
+						world.setBlockAndUpdate(event.getPos().relative(Direction.UP), ModBlockRegistry.Bloomery.defaultBlockState().setValue(BlockBloomery.STAGE, 1));
+						TileBloomery tile = ((TileBloomery) world.getBlockEntity(event.getPos().relative(Direction.UP)));
+						tile.recipe = BloomeryRecipe.getRecipe(event.getItemStack(), world);
+						event.getEntity().setItemInHand(event.getHand(), tile.ore.insertItem(0, event.getItemStack(), false));
+						world.playSound(null, event.getPos(), SoundEvents.GRAVEL_PLACE, SoundSource.BLOCKS, 1F, 1F);
+					}
 					event.setUseBlock(Result.DENY);
 					event.setUseItem(Result.DENY);
 
@@ -83,13 +86,12 @@ public class PileIgnitr {
 			event.setUseItem(Result.DENY);
 		}*/
 			}
-			if (world.getBlockState(event.getPos()).getBlock() == ModBlockRegistry.CoalPile) {
+			if (!world.isClientSide && world.getBlockState(event.getPos()).getBlock() == ModBlockRegistry.CoalPile) {
 				Item item = event.getItemStack().getItem();
 				if (item == Items.FLINT_AND_STEEL || item == ModItemRegistry.FireStarter) {
 					BlockCoalPile.igniteCoal(world, event.getPos());
 				}
 			}
-		}
 
 	}
 	@SubscribeEvent

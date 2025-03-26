@@ -99,20 +99,26 @@ public class ClayPotContainer2 extends AbstractContainerMenu {
 			  if (itemstack1.getCount() == itemstack.getCount()) {
 				  return ItemStack.EMPTY;
 			  }
+//			  inv.getItem(this.slot).getOrCreateTag().put("inventory", pot.serializeNBT());
 			  broadcastChanges();
 			  slot.onTake(playerIn, itemstack1);
 		  }
 
 	      return itemstack;
 	}
-	
+
+	@Override
+	public void removed(Player player) {
+		super.removed(player);
+		inv.getItem(slot).getOrCreateTag().put("inventory", pot.serializeNBT());
+	}
+
 	public static class ClayPotHandler extends ItemStackHandler{
-		Runnable function;
+//		Runnable function;
 		Level world;
 		
 		public ClayPotHandler(int slots,Runnable r,Level world) {
 			super(slots);
-			function=r;
 			this.world=world;
 		}
 
@@ -141,7 +147,7 @@ public class ClayPotContainer2 extends AbstractContainerMenu {
 
 		@Override
 		protected void onContentsChanged(int slot) {
-			function.run();
+//			setChanged();
 		}
 	}
 
