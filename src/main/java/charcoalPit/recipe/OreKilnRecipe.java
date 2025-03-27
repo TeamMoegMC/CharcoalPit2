@@ -138,7 +138,7 @@ public class OreKilnRecipe implements Recipe<Container>{
 				}
 			}
 			if(r>0&&oreKilnIsEmpty(kiln)) {
-				ItemStack out=recipe.output;
+				ItemStack out = recipe.output.copy();
 				out.setCount(r*out.getCount());
 				return out;
 			}
