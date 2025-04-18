@@ -132,7 +132,7 @@ public class BlockBarrel extends Block implements SimpleWaterloggedBlock, Entity
 			InteractionHand handIn, BlockHitResult hit) {
 		if(worldIn.isClientSide)
 			return InteractionResult.SUCCESS;
-		if(player.getItemInHand(handIn).getCapability(ForgeCapabilities.FLUID_HANDLER).isPresent()) {
+		if(player.getItemInHand(handIn).getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).isPresent()) {
 			if(FluidUtil.interactWithFluidHandler(player, handIn, worldIn, pos, null))
 					return InteractionResult.SUCCESS;
 		}else if(player.getItemInHand(handIn).getItem()==Items.GLASS_BOTTLE){

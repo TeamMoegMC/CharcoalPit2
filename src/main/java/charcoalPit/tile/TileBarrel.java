@@ -33,6 +33,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
@@ -308,13 +309,12 @@ public class TileBarrel extends BlockEntity {
 	}
 
 
-	public static Capability<IFluidHandler> FLUID= CapabilityManager.get(new CapabilityToken<IFluidHandler>() {
-    });
+	public static Capability<IFluidHandler> FLUID= ForgeCapabilities.FLUID_HANDLER;
     public LazyOptional<IFluidHandler> fluid_out=LazyOptional.of(()->tank);
 
 
-	public static Capability<IItemHandler> ITEM=CapabilityManager.get(new CapabilityToken<IItemHandler>() {
-	});
+	public static Capability<IFluidHandlerItem> ITEM=ForgeCapabilities.FLUID_HANDLER_ITEM;
+
     public LazyOptional<IItemHandler> item_out=LazyOptional.of(()->new IItemHandler() {
 		
 		@Override

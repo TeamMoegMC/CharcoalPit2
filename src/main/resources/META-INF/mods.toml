@@ -3,7 +3,7 @@ loaderVersion="[40,)" #mandatory
 license="GNU General Public License"
 [[mods]] #mandatory
 modId="charcoal_pit" #mandatory
-version="3.11.3" #mandatory
+version="3.11.4" #mandatory
 displayName="Charcoal Pit" #mandatory
 credits="Terrafirmacraft" #optional
 authors="EnderiumSmith, [TeamMoeg] dashuaibia" #optional
