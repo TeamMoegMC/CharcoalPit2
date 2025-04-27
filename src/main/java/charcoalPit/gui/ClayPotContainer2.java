@@ -110,7 +110,13 @@ public class ClayPotContainer2 extends AbstractContainerMenu {
 	@Override
 	public void removed(Player player) {
 		super.removed(player);
-		inv.getItem(slot).getOrCreateTag().put("inventory", pot.serializeNBT());
+		for (int i = 0; i < 9; i++) {
+			if (!pot.getStackInSlot(i).isEmpty()) {
+				inv.getItem(slot).getOrCreateTag().put("inventory", pot.serializeNBT());
+				return;
+			}
+		}
+		inv.getItem(slot).getOrCreateTag().remove("inventory");
 	}
 
 	public static class ClayPotHandler extends ItemStackHandler{
