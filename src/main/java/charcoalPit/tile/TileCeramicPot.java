@@ -3,6 +3,8 @@ package charcoalPit.tile;
 import charcoalPit.block.BlockCeramicPot;
 import charcoalPit.core.ModTileRegistry;
 import net.minecraft.core.BlockPos;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.ShulkerBoxBlock;
@@ -15,6 +17,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import net.minecraft.world.item.Item;
 
 public class TileCeramicPot extends BlockEntity{
 	
@@ -52,14 +55,14 @@ public class TileCeramicPot extends BlockEntity{
 	
 	public static class CeramicPotHandler extends ItemStackHandler{
 		Runnable function;
-		private static final ResourceLocation forbid=new ResourceLocation("immersiveengineering:forbidden_in_crates");
+		private static final TagKey<Item> forbid=ItemTags.create(new ResourceLocation("immersiveengineering:forbidden_in_crates"));
 		public CeramicPotHandler(int i,Runnable r) {
 			super(i);
 			function=r;
 		}
 		@Override
 		public boolean isItemValid(int slot, ItemStack stack) {
-			return !(Block.byItem(stack.getItem()) instanceof BlockCeramicPot||Block.byItem(stack.getItem()) instanceof ShulkerBoxBlock||stack.getTags().anyMatch(tag->tag.location()==forbid));
+			return !(Block.byItem(stack.getItem()) instanceof BlockCeramicPot||stack.is(forbid)||stack.getItem().canFitInsideContainerItems());
 		}
 		@Override
 		protected void onContentsChanged(int slot) {
