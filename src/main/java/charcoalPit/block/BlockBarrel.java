@@ -122,7 +122,9 @@ public class BlockBarrel extends Block implements SimpleWaterloggedBlock, Entity
 	@Override
 	public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (state.hasBlockEntity() && (state.getBlock() != newState.getBlock() || !newState.hasBlockEntity())) {
-			((TileBarrel)worldIn.getBlockEntity(pos)).dropInventory();
+			if (worldIn.getBlockEntity(pos) instanceof TileBarrel barrel) {
+				barrel.dropInventory();
+			}
 			worldIn.removeBlockEntity(pos);
 	    }
 	}
