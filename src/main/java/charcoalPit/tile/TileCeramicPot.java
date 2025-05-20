@@ -62,7 +62,7 @@ public class TileCeramicPot extends BlockEntity{
 		}
 		@Override
 		public boolean isItemValid(int slot, ItemStack stack) {
-			return !(Block.byItem(stack.getItem()) instanceof BlockCeramicPot||stack.is(forbid)||stack.getItem().canFitInsideContainerItems());
+			return !(Block.byItem(stack.getItem()) instanceof BlockCeramicPot||stack.is(forbid)||!stack.getItem().canFitInsideContainerItems());
 		}
 		@Override
 		protected void onContentsChanged(int slot) {
