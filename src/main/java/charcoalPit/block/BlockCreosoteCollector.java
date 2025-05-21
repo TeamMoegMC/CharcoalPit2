@@ -59,7 +59,7 @@ public class BlockCreosoteCollector extends Block implements EntityBlock {
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new TileCreosoteCollector(pos,state);
 	}
-	
+	/*
 	@Override
 	public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player,
 			InteractionHand handIn, BlockHitResult hit) {
@@ -69,7 +69,8 @@ public class BlockCreosoteCollector extends Block implements EntityBlock {
 		else {
 			return FluidUtil.interactWithFluidHandler(player, handIn, tile.external)?InteractionResult.SUCCESS:InteractionResult.FAIL;
 		}
-	}
+		return InteractionResult.PASS;
+	}*/
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
 		return createTickerHelper(type, ModTileRegistry.CreosoteCollector, TileCreosoteCollector::tick);
 	}

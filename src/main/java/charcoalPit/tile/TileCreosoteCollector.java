@@ -8,6 +8,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -18,7 +19,6 @@ public class TileCreosoteCollector extends BlockEntity{
 	
 	public FluidTank creosote;
 	int tick;
-	public static Capability<IFluidHandler> FLUID=null;
 	boolean flag;
 	
 	public TileCreosoteCollector(BlockPos blockPos, BlockState state) {
@@ -53,7 +53,7 @@ public class TileCreosoteCollector extends BlockEntity{
 			if(tile.creosote.getFluidAmount()>0&&tile.level.hasNeighborSignal(tile.worldPosition)){
 				BlockEntity tiledown=tile.level.getBlockEntity(tile.worldPosition.relative(Direction.DOWN));
 				if(tiledown!=null){
-					tile.getCapability(FLUID, Direction.UP).ifPresent((handler)->{
+					tile.getCapability(ForgeCapabilities.FLUID_HANDLER, Direction.UP).ifPresent((handler)->{
 						tile.flag=tile.flag||tile.creosote.drain(handler.fill(tile.creosote.getFluid(), FluidAction.EXECUTE), FluidAction.EXECUTE).getAmount()>0;
 					});
 				}
@@ -125,7 +125,7 @@ public class TileCreosoteCollector extends BlockEntity{
 	
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-		if((side==Direction.DOWN||side==null)&&cap.equals(FLUID)) {
+		if(cap==ForgeCapabilities.FLUID_HANDLER) {
 			return fluid.cast();
 		}
 		return super.getCapability(cap, side);

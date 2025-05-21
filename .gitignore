@@ -3,3 +3,7 @@
 /.idea/
 /.gradle/
 /.logs/
+/.settings
+.project
+.classpath
+/bin
