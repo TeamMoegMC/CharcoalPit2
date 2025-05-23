@@ -59,18 +59,14 @@ public class BlockCreosoteCollector extends Block implements EntityBlock {
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new TileCreosoteCollector(pos,state);
 	}
-	/*
+	
 	@Override
 	public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player,
 			InteractionHand handIn, BlockHitResult hit) {
-		TileCreosoteCollector tile=(TileCreosoteCollector)worldIn.getBlockEntity(pos);
-		if(worldIn.isClientSide)
-			return player.getItemInHand(handIn).getCapability(ForgeCapabilities.FLUID_HANDLER, null).isPresent()?InteractionResult.SUCCESS:InteractionResult.FAIL;
-		else {
-			return FluidUtil.interactWithFluidHandler(player, handIn, tile.external)?InteractionResult.SUCCESS:InteractionResult.FAIL;
-		}
-		return InteractionResult.PASS;
-	}*/
+		if(worldIn.getBlockEntity(pos) instanceof TileCreosoteCollector tile)
+			FluidUtil.interactWithFluidHandler(player, handIn, tile.external);
+			return InteractionResult.sidedSuccess(worldIn.isClientSide);
+	}
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
 		return createTickerHelper(type, ModTileRegistry.CreosoteCollector, TileCreosoteCollector::tick);
 	}
