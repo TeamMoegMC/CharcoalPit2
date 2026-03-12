@@ -4,7 +4,7 @@
         "down": "charcoal_pit:block/thatch_bottom",
         "east": "charcoal_pit:block/thatch_side",
         "north": "charcoal_pit:block/thatch_side",
-        "particle": "charcoal_pit:block/thatch",
+        "particle": "charcoal_pit:block/thatch_top",
         "south": "charcoal_pit:block/thatch_side",
         "up": "charcoal_pit:block/thatch_top",
         "west": "charcoal_pit:block/thatch_side"
