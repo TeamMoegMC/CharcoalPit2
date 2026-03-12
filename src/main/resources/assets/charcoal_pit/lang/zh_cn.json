@@ -256,7 +256,7 @@
   "charcoal_pit.jei.charcoal": "炭坑/焦炉",
   "charcoal_pit.jei.barrel": "桶",
   "charcoal_pit.jei.charcoal_pit_recipe": "木炭坑",
-  "charcoal_pit.instruction.place_kiln": "拿着原料按住 Shift 右击，可在地上放置窑/熟铁吹炼炉",
+  "charcoal_pit.instruction.place_kiln": "原料按C键，可在地上放置陶窑，Shift右击放置熟铁吹炼炉",
   "charcoal_pit.instruction.coke_oven": "时运附魔能提高效率。默认 80%，最高可达 95%",
   "charcoal_pit.instruction.charcoal_pit": "时运附魔能提高效率。默认 50%，最多 80%",
   "charcoal_pit.instruction.straw": "用锄头割高草可以获得干草",
