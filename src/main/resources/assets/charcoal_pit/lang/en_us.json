@@ -275,5 +275,7 @@
   "info.charcoal_pit.claypot_empty": "Empty",
   "info.charcoal_pit.charcoal_pit.claypot_no_fuel": "No Fuel",
   "info.charcoal_pit.charcoal_pit.claypot_no_fuel_x": "No Fuel (%s/%s)",
-  "info.charcoal_pit.charcoal_pit.claypot_fuel_x": "Fuel x%s (%s/%s)"
+  "info.charcoal_pit.charcoal_pit.claypot_fuel_x": "Fuel x%s (%s/%s)",
+  "key.categories.charcoalpit": "Charcoal Pit",
+  "key.charcoalpit.place_kiln": "Place Kiln"
 }

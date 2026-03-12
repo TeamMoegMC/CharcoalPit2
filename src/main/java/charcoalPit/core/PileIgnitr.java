@@ -8,6 +8,10 @@ import charcoalPit.recipe.BloomeryRecipe;
 import charcoalPit.recipe.PotteryKilnRecipe;
 import charcoalPit.tile.TileBloomery;
 import charcoalPit.tile.TilePotteryKiln;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.protocol.game.ClientboundSetExperiencePacket;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -25,8 +29,16 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
 @EventBusSubscriber(modid=CharcoalPit.MODID, bus=Bus.FORGE)
 public class PileIgnitr {
+	private static final Map<UUID, Long> lastClickTick = new HashMap<>();
+	private static final Map<UUID, BlockPos> lastClickPos = new HashMap<>();
+	private static final int DOUBLE_CLICK_WINDOW = 8;
+
 	@SubscribeEvent(priority=EventPriority.HIGH)
 	public static void placeKiln(PlayerInteractEvent.RightClickBlock event) {
 		//undye pots
@@ -44,35 +56,25 @@ public class PileIgnitr {
 //				}
 //			}
 			//place bloomery
-			if (event.getEntity().isShiftKeyDown()) {
-				if (PotteryKilnRecipe.isValidInput(event.getItemStack(), world) &&
-						event.getFace() == Direction.UP && world.getBlockState(event.getPos()).isFaceSturdy(world, event.getPos(), Direction.UP) &&
-						world.getBlockState(event.getPos().relative(Direction.UP)).canBeReplaced()) {
-					if (!world.isClientSide) {
-						world.setBlockAndUpdate(event.getPos().relative(Direction.UP), ModBlockRegistry.Kiln.defaultBlockState());
-						TilePotteryKiln tile = ((TilePotteryKiln) world.getBlockEntity(event.getPos().relative(Direction.UP)));
-						event.getEntity().setItemInHand(event.getHand(), tile.potteryStackHandler.insertItem(0, event.getItemStack(), false));
-//					world.sendBlockUpdated(event.getPos().relative(Direction.UP), world.getBlockState(event.getPos().relative(Direction.UP)), world.getBlockState(event.getPos().relative(Direction.UP)), 3);
-
-						world.playSound(null, event.getPos(), SoundEvents.GRAVEL_PLACE, SoundSource.BLOCKS, 1F, 1F);
-					}
-					event.setUseBlock(Result.DENY);
-					event.setUseItem(Result.DENY);
-				} else if (BloomeryRecipe.getRecipe(event.getItemStack(), world) != null &&
-						event.getFace() == Direction.UP && world.getBlockState(event.getPos()).is(BlockTags.create(new ResourceLocation(CharcoalPit.MODID, "bloomery_walls"))) &&
-						world.getBlockState(event.getPos().relative(Direction.UP)).canBeReplaced() &&
-						MethodHelper.Bloomery2ValidPosition(world, event.getPos().relative(Direction.UP), false, false)) {
-					if (!world.isClientSide) {
-						world.setBlockAndUpdate(event.getPos().relative(Direction.UP), ModBlockRegistry.Bloomery.defaultBlockState().setValue(BlockBloomery.STAGE, 1));
-						TileBloomery tile = ((TileBloomery) world.getBlockEntity(event.getPos().relative(Direction.UP)));
-						tile.recipe = BloomeryRecipe.getRecipe(event.getItemStack(), world);
-						event.getEntity().setItemInHand(event.getHand(), tile.ore.insertItem(0, event.getItemStack(), false));
-						world.playSound(null, event.getPos(), SoundEvents.GRAVEL_PLACE, SoundSource.BLOCKS, 1F, 1F);
-					}
-					event.setUseBlock(Result.DENY);
-					event.setUseItem(Result.DENY);
-
-				}
+		if (event.getEntity().isShiftKeyDown()
+				&& BloomeryRecipe.getRecipe(event.getItemStack(), world) != null
+				&& event.getFace() == Direction.UP
+				&& world.getBlockState(event.getPos()).is(
+				BlockTags.create(new ResourceLocation(CharcoalPit.MODID, "bloomery_walls")))
+				&& world.getBlockState(event.getPos().above()).canBeReplaced()
+				&& MethodHelper.Bloomery2ValidPosition(world, event.getPos().above(), false, false)) {
+			if (!world.isClientSide) {
+				world.setBlockAndUpdate(event.getPos().above(),
+						ModBlockRegistry.Bloomery.defaultBlockState().setValue(BlockBloomery.STAGE, 1));
+				TileBloomery tile = (TileBloomery) world.getBlockEntity(event.getPos().above());
+				tile.recipe = BloomeryRecipe.getRecipe(event.getItemStack(), world);
+				event.getEntity().setItemInHand(event.getHand(),
+						tile.ore.insertItem(0, event.getItemStack(), false));
+				world.playSound(null, event.getPos(), SoundEvents.GRAVEL_PLACE,
+						SoundSource.BLOCKS, 1F, 1F);
+			}
+			event.setUseBlock(Result.DENY);
+			event.setUseItem(Result.DENY);
 		/*if(!event.isCanceled()&&event.getPlayer().isSneaking()&&event.getItemStack().getItem().isIn(Tags.Items.ORES_IRON)&&
 				event.getFace()==Direction.UP&&event.getWorld().getBlockState(event.getPos()).isSolidSide(event.getWorld(), event.getPos(), Direction.UP)&&
 				event.getWorld().getBlockState(event.getPos().offset(Direction.UP)).getMaterial().isReplaceable()&&

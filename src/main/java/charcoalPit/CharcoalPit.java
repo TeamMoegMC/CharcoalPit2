@@ -5,6 +5,7 @@ import charcoalPit.core.ModBlockRegistry;
 import charcoalPit.core.ModCreativeModeTab;
 import charcoalPit.core.ModItemRegistry;
 import charcoalPit.fluid.ModFluidRegistry;
+import charcoalPit.network.ModNetwork;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -27,6 +28,7 @@ public class CharcoalPit {
 		ModFluidRegistry.FLUID_TYPES.register(modEventBus);
 		ModFluidRegistry.FLUIDS.register(modEventBus);
 
+		ModNetwork.register();
 		ModLoadingContext.get().registerConfig(Type.COMMON, Config.CONFIG);
 	}
 
